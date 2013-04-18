@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DataSource1">
+      <rd:DataSourceID>1dc1a4b2-3d87-42c3-81aa-6d4e42f02dd6</rd:DataSourceID>
+      <DataSourceReference>DataSource1</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <rd:ReportID>d3abaf10-15c6-48bd-8fe1-c3d6f6aa164d</rd:ReportID>
+  <Width>5in</Width>
+  <Body>
+    <Height>0.99in</Height>
+    <ColumnSpacing>0.5in</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <Style>
+          <FontFamily>Tahoma</FontFamily>
+          <FontSize>20pt</FontSize>
+          <Color>SteelBlue</Color>
+          <FontWeight>Bold</FontWeight>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Value>MC_Ppl_Rpt</Value>
+        <CanGrow>true</CanGrow>
+        <Height>0.36in</Height>
+      </Textbox>
+      <Matrix Name="matrix1">
+        <Top>0.36in</Top>
+        <RowGroupings>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_brand">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!brand.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!brand.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="brand">
+                  <Style>
+                    <FontFamily>Tahoma</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>#6e9eca</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>brand</rd:DefaultName>
+                  <Value>=Fields!brand.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1in</Width>
+          </RowGrouping>
+        </RowGroupings>
+        <MatrixRows>
+          <MatrixRow>
+            <MatrixCells>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox2">
+                    <Style>
+                      <FontFamily>Tahoma</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox2</rd:DefaultName>
+                    <Value>=Sum(Fields!JanPpl.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox3">
+                    <Style>
+                      <FontFamily>Tahoma</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox3</rd:DefaultName>
+                    <Value>=Sum(Fields!JanForecast.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+            </MatrixCells>
+            <Height>0.21in</Height>
+          </MatrixRow>
+        </MatrixRows>
+        <Corner>
+          <ReportItems>
+            <Textbox Name="textbox4">
+              <Style>
+                <FontFamily>Tahoma</FontFamily>
+                <FontSize>10pt</FontSize>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+                <BorderColor>
+                  <Default>LightGrey</Default>
+                </BorderColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+              <rd:DefaultName>textbox4</rd:DefaultName>
+              <Value>
+              </Value>
+              <CanGrow>true</CanGrow>
+              <Height>0.21in</Height>
+            </Textbox>
+          </ReportItems>
+        </Corner>
+        <DataSetName>DataSet1</DataSetName>
+        <MatrixColumns>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+        </MatrixColumns>
+        <ColumnGroupings>
+          <ColumnGrouping>
+            <DynamicColumns>
+              <Grouping Name="matrix1_BusinessUnit">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!BusinessUnit.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!BusinessUnit.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="BusinessUnit">
+                  <Style>
+                    <FontFamily>Tahoma</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>#6e9eca</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>BusinessUnit</rd:DefaultName>
+                  <Value>=Fields!BusinessUnit.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicColumns>
+            <Height>0.21in</Height>
+          </ColumnGrouping>
+          <ColumnGrouping>
+            <StaticColumns>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox5">
+                    <Style>
+                      <Color>White</Color>
+                      <FontFamily>Tahoma</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <BackgroundColor>SlateGray</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox5</rd:DefaultName>
+                    <Value>Jan Ppl</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox6">
+                    <Style>
+                      <Color>White</Color>
+                      <FontFamily>Tahoma</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <BackgroundColor>SlateGray</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox6</rd:DefaultName>
+                    <Value>Jan Forecast</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+            </StaticColumns>
+            <Height>0.21in</Height>
+          </ColumnGrouping>
+        </ColumnGroupings>
+      </Matrix>
+    </ReportItems>
+  </Body>
+  <Language>en-US</Language>
+  <LeftMargin>1in</LeftMargin>
+  <RightMargin>1in</RightMargin>
+  <TopMargin>1in</TopMargin>
+  <BottomMargin>1in</BottomMargin>
+  <PageWidth>8.5in</PageWidth>
+  <PageHeight>11in</PageHeight>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Fields>
+        <Field Name="brand">
+          <DataField>brand</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BusinessUnit">
+          <DataField>BusinessUnit</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Dept2">
+          <DataField>Dept2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Title">
+          <DataField>Title</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="JanPpl">
+          <DataField>JanPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FebPpl">
+          <DataField>FebPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MarPpl">
+          <DataField>MarPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="AprPpl">
+          <DataField>AprPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MayPpl">
+          <DataField>MayPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="JunePpl">
+          <DataField>JunePpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="JulyPpl">
+          <DataField>JulyPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="AugPpl">
+          <DataField>AugPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SeptPpl">
+          <DataField>SeptPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="OctPpl">
+          <DataField>OctPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="NovPpl">
+          <DataField>NovPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DecPpl">
+          <DataField>DecPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="totalPpl">
+          <DataField>totalPpl</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="brand">
+          <DataField>brand</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BusinessUnit">
+          <DataField>BusinessUnit</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Department">
+          <DataField>Department</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Title">
+          <DataField>Title</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="JanForecast">
+          <DataField>JanForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="FebForecast">
+          <DataField>FebForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MarForecast">
+          <DataField>MarForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="AprForecast">
+          <DataField>AprForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MayForecast">
+          <DataField>MayForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="JuneForecast">
+          <DataField>JuneForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="JulyForecast">
+          <DataField>JulyForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="AugForecast">
+          <DataField>AugForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SeptForecast">
+          <DataField>SeptForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="OctForecast">
+          <DataField>OctForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="NovForecast">
+          <DataField>NovForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DecForecast">
+          <DataField>DecForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="totalForecast">
+          <DataField>totalForecast</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandType>Text</CommandType>
+        <CommandText>select *
+from 
+(select brand, BusinessUnit, Dept2, Title
+, CAST((SUM(JanuaryHours)/166.67) as decimal(4,2)) as JanPpl
+, CAST((SUM(FebruaryHours)/166.67) as decimal(4,2)) as FebPpl
+, CAST((SUM(MarchHours)/166.67) as decimal(4,2)) as MarPpl
+, CAST((SUM(AprilHours)/166.67) as decimal(4,2)) as AprPpl
+, CAST((SUM(MayHours)/166.67) as decimal(4,2)) as MayPpl
+, CAST((SUM(JuneHours)/166.67) as decimal(4,2)) as JunePpl
+, CAST((SUM(JulyHours)/166.67) as decimal(4,2)) as JulyPpl
+, CAST((SUM(AugustHours)/166.67) as decimal(4,2)) as AugPpl
+, CAST((SUM(SeptemberHours)/166.67) as decimal(4,2)) as SeptPpl
+, CAST((SUM(OctoberHours)/166.67) as decimal(4,2)) as OctPpl
+, CAST((SUM(NovemberHours)/166.67) as decimal(4,2)) as NovPpl
+, CAST((SUM(DecemberHours)/166.67) as decimal(4,2)) as DecPpl
+, CAST((SUM(total)/2000) as decimal(4,2)) as totalPpl 
+from xwrk_CR600 group by brand, BusinessUnit, Dept2, Title)a,
+(select brand, BusinessUnit, Department, Title
+, CAST(SUM(JanForecast) as decimal(4,2)) as JanForecast
+, CAST(SUM(FebForecast) as decimal(4,2)) as FebForecast
+, CAST(SUM(MarForecast) as decimal(4,2)) as MarForecast
+, CAST(SUM(AprForecast) as decimal(4,2)) as AprForecast
+, CAST(SUM(MayForecast) as decimal(4,2)) as MayForecast
+, CAST(SUM(JunForecast) as decimal(4,2)) as JuneForecast
+, CAST(SUM(JulForecast) as decimal(4,2)) as JulyForecast
+, CAST(SUM(AugForecast) as decimal(4,2)) as AugForecast
+, CAST(SUM(SepForecast) as decimal(4,2)) as SeptForecast
+, CAST(SUM(OctForecast) as decimal(4,2)) as OctForecast
+, CAST(SUM(NovForecast) as decimal(4,2)) as NovForecast
+, CAST(SUM(DecForecast) as decimal(4,2)) as DecForecast
+, CAST(SUM(TotalForecast) as decimal(4,2)) as totalForecast 
+from xwrk_MC_Ppl_Forecast group by brand, BusinessUnit, Department, Title)f 
+where a.Brand = f.Brand
+AND a.BusinessUnit = f.BusinessUnit
+AND a.Dept2 = f. Department
+AND a.Title = f.Title
+order by a.Brand, a.BusinessUnit, a.Dept2, a.Title</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <Timeout>0</Timeout>
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

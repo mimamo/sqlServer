@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>APS_Excel</Name>
+  <ConnectionProperties>
+    <Extension>ODBC</Extension>
+    <ConnectString>Dsn=ADP_APS_HourlyRate</ConnectString>
+    <IntegratedSecurity>true</IntegratedSecurity>
+  </ConnectionProperties>
+  <DataSourceID>33682db5-423c-40bc-958b-3b74207e5e96</DataSourceID>
+</RptDataSource>

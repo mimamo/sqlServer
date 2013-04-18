@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Payroll_Hours_Report", "Payroll_Hours_Report\Payroll_Hours_Report.rptproj", "{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}.Debug|Default.ActiveCfg = Debug
+		{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}.Debug|Default.Build.0 = DebugLocal
+		{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}.Debug|Default.Deploy.0 = DebugLocal
+		{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}.DebugLocal|Default.Build.0 = DebugLocal
+		{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}.Release|Default.ActiveCfg = Release
+		{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}.Release|Default.Build.0 = Release
+		{A1C9B11A-C842-4E4B-A8AB-250BA2DEFFE7}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

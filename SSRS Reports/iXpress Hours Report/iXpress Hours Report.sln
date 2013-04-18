@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "iXpress Hours Report", "iXpress Hours Report\iXpress Hours Report.rptproj", "{4BF53DB8-3601-4928-8CAB-1929C740F0AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BF53DB8-3601-4928-8CAB-1929C740F0AD}.Debug|Default.ActiveCfg = Debug
+		{4BF53DB8-3601-4928-8CAB-1929C740F0AD}.Debug|Default.Build.0 = DebugLocal
+		{4BF53DB8-3601-4928-8CAB-1929C740F0AD}.Debug|Default.Deploy.0 = DebugLocal
+		{4BF53DB8-3601-4928-8CAB-1929C740F0AD}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{4BF53DB8-3601-4928-8CAB-1929C740F0AD}.DebugLocal|Default.Build.0 = DebugLocal
+		{4BF53DB8-3601-4928-8CAB-1929C740F0AD}.Release|Default.ActiveCfg = Release
+		{4BF53DB8-3601-4928-8CAB-1929C740F0AD}.Release|Default.Build.0 = Release
+		{4BF53DB8-3601-4928-8CAB-1929C740F0AD}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

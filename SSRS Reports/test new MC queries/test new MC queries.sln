@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "test new MC queries", "test new MC queries\test new MC queries.rptproj", "{E0F79A79-2E89-456F-96CA-E957BE67868B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0F79A79-2E89-456F-96CA-E957BE67868B}.Debug|Default.ActiveCfg = Debug
+		{E0F79A79-2E89-456F-96CA-E957BE67868B}.Debug|Default.Build.0 = DebugLocal
+		{E0F79A79-2E89-456F-96CA-E957BE67868B}.Debug|Default.Deploy.0 = DebugLocal
+		{E0F79A79-2E89-456F-96CA-E957BE67868B}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{E0F79A79-2E89-456F-96CA-E957BE67868B}.DebugLocal|Default.Build.0 = DebugLocal
+		{E0F79A79-2E89-456F-96CA-E957BE67868B}.Release|Default.ActiveCfg = Release
+		{E0F79A79-2E89-456F-96CA-E957BE67868B}.Release|Default.Build.0 = Release
+		{E0F79A79-2E89-456F-96CA-E957BE67868B}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

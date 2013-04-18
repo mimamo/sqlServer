@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="SQL1_DENVERAPP">
+      <rd:DataSourceID>18424ec8-9308-48eb-8410-fae3b9788881</rd:DataSourceID>
+      <DataSourceReference>SQL1_DENVERAPP</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <rd:ReportID>443c9d66-5efd-486f-bac2-41cba6e5c1c9</rd:ReportID>
+  <Width>5in</Width>
+  <Body>
+    <Height>0.72in</Height>
+    <ColumnSpacing>0.5in</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <Style>
+          <FontFamily>Verdana</FontFamily>
+          <FontSize>16pt</FontSize>
+          <Color>DarkRed</Color>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Value>test MC report</Value>
+        <CanGrow>true</CanGrow>
+        <Height>0.3in</Height>
+      </Textbox>
+      <Matrix Name="matrix1">
+        <Top>0.3in</Top>
+        <RowGroupings>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_SalesMarketing">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!SalesMarketing.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!SalesMarketing.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="SalesMarketing">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>Maroon</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>SalesMarketing</rd:DefaultName>
+                  <Value>=Fields!SalesMarketing.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1in</Width>
+          </RowGrouping>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_BusinessUnit">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!BusinessUnit.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!BusinessUnit.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="BusinessUnit">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>Brown</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>BusinessUnit</rd:DefaultName>
+                  <Value>=Fields!BusinessUnit.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1in</Width>
+          </RowGrouping>
+        </RowGroupings>
+        <MatrixRows>
+          <MatrixRow>
+            <MatrixCells>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox2">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox2</rd:DefaultName>
+                    <Value>=Sum(Fields!Hours.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+            </MatrixCells>
+            <Height>0.21in</Height>
+          </MatrixRow>
+        </MatrixRows>
+        <Corner>
+          <ReportItems>
+            <Textbox Name="textbox3">
+              <Style>
+                <FontFamily>Verdana</FontFamily>
+                <FontSize>10pt</FontSize>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+                <BorderColor>
+                  <Default>LightGrey</Default>
+                </BorderColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+              <rd:DefaultName>textbox3</rd:DefaultName>
+              <Value>
+              </Value>
+              <CanGrow>true</CanGrow>
+              <Height>0.21in</Height>
+            </Textbox>
+          </ReportItems>
+        </Corner>
+        <DataSetName>DataSet1</DataSetName>
+        <MatrixColumns>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+        </MatrixColumns>
+        <ColumnGroupings>
+          <ColumnGrouping>
+            <DynamicColumns>
+              <Grouping Name="matrix1_CurMonth">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!CurMonth.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!CurMonth.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="CurMonth">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>Maroon</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>CurMonth</rd:DefaultName>
+                  <Value>=Fields!CurMonth.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicColumns>
+            <Height>0.21in</Height>
+          </ColumnGrouping>
+        </ColumnGroupings>
+      </Matrix>
+    </ReportItems>
+  </Body>
+  <Language>en-US</Language>
+  <LeftMargin>1in</LeftMargin>
+  <RightMargin>1in</RightMargin>
+  <TopMargin>1in</TopMargin>
+  <BottomMargin>1in</BottomMargin>
+  <PageWidth>8.5in</PageWidth>
+  <PageHeight>11in</PageHeight>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Fields>
+        <Field Name="BusinessUnit">
+          <DataField>BusinessUnit</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Department">
+          <DataField>Department</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SalesMarketing">
+          <DataField>SalesMarketing</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Hours">
+          <DataField>Hours</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="Forecast">
+          <DataField>Forecast</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="FTE">
+          <DataField>FTE</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="Adj_Forecast">
+          <DataField>Adj_Forecast</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="Varience">
+          <DataField>Varience</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="CurMonth">
+          <DataField>CurMonth</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <CommandType>Text</CommandType>
+        <CommandText>--dsByBU_w_YTD
+select m.BusinessUnit
+, m.Department
+, m.SalesMarketing 
+, SUM(m.CurHours) as 'Hours'
+, ISNULL(SUM(ad.Forecst),0) as 'Forecast'
+, ISNULL(SUM(ad.FTE_Adjust),0) as 'FTE'
+, ISNULL(SUM(ad.Adj_Forecast),0) as 'Adj_Forecast'
+, SUM(m.CurHours)-ISNULL(SUM(ad.Adj_Forecast),0) as 'Varience'
+, m.CurMonth
+from 
+(select b.BusinessUnit
+, b.Department
+, b.SalesMarketing 
+, b.CurHours
+, b.CurMonth
+from 
+(select BusinessUnit, Department, SalesMarketing, (SUM(CurHours)/166.67) as CurHours, CurMonth from xwrk_MC_Data 
+WHERE BusinessUnit NOT LIKE ('OOS%')
+and CurMonth &lt;= @iCurMonth
+and Year = @iCurYear
+group by BusinessUnit, Department, SalesMarketing, CurMonth)b)m left outer join
+(select f.BusinessUnit
+, f.Department 
+, f.SalesMarketing
+, f.Forecst
+, f.FTE_Adjust
+, f.Adj_Forecast
+, f.CurMonth
+from 
+(select BusinessUnit, Department, SalesMarketing, SUM(fPpl) as 'Forecst'
+, SUM(fte_adj) as 'FTE_Adjust'
+, SUM(adj_fPpl) as 'Adj_Forecast'
+, fMonth as CurMonth from xwrk_MC_Forecast 
+WHERE BusinessUnit NOT LIKE ('OOS%')
+and fMonth &lt;= @iCurMonth
+and fYear = @iCurYear
+group by BusinessUnit, Department, SalesMarketing, fMonth)f)ad on m.BusinessUnit = ad.BusinessUnit 
+and m.SalesMarketing = ad.SalesMarketing 
+and m.Department = ad.Department and m.CurMonth = ad.CurMonth
+group by m.BusinessUnit, m.Department, m.SalesMarketing, m.CurMonth
+order by m.BusinessUnit</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <QueryParameters>
+          <QueryParameter Name="@iCurMonth">
+            <Value>=Parameters!iCurMonth.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@iCurYear">
+            <Value>=Parameters!iCurYear.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <Timeout>0</Timeout>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="iCurMonth">
+      <DataType>String</DataType>
+      <Prompt>i Cur Month</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="iCurYear">
+      <DataType>String</DataType>
+      <Prompt>i Cur Year</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

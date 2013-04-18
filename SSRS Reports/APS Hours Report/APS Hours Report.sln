@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "APS Hours Report", "APS Hours Report\APS Hours Report.rptproj", "{329AD92F-017B-4336-AF3E-BE5057F1C361}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{329AD92F-017B-4336-AF3E-BE5057F1C361}.Debug|Default.ActiveCfg = Release
+		{329AD92F-017B-4336-AF3E-BE5057F1C361}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{329AD92F-017B-4336-AF3E-BE5057F1C361}.DebugLocal|Default.Build.0 = DebugLocal
+		{329AD92F-017B-4336-AF3E-BE5057F1C361}.Release|Default.ActiveCfg = Release
+		{329AD92F-017B-4336-AF3E-BE5057F1C361}.Release|Default.Build.0 = Release
+		{329AD92F-017B-4336-AF3E-BE5057F1C361}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

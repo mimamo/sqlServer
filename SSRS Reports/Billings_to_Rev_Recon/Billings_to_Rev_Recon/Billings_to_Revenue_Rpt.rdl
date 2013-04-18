@@ -1,0 +1,1133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition">
+  <DataSources>
+    <DataSource Name="DENVERAPP">
+      <DataSourceReference>SQL1_DENVERAPP</DataSourceReference>
+      <rd:DataSourceID>88052818-451f-4266-af9e-1e0b76240014</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Fields>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Function_Code_Type">
+          <DataField>Function Code Type</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Section">
+          <DataField>Section</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Function_Group">
+          <DataField>Function Group</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Function_Group_Desc">
+          <DataField>Function Group Desc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Function_Code">
+          <DataField>Function Code</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Function_Code_Desc">
+          <DataField>Function Code Desc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Acct">
+          <DataField>Acct</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Acct_Desc">
+          <DataField>Acct Desc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Sub_Acct">
+          <DataField>Sub Acct</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Sub_Acct_Desc">
+          <DataField>Sub Acct Desc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Amt">
+          <DataField>Amt</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DENVERAPP</DataSourceName>
+        <CommandText>select a.[Function Code Type] 
+, a.[Function Group]
+, a.[Function Group Desc]
+, a.[Function Code]
+, a.[Function Code Desc]
+, a.Acct
+, a.[Acct Desc]
+, a.[Sub Acct]
+, a.[Sub Acct Desc]
+, a.Amt 
+, a.Section
+, a.Name
+from
+(select a.[Function Code Type]
+, a.[Function Group]
+, CASE 
+WHEN rtrim(a.[Function Group Desc]) = 'Production' OR rtrim(a.[Function Group Desc]) = 'Interactive Production' 
+	OR rtrim(a.[Function Group Desc]) = 'Research' OR rtrim(a.[Function Group Desc]) = 'Photography' 
+	THEN 'Production Costs' 
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' THEN 'Unbillable'
+ELSE 'Incidental Costs'
+END as 'Section'
+, a.[Function Group Desc]
+, b.[Function Code]
+, b.[Function Code Desc]
+, CASE 
+WHEN rtrim(a.[Function Group Desc]) = 'Broadcast' AND rtrim(b.[Function Code Desc]) = 'Broadcast Production' THEN 'A/V Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Audio Production' THEN 'A/V Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Parking Expense' THEN 'Vehicle Related Expenses'
+WHEN rtrim(b.[Function Code Desc]) = 'Post Production' THEN 'A/V Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Media Fee' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Digital Fee' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Revenue Accrual' and rtrim(b.[Acct Desc]) = 'EITF' THEN 'EITF'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent &amp; Residuals' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Agency Fee' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Finance Transfer Function' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Miscellaneous' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Storage Costs' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Supplies' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Usage Tax' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'AV Services' THEN 'A/V Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Entertainment' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Storage' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'LSW KAR Pay for Performance' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Miscellaneous Expense' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Parking Expense' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Presentation Materials' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Photography' THEN 'Photography'
+WHEN rtrim(b.[Function Code Desc]) = 'Stock Photography' THEN 'Photography'
+WHEN rtrim(b.[Function Code Desc]) = 'Printing' THEN 'Printing Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Art Production Services' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Broadcast Production Costs' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Digital Production' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = '3D Production' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Comps' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Equipment Rental' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Final Art' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Illustrations' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Language Translation' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Merchandise' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Set Up Charge' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Sponsorship' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Trafficking' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Video Production' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Dropship Costs' THEN 'Shipping Postage &amp; Messanger'
+WHEN rtrim(b.[Function Code Desc]) = 'Freight' THEN 'Shipping Postage &amp; Messanger'
+WHEN rtrim(b.[Function Code Desc]) = 'Kitting' THEN 'Shipping Postage &amp; Messanger'
+WHEN rtrim(b.[Function Code Desc]) = 'Chica Off Premise Talent' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Chica On Premise Talent' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent Residuals' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent Session Fees' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Entertainment' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel Airfare' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel Car Rental -Taxi' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel Expense' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel Hotel' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel Meals' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel Mileage' THEN 'Vehicle Related Expenses'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel Other' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Dubbing Services' THEN 'Editing Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Art Buying Fee' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Event Production Fee' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'HTML Development' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Mobile Mktg Development Fee' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Food and Beverage' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Insurance and Fees' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Telephone and Equipment Chrges' THEN 'Telecommunications'
+WHEN rtrim(a.[Function Group Desc]) = 'Interactive Production' THEN 'Interactive Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Site Hosting' THEN 'Site &amp; Sponsorship Fees'
+WHEN rtrim(b.[Function Code Desc]) = 'Contract Labor' THEN 'Freelancers &amp; Subcontract'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel - Other' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Donation' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Fulfillment Services' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Mike Chou Goods &amp; Services' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Misc Operating Costs' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Miscellaneous Billing Credit' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Third Party Fulfillment' THEN 'Freelancers &amp; Subcontract'
+WHEN rtrim(b.[Function Code Desc]) = 'Print Production' THEN 'Printing Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Printing' THEN 'Printing Services'
+WHEN rtrim(b.[Function Code Desc]) = 'APS Photography' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Broadcast Business Management' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Broadcast Production' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Cassettes Dubs Tapes' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Color Seps' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Database ProdTn List Purchase' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Deliver Svc' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'DSL System' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Event Management' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Film DTP Prepress' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Interest' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Legal Expense' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Miscellaneous Production' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Partner Mgmt Sourcing' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Permanent Merchandise' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Production Insurance' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Samples-Prototypes' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Site Venue' THEN 'Site &amp; Sponsorship Fees'
+WHEN rtrim(b.[Function Code Desc]) = 'Stock Footage' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Support Allocation' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Research' THEN 'Production Research'
+WHEN rtrim(b.[Function Code Desc]) = 'Courier' THEN 'Shipping Postage &amp; Messanger'
+WHEN rtrim(b.[Function Code Desc]) = 'Broadcast Talent Session Exp' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Event Staff Crew' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'LALA Brand Ambassadors' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent and Entertainment' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent Expense' THEN 'Talent Fee/Honoraria'
+WHEN rtrim(b.[Function Code Desc]) = 'Meals' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent &amp; Residuals' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Chica On Premise Talent' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent and Entertainment' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent Expense' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Talent Session Fees' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Merchandise' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Transportation' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Food and Bev - Local Meals' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(b.[Function Code Desc]) = 'Portable Hard Drives' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Travel Meals - BAL' THEN 'Travel Meals &amp; Hospitality Services'
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' AND rtrim(b.[Function Code Desc]) = 'Freelance' THEN 'Freelance'
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' AND rtrim(b.[Function Code Desc]) = 'Outside Services' THEN 'Outside Services'
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' AND rtrim(b.[Function Code Desc]) = 'UB Air' THEN 'UB Air'
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' AND rtrim(b.[Function Code Desc]) = 'UB Entertainment' THEN 'UB Entertainment'
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' AND rtrim(b.[Function Code Desc]) = 'UB Hotel' THEN 'UB Hotel'
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' AND rtrim(b.[Function Code Desc]) = 'UB Mileage Expense' THEN 'UB Mileage Expense'
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' AND rtrim(b.[Function Code Desc]) = 'UB Other Transit' THEN 'UB Other Transit'
+WHEN rtrim(a.[Function Group Desc]) = 'Unbillable' AND rtrim(b.[Function Code Desc]) = 'UB Parking' THEN 'UB Parking'
+WHEN rtrim(b.[Function Code Desc]) = 'Animation Fee' THEN 'Incidental Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Dropship' THEN 'Shipping Postage &amp; Messanger'
+WHEN rtrim(b.[Function Code Desc]) = 'Prizes Merchandise' THEN 'Premiums &amp; Promotional Merchandise'
+WHEN rtrim(b.[Function Code Desc]) = 'Outside Services' THEN 'Production'
+WHEN rtrim(b.[Function Code Desc]) = 'Recording Studio Mixing' THEN 'Production'
+	ELSE 'NOT FOUND'
+	END AS 'Name'
+, b.Acct
+, b.[Acct Desc]
+, b.[Sub Acct]
+, b.[Sub Acct Desc]
+, b.[Amt Total] AS 'Amt'
+from 
+	(select f.code_group
+	, gl.TaskID as 'Function Code'
+	, f.descr as 'Function Code Desc'
+	, gl.Acct as 'Acct' 
+	, a.Descr as 'Acct Desc' 
+	, gl.[SUB] as 'Sub Acct' 
+	, sa.Descr as 'Sub Acct Desc' 
+	, (sum(gl.cramt)-SUM(gl.dramt)) as 'Amt Total' 
+		from GLTran gl left outer join Account a on gl.acct = a.acct
+		left outer join SubAcct sa on gl.[Sub] = sa.[Sub]
+		left outer join xIGFunctionCode f on gl.TaskID = f.code_ID
+			where rtrim(gl.PerPost) = @perPost
+			AND rtrim(gl.Acct) between '4699' and '4970'
+			group by gl.TaskID, f.descr, gl.acct, a.Descr, gl.[sub], sa.Descr, f.code_group)b 
+	LEFT OUTER JOIN 
+	(select code_value, code_type as 'Function Code Type'
+	, code_value as 'Function Group'
+	, code_value_desc as 'Function Group Desc'
+		from PJCODE where code_type = '9FCG')a ON b.code_group = a.code_value)a
+where a.[Function Code] NOT IN ('39000','41001','41003')
+UNION ALL
+select b.[Function Code Type] 
+, b.[Function Group]
+, b.[Function Group Desc]
+, b.[Function Code]
+, b.[Function Code Desc]
+, b.Acct
+, b.[Acct Desc]
+, b.[Sub Acct]
+, b.[Sub Acct Desc]
+, b.Amt 
+, b.Section
+, b.Name
+from
+(select a.[Function Code Type]
+, a.[Function Group]
+, 'Costs of Media' as 'Section'
+, a.[Function Group Desc]
+, b.[Function Code]
+, b.[Function Code Desc]
+, CASE 
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media Commission' THEN 'Media Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media DDS Service Char' THEN 'Media Other'
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media Invoices' AND b.[Acct Desc] = 'COS Media - Interactive' THEN 'Internet'
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media Invoices' AND b.[Acct Desc] = 'COS Media - Magazine' THEN 'Magazine'
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media Invoices' AND b.[Acct Desc] = 'COS Media - Network Radio' THEN 'Spot &amp; Network Radio'
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media Invoices' AND b.[Acct Desc] = 'COS Media - Newspaper' THEN 'Newspaper'
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media Invoices' AND (b.[Acct Desc] = 'COS Media - Spot TV' OR b.[Acct Desc] = 'COS - Network TV') 
+	THEN 'Spot &amp; Network TV'
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media Invoices' AND b.[Acct Desc] = 'COS Media - Outdoor' THEN 'Outdoor'
+WHEN rtrim(b.[Function Code Desc]) = 'Donovan Media Invoices' AND b.[Acct Desc] = 'COS - Production' THEN 'In Store Advertising'
+WHEN rtrim(b.[Function Code Desc]) = 'On Premise Promotional Spend' AND b.[Acct Desc] = 'COS - Production' THEN 'In Store Advertising'
+	ELSE 'NOT FOUND'
+	END AS 'Name'
+, b.Acct
+, b.[Acct Desc]
+, b.[Sub Acct]
+, b.[Sub Acct Desc]
+, b.[Amt Total] AS 'Amt'
+from 
+	(select f.code_group
+	, gl.TaskID as 'Function Code'
+	, f.descr as 'Function Code Desc'
+	, gl.Acct as 'Acct' 
+	, a.Descr as 'Acct Desc' 
+	, gl.[SUB] as 'Sub Acct' 
+	, sa.Descr as 'Sub Acct Desc' 
+	, (sum(gl.cramt)-SUM(gl.dramt)) as 'Amt Total' 
+		from GLTran gl left outer join Account a on gl.acct = a.acct
+		left outer join SubAcct sa on gl.[Sub] = sa.[Sub]
+		left outer join xIGFunctionCode f on gl.TaskID = f.code_ID
+			where rtrim(gl.PerPost) = @perPost
+			AND rtrim(gl.Acct) between '4699' and '4970'
+			group by gl.TaskID, f.descr, gl.acct, a.Descr, gl.[sub], sa.Descr, f.code_group)b 
+	LEFT OUTER JOIN 
+	(select code_value, code_type as 'Function Code Type'
+	, code_value as 'Function Group'
+	, code_value_desc as 'Function Group Desc'
+		from PJCODE where code_type = '9FCG')a ON b.code_group = a.code_value)b 
+where (b.[Function Code Desc] LIKE 'Donovan%' or b.[Function Code Desc] = 'On Premise Promotional Spend')</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@perPost">
+            <Value>=Parameters!perPost.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>="Billings to Revenue Report (Fiscal Period: "+Parameters!perPost.Value+")"</Value>
+                <Style>
+                  <FontFamily>Tahoma</FontFamily>
+                  <FontSize>20pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <Color>SteelBlue</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Height>0.36in</Height>
+        <Width>11.125in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Tablix Name="Billings_to_Revenue">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.48958in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.63542in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.25in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox25">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Function Group</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox25</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox27">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Function Group Desc</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox27</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox29">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Function Code</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox29</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox31">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Function Code Desc</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox31</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox33">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Acct</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox33</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox35">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Acct Desc</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox35</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox37">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Sub Acct</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox37</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox39">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Sub Acct Desc</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox39</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox23">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Amt</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox23</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox41">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Section</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox41</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox43">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Name</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox43</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.25in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Function_Group1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Function_Group.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Function_Group1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Function_Group_Desc1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Function_Group_Desc.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Function_Group_Desc1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Function_Code">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Function_Code.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Function_Code</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Function_Code_Desc">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Function_Code_Desc.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Function_Code_Desc</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Acct">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Acct.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Acct</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Acct_Desc">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Acct_Desc.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Acct_Desc</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Sub_Acct">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Sub_Acct.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Sub_Acct</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Sub_Acct_Desc">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Sub_Acct_Desc.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Sub_Acct_Desc</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Amt">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Amt.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Amt</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Section">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Section.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Section</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Name">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Name.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Name</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+            </TablixMember>
+            <TablixMember>
+              <Group Name="Details" />
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DataSet1</DataSetName>
+        <Top>0.40167in</Top>
+        <Height>0.5in</Height>
+        <Width>11.125in</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Tablix>
+    </ReportItems>
+    <Height>0.95667in</Height>
+    <Style>
+      <Border />
+    </Style>
+  </Body>
+  <ReportParameters>
+    <ReportParameter Name="perPost">
+      <DataType>String</DataType>
+      <Prompt>Fiscal Period (ex: 201212)</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Width>11.125in</Width>
+  <Page>
+    <LeftMargin>1in</LeftMargin>
+    <RightMargin>1in</RightMargin>
+    <TopMargin>1in</TopMargin>
+    <BottomMargin>1in</BottomMargin>
+    <Style />
+  </Page>
+  <Language>en-US</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportID>b4338a68-890d-4b11-b4bb-3b33ed3e6ab3</rd:ReportID>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+</Report>

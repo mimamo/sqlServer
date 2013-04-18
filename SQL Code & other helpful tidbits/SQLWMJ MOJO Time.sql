@@ -1,0 +1,1 @@
+select top 10 * from SQLWMJ.MOJo_prod.dbo.intLogTimeDetail where TransactionDate > '03/15/2012' and approverid = 'mcampbell'

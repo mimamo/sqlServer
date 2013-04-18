@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Ariba", "Ariba\Ariba.rptproj", "{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}.Debug|Default.ActiveCfg = Release
+		{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}.Debug|Default.Build.0 = Release
+		{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}.Debug|Default.Deploy.0 = Release
+		{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}.DebugLocal|Default.Build.0 = DebugLocal
+		{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}.Release|Default.ActiveCfg = Release
+		{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}.Release|Default.Build.0 = Release
+		{ADE27CB2-09C6-439A-853F-AE1A8B11CC5E}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

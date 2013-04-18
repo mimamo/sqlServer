@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Media_FuncCode_Report", "Media_FuncCode_Report\Media_FuncCode_Report.rptproj", "{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}.Debug|Default.ActiveCfg = Debug
+		{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}.Debug|Default.Build.0 = DebugLocal
+		{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}.Debug|Default.Deploy.0 = DebugLocal
+		{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}.DebugLocal|Default.Build.0 = DebugLocal
+		{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}.Release|Default.ActiveCfg = Release
+		{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}.Release|Default.Build.0 = Release
+		{A9CDF959-ADEF-4FF5-806D-F3A3B6160A9D}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

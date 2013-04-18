@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "FJR Explosion", "FJR Explosion\FJR Explosion.rptproj", "{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}.Debug|Default.ActiveCfg = Debug
+		{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}.Debug|Default.Build.0 = DebugLocal
+		{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}.Debug|Default.Deploy.0 = DebugLocal
+		{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}.DebugLocal|Default.Build.0 = DebugLocal
+		{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}.Release|Default.ActiveCfg = Release
+		{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}.Release|Default.Build.0 = Release
+		{BE3CE005-7C26-424E-AF7C-4AE200C97AA8}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

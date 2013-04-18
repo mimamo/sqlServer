@@ -1,0 +1,1086 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="SQL1_DENVERAPP">
+      <rd:DataSourceID>eb318855-a607-42f6-8692-1b5510e3d708</rd:DataSourceID>
+      <DataSourceReference>SQL1_DENVERAPP</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <rd:ReportID>d47f8922-29a2-4011-8b26-6cc719c89d51</rd:ReportID>
+  <Width>12in</Width>
+  <Body>
+    <Height>0.93in</Height>
+    <ColumnSpacing>0.5in</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <Style>
+          <FontFamily>Verdana</FontFamily>
+          <FontSize>16pt</FontSize>
+          <Color>DarkRed</Color>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Value>Timecard Compare Report</Value>
+        <CanGrow>true</CanGrow>
+        <Height>0.3in</Height>
+      </Textbox>
+      <Matrix Name="matrix1">
+        <Top>0.3in</Top>
+        <RowGroupings>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_employee">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!employee.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!employee.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="employee">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>Maroon</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>employee</rd:DefaultName>
+                  <Value>=Fields!employee.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1in</Width>
+          </RowGrouping>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_hdr_docnbr">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!hdr_docnbr.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!hdr_docnbr.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="hdr_docnbr">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>Brown</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>hdr_docnbr</rd:DefaultName>
+                  <Value>=Fields!hdr_docnbr.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1in</Width>
+          </RowGrouping>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_project">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!project.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!project.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="project">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>#ce8955</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>project</rd:DefaultName>
+                  <Value>=Fields!project.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1in</Width>
+          </RowGrouping>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_pjt_entity">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!pjt_entity.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!pjt_entity.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="pjt_entity">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>#ce8955</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>pjt_entity</rd:DefaultName>
+                  <Value>=Fields!pjt_entity.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1in</Width>
+          </RowGrouping>
+        </RowGroupings>
+        <MatrixRows>
+          <MatrixRow>
+            <MatrixCells>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox2">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox2</rd:DefaultName>
+                    <Value>=Sum(Fields!day1_hr1.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox3">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox3</rd:DefaultName>
+                    <Value>=Sum(Fields!day2_hr1.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox4">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox4</rd:DefaultName>
+                    <Value>=Sum(Fields!day3_hr1.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox5">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox5</rd:DefaultName>
+                    <Value>=Sum(Fields!day4_hr1.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox6">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox6</rd:DefaultName>
+                    <Value>=Sum(Fields!day5_hr1.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox7">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox7</rd:DefaultName>
+                    <Value>=Sum(Fields!day6_hr1.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox8">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox8</rd:DefaultName>
+                    <Value>=Sum(Fields!day7_hr1.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox9">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox9</rd:DefaultName>
+                    <Value>=Sum(Fields!total_hrs.Value)</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+            </MatrixCells>
+            <Height>0.21in</Height>
+          </MatrixRow>
+        </MatrixRows>
+        <Corner>
+          <ReportItems>
+            <Textbox Name="textbox10">
+              <Style>
+                <FontFamily>Verdana</FontFamily>
+                <FontSize>10pt</FontSize>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+                <BorderColor>
+                  <Default>LightGrey</Default>
+                </BorderColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+              <rd:DefaultName>textbox10</rd:DefaultName>
+              <Value>
+              </Value>
+              <CanGrow>true</CanGrow>
+              <Height>0.21in</Height>
+            </Textbox>
+          </ReportItems>
+        </Corner>
+        <DataSetName>DataSet1</DataSetName>
+        <MatrixColumns>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>1in</Width>
+          </MatrixColumn>
+        </MatrixColumns>
+        <ColumnGroupings>
+          <ColumnGrouping>
+            <DynamicColumns>
+              <Grouping Name="matrix1_pe_date">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!pe_date.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!pe_date.Value</SortExpression>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="pe_date">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Color>White</Color>
+                    <BackgroundColor>Maroon</BackgroundColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>pe_date</rd:DefaultName>
+                  <Value>=Fields!pe_date.Value</Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                  <Width>1in</Width>
+                </Textbox>
+              </ReportItems>
+            </DynamicColumns>
+            <Height>0.21in</Height>
+          </ColumnGrouping>
+          <ColumnGrouping>
+            <StaticColumns>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox11">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>White</Color>
+                      <BackgroundColor>Brown</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox11</rd:DefaultName>
+                    <Value>day1 hr1</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox12">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>White</Color>
+                      <BackgroundColor>Brown</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox12</rd:DefaultName>
+                    <Value>day2 hr1</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox13">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>White</Color>
+                      <BackgroundColor>Brown</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox13</rd:DefaultName>
+                    <Value>day3 hr1</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox14">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>White</Color>
+                      <BackgroundColor>Brown</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox14</rd:DefaultName>
+                    <Value>day4 hr1</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox15">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>White</Color>
+                      <BackgroundColor>Brown</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox15</rd:DefaultName>
+                    <Value>day5 hr1</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox16">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>White</Color>
+                      <BackgroundColor>Brown</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox16</rd:DefaultName>
+                    <Value>day6 hr1</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox17">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>White</Color>
+                      <BackgroundColor>Brown</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox17</rd:DefaultName>
+                    <Value>day7 hr1</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox18">
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>White</Color>
+                      <BackgroundColor>Brown</BackgroundColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <TextAlign>Right</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>textbox18</rd:DefaultName>
+                    <Value>total hrs</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                    <Width>1in</Width>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+            </StaticColumns>
+            <Height>0.21in</Height>
+          </ColumnGrouping>
+        </ColumnGroupings>
+      </Matrix>
+    </ReportItems>
+  </Body>
+  <Language>en-US</Language>
+  <LeftMargin>1in</LeftMargin>
+  <RightMargin>1in</RightMargin>
+  <TopMargin>1in</TopMargin>
+  <BottomMargin>1in</BottomMargin>
+  <PageWidth>8.5in</PageWidth>
+  <PageHeight>11in</PageHeight>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Fields>
+        <Field Name="employee">
+          <DataField>employee</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="pe_date">
+          <DataField>pe_date</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="hdr_docnbr">
+          <DataField>hdr_docnbr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CpnyId_chrg">
+          <DataField>CpnyId_chrg</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CpnyId_home">
+          <DataField>CpnyId_home</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="crtd_datetime">
+          <DataField>crtd_datetime</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="crtd_prog">
+          <DataField>crtd_prog</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="crtd_user">
+          <DataField>crtd_user</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="day1_hr1">
+          <DataField>day1_hr1</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day1_hr2">
+          <DataField>day1_hr2</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day1_hr3">
+          <DataField>day1_hr3</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day2_hr1">
+          <DataField>day2_hr1</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day2_hr2">
+          <DataField>day2_hr2</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day2_hr3">
+          <DataField>day2_hr3</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day3_hr1">
+          <DataField>day3_hr1</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day3_hr2">
+          <DataField>day3_hr2</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day3_hr3">
+          <DataField>day3_hr3</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day4_hr1">
+          <DataField>day4_hr1</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day4_hr2">
+          <DataField>day4_hr2</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day4_hr3">
+          <DataField>day4_hr3</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day5_hr1">
+          <DataField>day5_hr1</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day5_hr2">
+          <DataField>day5_hr2</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day5_hr3">
+          <DataField>day5_hr3</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day6_hr1">
+          <DataField>day6_hr1</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day6_hr2">
+          <DataField>day6_hr2</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day6_hr3">
+          <DataField>day6_hr3</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day7_hr1">
+          <DataField>day7_hr1</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day7_hr2">
+          <DataField>day7_hr2</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="day7_hr3">
+          <DataField>day7_hr3</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="docnbr">
+          <DataField>docnbr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="earn_type_id">
+          <DataField>earn_type_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="gl_acct">
+          <DataField>gl_acct</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="gl_subacct">
+          <DataField>gl_subacct</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="labor_class_cd">
+          <DataField>labor_class_cd</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="labor_stdcost">
+          <DataField>labor_stdcost</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="ld_desc">
+          <DataField>ld_desc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id01">
+          <DataField>ld_id01</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id02">
+          <DataField>ld_id02</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id03">
+          <DataField>ld_id03</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id04">
+          <DataField>ld_id04</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id05">
+          <DataField>ld_id05</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id06">
+          <DataField>ld_id06</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="ld_id07">
+          <DataField>ld_id07</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="ld_id08">
+          <DataField>ld_id08</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="ld_id09">
+          <DataField>ld_id09</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="ld_id10">
+          <DataField>ld_id10</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ld_id11">
+          <DataField>ld_id11</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id12">
+          <DataField>ld_id12</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id13">
+          <DataField>ld_id13</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id14">
+          <DataField>ld_id14</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id15">
+          <DataField>ld_id15</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id16">
+          <DataField>ld_id16</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id17">
+          <DataField>ld_id17</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ld_id18">
+          <DataField>ld_id18</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="ld_id19">
+          <DataField>ld_id19</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="ld_id20">
+          <DataField>ld_id20</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="ld_status">
+          <DataField>ld_status</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="linenbr">
+          <DataField>linenbr</DataField>
+          <rd:TypeName>System.Int16</rd:TypeName>
+        </Field>
+        <Field Name="lupd_datetime">
+          <DataField>lupd_datetime</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="lupd_prog">
+          <DataField>lupd_prog</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="lupd_user">
+          <DataField>lupd_user</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="noteid">
+          <DataField>noteid</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="pjt_entity">
+          <DataField>pjt_entity</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="project">
+          <DataField>project</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="rate_source">
+          <DataField>rate_source</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="shift">
+          <DataField>shift</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SubTask_Name">
+          <DataField>SubTask_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SubTask_UID">
+          <DataField>SubTask_UID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="total_amount">
+          <DataField>total_amount</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="total_hrs">
+          <DataField>total_hrs</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="union_cd">
+          <DataField>union_cd</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="user1">
+          <DataField>user1</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="user2">
+          <DataField>user2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="user3">
+          <DataField>user3</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="user4">
+          <DataField>user4</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="work_comp_cd">
+          <DataField>work_comp_cd</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="work_type">
+          <DataField>work_type</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="tstamp">
+          <DataField>tstamp</DataField>
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <CommandType>Text</CommandType>
+        <CommandText>select h.employee, h.pe_date, h.docnbr as hdr_docnbr, d.* 
+from PJLABDET d left outer join PJLABHDR h on d.docnbr = h.docnbr
+where d.docnbr IN (select distinct docnbr from PJLABHDR where le_key &lt;&gt; '0' and le_key &lt;&gt; '')
+and h.employee =  @sEmployee</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <QueryParameters>
+          <QueryParameter Name="@sEmployee">
+            <Value>=Parameters!sEmployee.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <Timeout>0</Timeout>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="sEmployee">
+      <DataType>String</DataType>
+      <Prompt>s Employee</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

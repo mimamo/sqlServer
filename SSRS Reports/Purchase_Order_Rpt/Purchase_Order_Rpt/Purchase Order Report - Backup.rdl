@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DENVERAPP">
+      <rd:DataSourceID>6d52ccb0-5779-462c-b757-9ceb057122da</rd:DataSourceID>
+      <DataSourceReference>DENVERAPP</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <rd:ReportID>a21a4ada-33ec-4597-b602-59d940b35b9c</rd:ReportID>
+  <Width>5in</Width>
+  <Body>
+    <Height>5.29in</Height>
+    <ColumnSpacing>0.5in</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <Style>
+          <FontFamily>Tahoma</FontFamily>
+          <FontSize>20pt</FontSize>
+          <Color>SteelBlue</Color>
+          <FontWeight>Bold</FontWeight>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Value>Purchase Order Report</Value>
+        <CanGrow>true</CanGrow>
+        <Height>0.36in</Height>
+      </Textbox>
+      <List Name="List1">
+        <Style>
+          <FontFamily>Tahoma</FontFamily>
+          <FontSize>14pt</FontSize>
+          <Color>SlateGray</Color>
+        </Style>
+        <ReportItems>
+          <Textbox Name="vendid">
+            <Style>
+              <FontFamily>Tahoma</FontFamily>
+              <FontSize>14pt</FontSize>
+              <Color>SlateGray</Color>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <rd:DefaultName>vendid</rd:DefaultName>
+            <Value>=Fields!vendid.Value</Value>
+            <CanGrow>true</CanGrow>
+            <Height>0.27in</Height>
+          </Textbox>
+          <List Name="List2">
+            <Style>
+              <FontFamily>Tahoma</FontFamily>
+              <FontSize>12pt</FontSize>
+            </Style>
+            <ReportItems>
+              <Textbox Name="invcdate">
+                <Style>
+                  <FontFamily>Tahoma</FontFamily>
+                  <FontSize>12pt</FontSize>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+                <rd:DefaultName>invcdate</rd:DefaultName>
+                <Value>=Fields!invcdate.Value</Value>
+                <CanGrow>true</CanGrow>
+                <Height>0.24in</Height>
+              </Textbox>
+              <List Name="List3">
+                <Style>
+                  <FontFamily>Tahoma</FontFamily>
+                  <FontSize>10pt</FontSize>
+                </Style>
+                <ReportItems>
+                  <Textbox Name="invcnbr">
+                    <Style>
+                      <FontFamily>Tahoma</FontFamily>
+                      <FontSize>10pt</FontSize>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                    <rd:DefaultName>invcnbr</rd:DefaultName>
+                    <Value>=Fields!invcnbr.Value</Value>
+                    <CanGrow>true</CanGrow>
+                    <Height>0.21in</Height>
+                  </Textbox>
+                  <List Name="List4">
+                    <Style>
+                      <FontFamily>Tahoma</FontFamily>
+                      <FontSize>10pt</FontSize>
+                    </Style>
+                    <ReportItems>
+                      <Textbox Name="buyer">
+                        <Style>
+                          <FontFamily>Tahoma</FontFamily>
+                          <FontSize>10pt</FontSize>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                        <rd:DefaultName>buyer</rd:DefaultName>
+                        <Value>=Fields!buyer.Value</Value>
+                        <CanGrow>true</CanGrow>
+                        <Height>0.21in</Height>
+                      </Textbox>
+                      <List Name="List5">
+                        <Style>
+                          <FontFamily>Tahoma</FontFamily>
+                          <FontSize>10pt</FontSize>
+                        </Style>
+                        <ReportItems>
+                          <Textbox Name="vendname">
+                            <Style>
+                              <FontFamily>Tahoma</FontFamily>
+                              <FontSize>10pt</FontSize>
+                              <PaddingLeft>2pt</PaddingLeft>
+                              <PaddingRight>2pt</PaddingRight>
+                              <PaddingTop>2pt</PaddingTop>
+                              <PaddingBottom>2pt</PaddingBottom>
+                            </Style>
+                            <rd:DefaultName>vendname</rd:DefaultName>
+                            <Value>=Fields!vendname.Value</Value>
+                            <CanGrow>true</CanGrow>
+                            <Height>0.21in</Height>
+                          </Textbox>
+                          <List Name="List6">
+                            <Style>
+                              <FontFamily>Tahoma</FontFamily>
+                              <FontSize>10pt</FontSize>
+                            </Style>
+                            <ReportItems>
+                              <Textbox Name="ponbr">
+                                <Style>
+                                  <FontFamily>Tahoma</FontFamily>
+                                  <FontSize>10pt</FontSize>
+                                  <PaddingLeft>2pt</PaddingLeft>
+                                  <PaddingRight>2pt</PaddingRight>
+                                  <PaddingTop>2pt</PaddingTop>
+                                  <PaddingBottom>2pt</PaddingBottom>
+                                </Style>
+                                <rd:DefaultName>ponbr</rd:DefaultName>
+                                <Value>=Fields!ponbr.Value</Value>
+                                <CanGrow>true</CanGrow>
+                                <Height>0.21in</Height>
+                              </Textbox>
+                              <List Name="List7">
+                                <Style>
+                                  <FontFamily>Tahoma</FontFamily>
+                                  <FontSize>10pt</FontSize>
+                                </Style>
+                                <ReportItems>
+                                  <Textbox Name="podate">
+                                    <Style>
+                                      <FontFamily>Tahoma</FontFamily>
+                                      <FontSize>10pt</FontSize>
+                                      <PaddingLeft>2pt</PaddingLeft>
+                                      <PaddingRight>2pt</PaddingRight>
+                                      <PaddingTop>2pt</PaddingTop>
+                                      <PaddingBottom>2pt</PaddingBottom>
+                                    </Style>
+                                    <rd:DefaultName>podate</rd:DefaultName>
+                                    <Value>=Fields!podate.Value</Value>
+                                    <CanGrow>true</CanGrow>
+                                    <Height>0.21in</Height>
+                                  </Textbox>
+                                  <List Name="List8">
+                                    <Style>
+                                      <FontFamily>Tahoma</FontFamily>
+                                      <FontSize>10pt</FontSize>
+                                    </Style>
+                                    <ReportItems>
+                                      <Textbox Name="trandate">
+                                        <Style>
+                                          <FontFamily>Tahoma</FontFamily>
+                                          <FontSize>10pt</FontSize>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                        <rd:DefaultName>trandate</rd:DefaultName>
+                                        <Value>=Fields!trandate.Value</Value>
+                                        <CanGrow>true</CanGrow>
+                                        <Height>0.21in</Height>
+                                      </Textbox>
+                                      <List Name="List9">
+                                        <Style>
+                                          <FontFamily>Tahoma</FontFamily>
+                                          <FontSize>10pt</FontSize>
+                                        </Style>
+                                        <ReportItems>
+                                          <Textbox Name="trandesc">
+                                            <Style>
+                                              <FontFamily>Tahoma</FontFamily>
+                                              <FontSize>10pt</FontSize>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                            <rd:DefaultName>trandesc</rd:DefaultName>
+                                            <Value>=Fields!trandesc.Value</Value>
+                                            <CanGrow>true</CanGrow>
+                                            <Height>0.21in</Height>
+                                          </Textbox>
+                                          <Table Name="table1">
+                                            <Top>0.5in</Top>
+                                            <Style />
+                                            <Header>
+                                              <RepeatOnNewPage>true</RepeatOnNewPage>
+                                              <TableRows>
+                                                <TableRow>
+                                                  <TableCells>
+                                                    <TableCell>
+                                                      <ReportItems>
+                                                        <Textbox Name="textbox2">
+                                                          <Style>
+                                                            <BackgroundColor>SteelBlue</BackgroundColor>
+                                                            <FontFamily>Tahoma</FontFamily>
+                                                            <FontSize>11pt</FontSize>
+                                                            <FontWeight>Bold</FontWeight>
+                                                            <Color>White</Color>
+                                                            <BorderStyle>
+                                                              <Default>Solid</Default>
+                                                            </BorderStyle>
+                                                            <BorderColor>
+                                                              <Default>LightGrey</Default>
+                                                            </BorderColor>
+                                                            <PaddingLeft>2pt</PaddingLeft>
+                                                            <PaddingRight>2pt</PaddingRight>
+                                                            <PaddingTop>2pt</PaddingTop>
+                                                            <PaddingBottom>2pt</PaddingBottom>
+                                                          </Style>
+                                                          <rd:DefaultName>textbox2</rd:DefaultName>
+                                                          <Value>Per Ent</Value>
+                                                          <CanGrow>true</CanGrow>
+                                                          <Height>0.22in</Height>
+                                                          <Width>1in</Width>
+                                                        </Textbox>
+                                                      </ReportItems>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                      <ReportItems>
+                                                        <Textbox Name="textbox3">
+                                                          <Style>
+                                                            <BackgroundColor>SteelBlue</BackgroundColor>
+                                                            <FontFamily>Tahoma</FontFamily>
+                                                            <FontSize>11pt</FontSize>
+                                                            <FontWeight>Bold</FontWeight>
+                                                            <Color>White</Color>
+                                                            <BorderStyle>
+                                                              <Default>Solid</Default>
+                                                            </BorderStyle>
+                                                            <BorderColor>
+                                                              <Default>LightGrey</Default>
+                                                            </BorderColor>
+                                                            <PaddingLeft>2pt</PaddingLeft>
+                                                            <PaddingRight>2pt</PaddingRight>
+                                                            <PaddingTop>2pt</PaddingTop>
+                                                            <PaddingBottom>2pt</PaddingBottom>
+                                                          </Style>
+                                                          <rd:DefaultName>textbox3</rd:DefaultName>
+                                                          <Value>Per Post</Value>
+                                                          <CanGrow>true</CanGrow>
+                                                          <Height>0.22in</Height>
+                                                          <Width>1in</Width>
+                                                        </Textbox>
+                                                      </ReportItems>
+                                                    </TableCell>
+                                                  </TableCells>
+                                                  <Height>0.22in</Height>
+                                                </TableRow>
+                                              </TableRows>
+                                            </Header>
+                                            <Details>
+                                              <TableRows>
+                                                <TableRow>
+                                                  <TableCells>
+                                                    <TableCell>
+                                                      <ReportItems>
+                                                        <Textbox Name="PerEnt">
+                                                          <Style>
+                                                            <FontFamily>Tahoma</FontFamily>
+                                                            <FontSize>10pt</FontSize>
+                                                            <BorderStyle>
+                                                              <Default>Solid</Default>
+                                                            </BorderStyle>
+                                                            <BorderColor>
+                                                              <Default>LightGrey</Default>
+                                                            </BorderColor>
+                                                            <PaddingLeft>2pt</PaddingLeft>
+                                                            <PaddingRight>2pt</PaddingRight>
+                                                            <PaddingTop>2pt</PaddingTop>
+                                                            <PaddingBottom>2pt</PaddingBottom>
+                                                          </Style>
+                                                          <rd:DefaultName>PerEnt</rd:DefaultName>
+                                                          <Value>=Fields!PerEnt.Value</Value>
+                                                          <CanGrow>true</CanGrow>
+                                                          <Height>0.21in</Height>
+                                                          <Width>1in</Width>
+                                                        </Textbox>
+                                                      </ReportItems>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                      <ReportItems>
+                                                        <Textbox Name="PerPost">
+                                                          <Style>
+                                                            <FontFamily>Tahoma</FontFamily>
+                                                            <FontSize>10pt</FontSize>
+                                                            <BorderStyle>
+                                                              <Default>Solid</Default>
+                                                            </BorderStyle>
+                                                            <BorderColor>
+                                                              <Default>LightGrey</Default>
+                                                            </BorderColor>
+                                                            <PaddingLeft>2pt</PaddingLeft>
+                                                            <PaddingRight>2pt</PaddingRight>
+                                                            <PaddingTop>2pt</PaddingTop>
+                                                            <PaddingBottom>2pt</PaddingBottom>
+                                                          </Style>
+                                                          <rd:DefaultName>PerPost</rd:DefaultName>
+                                                          <Value>=Fields!PerPost.Value</Value>
+                                                          <CanGrow>true</CanGrow>
+                                                          <Height>0.21in</Height>
+                                                          <Width>1in</Width>
+                                                        </Textbox>
+                                                      </ReportItems>
+                                                    </TableCell>
+                                                  </TableCells>
+                                                  <Height>0.21in</Height>
+                                                </TableRow>
+                                              </TableRows>
+                                            </Details>
+                                            <TableColumns>
+                                              <TableColumn>
+                                                <Width>1in</Width>
+                                              </TableColumn>
+                                              <TableColumn>
+                                                <Width>1in</Width>
+                                              </TableColumn>
+                                            </TableColumns>
+                                            <DataSetName>DataSet1</DataSetName>
+                                          </Table>
+                                        </ReportItems>
+                                        <Grouping Name="list1_trandesc">
+                                          <GroupExpressions>
+                                            <GroupExpression>=Fields!trandesc.Value</GroupExpression>
+                                          </GroupExpressions>
+                                          <PageBreakAtEnd>true</PageBreakAtEnd>
+                                        </Grouping>
+                                        <Sorting>
+                                          <SortBy>
+                                            <SortExpression>=Fields!trandesc.Value</SortExpression>
+                                          </SortBy>
+                                        </Sorting>
+                                        <Top>0.5in</Top>
+                                        <DataSetName>DataSet1</DataSetName>
+                                      </List>
+                                    </ReportItems>
+                                    <Grouping Name="list1_trandate">
+                                      <GroupExpressions>
+                                        <GroupExpression>=Fields!trandate.Value</GroupExpression>
+                                      </GroupExpressions>
+                                      <PageBreakAtEnd>true</PageBreakAtEnd>
+                                    </Grouping>
+                                    <Sorting>
+                                      <SortBy>
+                                        <SortExpression>=Fields!trandate.Value</SortExpression>
+                                      </SortBy>
+                                    </Sorting>
+                                    <Top>0.5in</Top>
+                                    <DataSetName>DataSet1</DataSetName>
+                                  </List>
+                                </ReportItems>
+                                <Grouping Name="list1_podate">
+                                  <GroupExpressions>
+                                    <GroupExpression>=Fields!podate.Value</GroupExpression>
+                                  </GroupExpressions>
+                                  <PageBreakAtEnd>true</PageBreakAtEnd>
+                                </Grouping>
+                                <Sorting>
+                                  <SortBy>
+                                    <SortExpression>=Fields!podate.Value</SortExpression>
+                                  </SortBy>
+                                </Sorting>
+                                <Top>0.5in</Top>
+                                <DataSetName>DataSet1</DataSetName>
+                              </List>
+                            </ReportItems>
+                            <Grouping Name="list1_ponbr">
+                              <GroupExpressions>
+                                <GroupExpression>=Fields!ponbr.Value</GroupExpression>
+                              </GroupExpressions>
+                              <PageBreakAtEnd>true</PageBreakAtEnd>
+                            </Grouping>
+                            <Sorting>
+                              <SortBy>
+                                <SortExpression>=Fields!ponbr.Value</SortExpression>
+                              </SortBy>
+                            </Sorting>
+                            <Top>0.5in</Top>
+                            <DataSetName>DataSet1</DataSetName>
+                          </List>
+                        </ReportItems>
+                        <Grouping Name="list1_vendname">
+                          <GroupExpressions>
+                            <GroupExpression>=Fields!vendname.Value</GroupExpression>
+                          </GroupExpressions>
+                          <PageBreakAtEnd>true</PageBreakAtEnd>
+                        </Grouping>
+                        <Sorting>
+                          <SortBy>
+                            <SortExpression>=Fields!vendname.Value</SortExpression>
+                          </SortBy>
+                        </Sorting>
+                        <Top>0.5in</Top>
+                        <DataSetName>DataSet1</DataSetName>
+                      </List>
+                    </ReportItems>
+                    <Grouping Name="list1_buyer">
+                      <GroupExpressions>
+                        <GroupExpression>=Fields!buyer.Value</GroupExpression>
+                      </GroupExpressions>
+                      <PageBreakAtEnd>true</PageBreakAtEnd>
+                    </Grouping>
+                    <Sorting>
+                      <SortBy>
+                        <SortExpression>=Fields!buyer.Value</SortExpression>
+                      </SortBy>
+                    </Sorting>
+                    <Top>0.5in</Top>
+                    <DataSetName>DataSet1</DataSetName>
+                  </List>
+                </ReportItems>
+                <Grouping Name="list1_invcnbr">
+                  <GroupExpressions>
+                    <GroupExpression>=Fields!invcnbr.Value</GroupExpression>
+                  </GroupExpressions>
+                  <PageBreakAtEnd>true</PageBreakAtEnd>
+                </Grouping>
+                <Sorting>
+                  <SortBy>
+                    <SortExpression>=Fields!invcnbr.Value</SortExpression>
+                  </SortBy>
+                </Sorting>
+                <Top>0.5in</Top>
+                <DataSetName>DataSet1</DataSetName>
+              </List>
+            </ReportItems>
+            <Grouping Name="list1_invcdate">
+              <GroupExpressions>
+                <GroupExpression>=Fields!invcdate.Value</GroupExpression>
+              </GroupExpressions>
+              <PageBreakAtEnd>true</PageBreakAtEnd>
+            </Grouping>
+            <Sorting>
+              <SortBy>
+                <SortExpression>=Fields!invcdate.Value</SortExpression>
+              </SortBy>
+            </Sorting>
+            <Top>0.5in</Top>
+            <DataSetName>DataSet1</DataSetName>
+          </List>
+        </ReportItems>
+        <Grouping Name="list1_vendid">
+          <GroupExpressions>
+            <GroupExpression>=Fields!vendid.Value</GroupExpression>
+          </GroupExpressions>
+          <PageBreakAtEnd>true</PageBreakAtEnd>
+        </Grouping>
+        <Sorting>
+          <SortBy>
+            <SortExpression>=Fields!vendid.Value</SortExpression>
+          </SortBy>
+        </Sorting>
+        <Top>0.36in</Top>
+        <DataSetName>DataSet1</DataSetName>
+      </List>
+    </ReportItems>
+  </Body>
+  <Language>en-US</Language>
+  <LeftMargin>1in</LeftMargin>
+  <RightMargin>1in</RightMargin>
+  <TopMargin>1in</TopMargin>
+  <BottomMargin>1in</BottomMargin>
+  <PageWidth>8.5in</PageWidth>
+  <PageHeight>11in</PageHeight>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Fields>
+        <Field Name="vendid">
+          <DataField>vendid</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="invcdate">
+          <DataField>invcdate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="invcnbr">
+          <DataField>invcnbr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="buyer">
+          <DataField>buyer</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="vendname">
+          <DataField>vendname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ponbr">
+          <DataField>ponbr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="podate">
+          <DataField>podate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="trandate">
+          <DataField>trandate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="trandesc">
+          <DataField>trandesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PerEnt">
+          <DataField>PerEnt</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PerPost">
+          <DataField>PerPost</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DENVERAPP</DataSourceName>
+        <CommandType>Text</CommandType>
+        <CommandText>select v.vendid, v.invcdate, v.invcnbr, po.buyer, po.vendname, po.ponbr, po.podate, t.trandate, t.trandesc, t.PerEnt, t.PerPost
+	from APDoc v, PurchOrd po, APTran t
+	where v.VendId = po.VendID 
+		and v.BatNbr = t.BatNbr
+		and v.RefNbr = v.RefNbr 
+		and v.InvcNbr &lt;&gt; ''
+		and po.PODate between '2011-12-01' and '2011-12-1'</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <Timeout>0</Timeout>
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

@@ -1,0 +1,1 @@
+select * from PJTIMDET where tl_id09 > '1/1/1900'

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "AP OnBase Report", "AP OnBase Report\AP OnBase Report.rptproj", "{1CF3F661-BD1F-4685-83F7-246F84A069BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CF3F661-BD1F-4685-83F7-246F84A069BB}.Debug|Default.ActiveCfg = Debug
+		{1CF3F661-BD1F-4685-83F7-246F84A069BB}.Debug|Default.Build.0 = DebugLocal
+		{1CF3F661-BD1F-4685-83F7-246F84A069BB}.Debug|Default.Deploy.0 = DebugLocal
+		{1CF3F661-BD1F-4685-83F7-246F84A069BB}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{1CF3F661-BD1F-4685-83F7-246F84A069BB}.DebugLocal|Default.Build.0 = DebugLocal
+		{1CF3F661-BD1F-4685-83F7-246F84A069BB}.Release|Default.ActiveCfg = Release
+		{1CF3F661-BD1F-4685-83F7-246F84A069BB}.Release|Default.Build.0 = Release
+		{1CF3F661-BD1F-4685-83F7-246F84A069BB}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

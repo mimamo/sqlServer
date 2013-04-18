@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "JJ Monthly Report", "JJ Monthly Report\JJ Monthly Report.rptproj", "{163D3A82-6381-42BF-A37A-C8A8340CBA30}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{163D3A82-6381-42BF-A37A-C8A8340CBA30}.Debug|Default.ActiveCfg = Debug
+		{163D3A82-6381-42BF-A37A-C8A8340CBA30}.Debug|Default.Build.0 = DebugLocal
+		{163D3A82-6381-42BF-A37A-C8A8340CBA30}.Debug|Default.Deploy.0 = DebugLocal
+		{163D3A82-6381-42BF-A37A-C8A8340CBA30}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{163D3A82-6381-42BF-A37A-C8A8340CBA30}.DebugLocal|Default.Build.0 = DebugLocal
+		{163D3A82-6381-42BF-A37A-C8A8340CBA30}.Release|Default.ActiveCfg = Release
+		{163D3A82-6381-42BF-A37A-C8A8340CBA30}.Release|Default.Build.0 = Release
+		{163D3A82-6381-42BF-A37A-C8A8340CBA30}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

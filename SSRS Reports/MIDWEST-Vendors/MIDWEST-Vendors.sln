@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Dynamics-OnBase Vendors", "MIDWEST-Vendors\Dynamics-OnBase Vendors.rptproj", "{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}.Debug|Default.ActiveCfg = Debug
+		{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}.Debug|Default.Build.0 = DebugLocal
+		{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}.Debug|Default.Deploy.0 = DebugLocal
+		{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}.DebugLocal|Default.Build.0 = DebugLocal
+		{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}.Release|Default.ActiveCfg = Release
+		{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}.Release|Default.Build.0 = Release
+		{FD6B1F5D-F277-4AC1-8038-69B903AC62CB}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

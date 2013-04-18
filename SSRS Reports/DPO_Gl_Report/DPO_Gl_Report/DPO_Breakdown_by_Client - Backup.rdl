@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="SQL1_DENVERAPP">
+      <rd:DataSourceID>7e16cfe9-cd3f-49e7-b231-ee2e20fcfde4</rd:DataSourceID>
+      <DataSourceReference>SQL1_DENVERAPP</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <rd:ReportID>e4857785-4fa8-4dfc-bf00-6495e9473e15</rd:ReportID>
+  <Width>5in</Width>
+  <Body>
+    <Height>1.22in</Height>
+    <ColumnSpacing>0.5in</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <Style>
+          <FontFamily>Verdana</FontFamily>
+          <FontSize>16pt</FontSize>
+          <Color>DarkRed</Color>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Value>DPO_Breakdown_by_Client</Value>
+        <CanGrow>true</CanGrow>
+        <Height>0.3in</Height>
+      </Textbox>
+      <List Name="List1">
+        <Style>
+          <FontFamily>Verdana</FontFamily>
+          <FontSize>14pt</FontSize>
+        </Style>
+        <ReportItems>
+          <Textbox Name="Pay_Group">
+            <Style>
+              <FontFamily>Verdana</FontFamily>
+              <FontSize>14pt</FontSize>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <rd:DefaultName>Pay_Group</rd:DefaultName>
+            <Value>=Fields!Pay_Group.Value</Value>
+            <CanGrow>true</CanGrow>
+            <Height>0.27in</Height>
+          </Textbox>
+          <Matrix Name="matrix1">
+            <Top>0.5in</Top>
+            <RowGroupings>
+              <RowGrouping>
+                <DynamicRows>
+                  <Grouping Name="matrix1_CustId">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!CustId.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Grouping>
+                  <Sorting>
+                    <SortBy>
+                      <SortExpression>=Fields!CustId.Value</SortExpression>
+                    </SortBy>
+                  </Sorting>
+                  <ReportItems>
+                    <Textbox Name="CustId">
+                      <Style>
+                        <FontFamily>Verdana</FontFamily>
+                        <FontSize>10pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                        <Color>White</Color>
+                        <BackgroundColor>Maroon</BackgroundColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <rd:DefaultName>CustId</rd:DefaultName>
+                      <Value>=Fields!CustId.Value</Value>
+                      <CanGrow>true</CanGrow>
+                      <Height>0.21in</Height>
+                      <Width>1in</Width>
+                    </Textbox>
+                  </ReportItems>
+                </DynamicRows>
+                <Width>1in</Width>
+              </RowGrouping>
+              <RowGrouping>
+                <DynamicRows>
+                  <Grouping Name="matrix1_Customer">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!Customer.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Grouping>
+                  <Sorting>
+                    <SortBy>
+                      <SortExpression>=Fields!Customer.Value</SortExpression>
+                    </SortBy>
+                  </Sorting>
+                  <ReportItems>
+                    <Textbox Name="Customer">
+                      <Style>
+                        <FontFamily>Verdana</FontFamily>
+                        <FontSize>10pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                        <Color>White</Color>
+                        <BackgroundColor>Brown</BackgroundColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <rd:DefaultName>Customer</rd:DefaultName>
+                      <Value>=Fields!Customer.Value</Value>
+                      <CanGrow>true</CanGrow>
+                      <Height>0.21in</Height>
+                      <Width>1in</Width>
+                    </Textbox>
+                  </ReportItems>
+                </DynamicRows>
+                <Width>1in</Width>
+              </RowGrouping>
+            </RowGroupings>
+            <MatrixRows>
+              <MatrixRow>
+                <MatrixCells>
+                  <MatrixCell>
+                    <ReportItems>
+                      <Textbox Name="textbox2">
+                        <Style>
+                          <FontFamily>Verdana</FontFamily>
+                          <FontSize>10pt</FontSize>
+                          <BorderStyle>
+                            <Default>Solid</Default>
+                          </BorderStyle>
+                          <BorderColor>
+                            <Default>LightGrey</Default>
+                          </BorderColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                        <rd:DefaultName>textbox2</rd:DefaultName>
+                        <Value>=Sum(Fields!Debit.Value)</Value>
+                        <CanGrow>true</CanGrow>
+                        <Height>0.21in</Height>
+                        <Width>1in</Width>
+                      </Textbox>
+                    </ReportItems>
+                  </MatrixCell>
+                </MatrixCells>
+                <Height>0.21in</Height>
+              </MatrixRow>
+            </MatrixRows>
+            <Corner>
+              <ReportItems>
+                <Textbox Name="textbox3">
+                  <Style>
+                    <FontFamily>Verdana</FontFamily>
+                    <FontSize>10pt</FontSize>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>2pt</PaddingBottom>
+                  </Style>
+                  <rd:DefaultName>textbox3</rd:DefaultName>
+                  <Value>
+                  </Value>
+                  <CanGrow>true</CanGrow>
+                  <Height>0.21in</Height>
+                </Textbox>
+              </ReportItems>
+            </Corner>
+            <DataSetName>DataSet1</DataSetName>
+            <MatrixColumns>
+              <MatrixColumn>
+                <Width>1in</Width>
+              </MatrixColumn>
+            </MatrixColumns>
+            <ColumnGroupings>
+              <ColumnGrouping>
+                <DynamicColumns>
+                  <Grouping Name="matrix1_Month">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!Month.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Grouping>
+                  <Sorting>
+                    <SortBy>
+                      <SortExpression>=Fields!Month.Value</SortExpression>
+                    </SortBy>
+                  </Sorting>
+                  <ReportItems>
+                    <Textbox Name="Month">
+                      <Style>
+                        <FontFamily>Verdana</FontFamily>
+                        <FontSize>10pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                        <Color>White</Color>
+                        <BackgroundColor>Maroon</BackgroundColor>
+                        <BorderStyle>
+                          <Default>Solid</Default>
+                        </BorderStyle>
+                        <BorderColor>
+                          <Default>LightGrey</Default>
+                        </BorderColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <rd:DefaultName>Month</rd:DefaultName>
+                      <Value>=Fields!Month.Value</Value>
+                      <CanGrow>true</CanGrow>
+                      <Height>0.21in</Height>
+                      <Width>1in</Width>
+                    </Textbox>
+                  </ReportItems>
+                </DynamicColumns>
+                <Height>0.21in</Height>
+              </ColumnGrouping>
+            </ColumnGroupings>
+          </Matrix>
+        </ReportItems>
+        <Grouping Name="list1_Pay_Group">
+          <GroupExpressions>
+            <GroupExpression>=Fields!Pay_Group.Value</GroupExpression>
+          </GroupExpressions>
+          <PageBreakAtEnd>true</PageBreakAtEnd>
+        </Grouping>
+        <Sorting>
+          <SortBy>
+            <SortExpression>=Fields!Pay_Group.Value</SortExpression>
+          </SortBy>
+        </Sorting>
+        <Top>0.3in</Top>
+        <DataSetName>DataSet1</DataSetName>
+      </List>
+    </ReportItems>
+  </Body>
+  <Language>en-US</Language>
+  <LeftMargin>1in</LeftMargin>
+  <RightMargin>1in</RightMargin>
+  <TopMargin>1in</TopMargin>
+  <BottomMargin>1in</BottomMargin>
+  <PageWidth>8.5in</PageWidth>
+  <PageHeight>11in</PageHeight>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Fields>
+        <Field Name="BatNbr">
+          <DataField>BatNbr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="InvoiceNum">
+          <DataField>InvoiceNum</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="GL_Acct">
+          <DataField>GL_Acct</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Descr">
+          <DataField>Descr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ProjectID">
+          <DataField>ProjectID</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Project_Desc">
+          <DataField>Project_Desc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CustId">
+          <DataField>CustId</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Customer">
+          <DataField>Customer</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VendId">
+          <DataField>VendId</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Pay_Group">
+          <DataField>Pay_Group</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PerPost">
+          <DataField>PerPost</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Month">
+          <DataField>Month</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Debit">
+          <DataField>Debit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <CommandType>Text</CommandType>
+        <CommandText>-- AP SQL query
+select 
+gl.BatNbr
+, gl.ExtRefNbr as 'InvoiceNum'
+, gl.Acct as 'GL_Acct'
+, a.Descr
+, gl.ProjectID
+, isnull(p.project_desc,'') as 'Project_Desc'
+, CASE WHEN p.customer IS NULL THEN 'IEXP' ELSE p.customer END as 'CustId'
+, CASE WHEN c.Name IS NULL THEN 'Internal Expense' ELSE c.Name END as 'Customer'
+, gl.Id as 'VendId'
+, v.Name
+, v.ClassID as 'Pay_Group'
+, gl.PerPost
+, CASE WHEN RIGHT(gl.PerPost,2) = '01' THEN 'Jan' 
+	WHEN RIGHT(gl.PerPost,2) = '02' THEN 'Feb' 
+	WHEN RIGHT(gl.PerPost,2) = '03' THEN 'Mar' 
+	WHEN RIGHT(gl.PerPost,2) = '04' THEN 'Apr' 
+	WHEN RIGHT(gl.PerPost,2) = '05' THEN 'May' 
+	WHEN RIGHT(gl.PerPost,2) = '06' THEN 'Jun' 
+	WHEN RIGHT(gl.PerPost,2) = '07' THEN 'Jul' 
+	WHEN RIGHT(gl.PerPost,2) = '08' THEN 'Aug' 
+	WHEN RIGHT(gl.PerPost,2) = '09' THEN 'Sep' 
+	WHEN RIGHT(gl.PerPost,2) = '10' THEN 'Oct' 
+	WHEN RIGHT(gl.PerPost,2) = '11' THEN 'Nov' 
+	WHEN RIGHT(gl.PerPost,2) = '12' THEN 'Dec' END as 'Month'
+, gl.CuryDrAmt as 'Debit'
+from 
+GLTran gl 
+left outer join
+PJPROJ p on gl.ProjectID = p.project
+left outer join
+Vendor v on gl.Id = v.VendId
+left outer join 
+Account a on gl.Acct = a.Acct
+left outer join 
+Customer c on p.customer = c.CustId
+where gl.TranType = 'VO' 
+and CuryDrAmt &lt;&gt; '0'
+and gl.PerPost between @bMonth and @eMonth 
+and v.ClassID = 'PROD'</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <QueryParameters>
+          <QueryParameter Name="@bMonth">
+            <Value>=Parameters!bMonth.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@eMonth">
+            <Value>=Parameters!eMonth.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <Timeout>0</Timeout>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="bMonth">
+      <DataType>String</DataType>
+      <Prompt>b Month</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="eMonth">
+      <DataType>String</DataType>
+      <Prompt>e Month</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+</Report>
