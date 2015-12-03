@@ -1,6 +1,6 @@
 select 
 AccountID = LTRIM(RTRIM(acct)),
-'' as CompanyCode,
+CompanyCode = '',
 REPLACE(LTRIM(RTRIM(Descr)),',',' ') as AccountName,
 LTRIM(RTRIM(acct)) as MajorAccountId,
 REPLACE(LTRIM(RTRIM(Descr)),',',' ') as MajorAccountName,
