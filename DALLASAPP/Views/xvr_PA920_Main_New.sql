@@ -57,7 +57,7 @@ SELECT		LTRIM(RTRIM(A.project)) AS 'Project',
 			END AS 'EstimateVsActualsAndOpenPo'
 FROM		PJPROJ A
 			LEFT OUTER JOIN Customer B ON A.pm_id01 = B.CustId
-			LEFT OUTER JOIN PJCODE C ON SUBSTRING(A.project,4,3) = C.code_value AND C.code_type = '0PRD'
+			LEFT OUTER JOIN PJCODE C ON A.pm_id02 = C.code_value AND C.code_type = 'BCYC'
 			LEFT OUTER JOIN	(SELECT		project AS 'Project',
 										SUM(eac_amount) AS 'Amount'
 							FROM		PJPTDROL
