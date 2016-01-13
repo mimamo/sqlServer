@@ -1,4 +1,4 @@
-USE [DENVERAPP]
+USE [DEN_DEV_APP]
 GO
 
 SET QUOTED_IDENTIFIER OFF
@@ -20,13 +20,14 @@ CREATE PROCEDURE [dbo].[xvr_PA924_FJR]
 AS
 
 /*******************************************************************************************************
-*	DENVERAPP.dbo.xvr_PA924_FJR.sql
+*	DEN_DEV_APP.dbo.xvr_PA924_FJR.sql
 *
 *   Notes:  Account Leadership FJR Report - This does the same thing as the query in the SSRS report
 			for this. Reformatted into a procedure and tuned it, though, to trouble shoot the discrepancies
 			mentioned in #43811 (among other tickets)
 
-	execute DENVERAPP.dbo.xvr_PA924_FJR
+	execute DEN_DEV_APP.dbo.xvr_PA924_FJR
+
 *                  
 *   Modifications:   
 *   Name				Date        Brief description
@@ -142,7 +143,7 @@ SELECT Project,
 					ELSE 0 
 				END)
  
-From DENVERAPP.dbo.xvr_PA924_Main (nolock)	
+From DEN_DEV_APP.dbo.xvr_PA924_Main (nolock)	
 Where FSYearNum = @iYear 
 Group by Project
 
@@ -155,8 +156,8 @@ insert ##cle
 Select CLE.Project, 
 	CLEFee = SUM(CASE WHEN (FC.code_group = 'FEE' and FC.code_ID <> '00975') THEN CLE.CLEAmount ELSE 0 END), 
 	CLEAmount = SUM(CLE.CLEAmount) 
-From DENVERAPP.dbo.xvr_Est_CLE CLE (nolock)
-INNER JOIN DENVERAPP.dbo.xIGFunctionCode FC (nolock)
+From DEN_DEV_APP.dbo.xvr_Est_CLE CLE (nolock)
+INNER JOIN DEN_DEV_APP.dbo.xIGFunctionCode FC (nolock)
 	ON CLE.pjt_entity = FC.code_ID
 Group by CLE.Project
 
@@ -167,9 +168,9 @@ insert ##trv
 )
 SELECT project,
 	TRAVActuals = sum(Amount01 + Amount02 + Amount03 + Amount04 + Amount05 + Amount06 + Amount07 + Amount08 + Amount09 + Amount10 + Amount11 + Amount12 + Amount13 + Amount14 + Amount15)
-FROM DENVERAPP.dbo.xvr_BU96C_Actuals (nolock)
+FROM DEN_DEV_APP.dbo.xvr_BU96C_Actuals (nolock)
 where [Function] in (select code_ID 
-						from DENVERAPP.dbo.xIGFunctionCode (nolock)
+						from DEN_DEV_APP.dbo.xIGFunctionCode (nolock)
 						where code_group = 'TRAV') 
 	and acct = 'Billable'
 group by project
@@ -181,9 +182,9 @@ insert ##oop
 )
 SELECT project,
   OOPActuals = sum(Amount01 + Amount02 + Amount03 + Amount04 + Amount05 + Amount06 + Amount07 + Amount08 + Amount09 + Amount10 + Amount11 + Amount12 + Amount13 + Amount14 + Amount15)
-FROM DENVERAPP.dbo.xvr_BU96C_Actuals (nolock)				
+FROM DEN_DEV_APP.dbo.xvr_BU96C_Actuals (nolock)				
 where [Function] in (select code_ID 
-					from DENVERAPP.dbo.xIGFunctionCode (nolock)
+					from DEN_DEV_APP.dbo.xIGFunctionCode (nolock)
 					where code_group NOT IN ('TRAV','FEE') 
 						or code_id = '00975') 
 	and acct IN ('Billable','BILLABLE APS','BILLABLE FEES') 
@@ -198,18 +199,18 @@ SELECT d.project,
 	WIPOvr60Amount = SUM(CASE WHEN d.li_type NOT IN ('D', 'A') AND DateDiff(day, d.source_trx_date, GETDATE() /*@CurrentDate*/ ) >60 THEN d.amount
 							ELSE 0
 						END) 							
-FROM DENVERAPP.dbo.PJINVDET d (nolock)
-LEFT JOIN DENVERAPP.dbo.PJINVHDR h (nolock)
+FROM DEN_DEV_APP.dbo.PJINVDET d (nolock)
+LEFT JOIN DEN_DEV_APP.dbo.PJINVHDR h (nolock)
 	ON d.draft_num = h.draft_num
-INNER JOIN DENVERAPP.dbo.PJPROJ p (nolock)
+INNER JOIN DEN_DEV_APP.dbo.PJPROJ p (nolock)
 	ON d.project = p.project 
-INNER JOIN DENVERAPP.dbo.PJACCT a (nolock) 
+INNER JOIN DEN_DEV_APP.dbo.PJACCT a (nolock) 
 	ON d.acct = a.acct
 WHERE d.hold_status <> 'PG' 
 	AND d.bill_status <> 'B'
 	AND a.acct_group_cd NOT IN ('CM', 'FE')
 	AND p.project NOT IN (SELECT JobID 
-							FROM DENVERAPP.dbo.xWIPAgingException (nolock))
+							FROM DEN_DEV_APP.dbo.xWIPAgingException (nolock))
 	AND (substring(d.acct, 1, 6) <> 'OFFSET' 
 		OR d.acct = 'OFFSET PREBILL')
 Group By d.project	
@@ -221,13 +222,13 @@ insert ##projectHrs
 )
 SELECT project,
 	TTLHrs = SUM(units)  --PJTRAN.units AS Hrs
-FROM DENVERAPP.dbo.PJTRAN (nolock) 
+FROM DEN_DEV_APP.dbo.PJTRAN (nolock) 
 WHERE acct = 'LABOR'
 Group By Project	
 
 insert ##ip (project)
 SELECT Project 
-FROM DENVERAPP.dbo.PJPROJ (nolock)
+FROM DEN_DEV_APP.dbo.PJPROJ (nolock)
 WHERE contract_type IN('BPRD','FEE','MED','PARN','PDNT','PRNT','PROD','RET','TIME','NYK')
 
 --Main Query
@@ -266,25 +267,24 @@ select Company = 'DENVER',
 	ProjectStatus = p.status_pa, 
 	-- Filtering fields required when adding logic for all parent child to return when either is pulled.
 	FltClientPO = p.purchase_order_num
-into ##test
 From  ##ip ip --!!!!!! ALL FILTER CRITERIA MUST BE ON IP AND NOT P OR PARENT CHILD JOBS WILL NOT ALWAYS BE PULLED TOGETHER!!!!!!
-INNER JOIN DENVERAPP.dbo.PJBILL A (nolock)
+INNER JOIN DEN_DEV_APP.dbo.PJBILL A (nolock)
 	ON ip.Project = A.Project
-INNER JOIN DENVERAPP.dbo.PJBILL B (nolock)
+INNER JOIN DEN_DEV_APP.dbo.PJBILL B (nolock)
 	ON A.project_billwith = B.project_billwith 
-INNER JOIN DENVERAPP.dbo.PJPROJ p (nolock)
+INNER JOIN DEN_DEV_APP.dbo.PJPROJ p (nolock)
 	ON b.project = p.project
-LEFT OUTER JOIN DENVERAPP.dbo.xIGProdCode pc (nolock)
+LEFT OUTER JOIN DEN_DEV_APP.dbo.xIGProdCode pc (nolock)
 	ON p.pm_id02 = pc.code_ID
-LEFT OUTER JOIN DENVERAPP.dbo.CUSTOMER c (nolock)
+LEFT OUTER JOIN DEN_DEV_APP.dbo.CUSTOMER c (nolock)
 	ON p.pm_id01 = C.CustId
-LEFT OUTER JOIN DENVERAPP.dbo.PJPROJEX x (nolock)
+LEFT OUTER JOIN DEN_DEV_APP.dbo.PJPROJEX x (nolock)
 	ON p.project = x.project
-LEFT JOIN DENVERAPP.dbo.xClientContact xc (nolock)
+LEFT JOIN DEN_DEV_APP.dbo.xClientContact xc (nolock)
 	ON p.user2 = xc.EA_ID
 LEFT OUTER JOIN ##fjr fjr --FJR query.  To get down to one line for reporting pulling as main source
 	ON p.project = FJR.Project	--END FJR query
-LEFT OUTER JOIN DENVERAPP.dbo.xvr_Est_ULE_Project ULE (nolock) --Unlocked Estimate view by project				
+LEFT OUTER JOIN DEN_DEV_APP.dbo.xvr_Est_ULE_Project ULE (nolock) --Unlocked Estimate view by project				
 	ON p.Project = ULE.Project
 LEFT OUTER JOIN ##cle CLE /*(Using Current Locked Estimate view with functions.  Must roll up to project or cartestion joins */
 	ON p.Project = CLE.Project
@@ -300,17 +300,17 @@ LEFT OUTER JOIN ##projectHrs ProjectHrs --Time query taken from Client P&L
 	ON p.Project = ProjectHrs.Project
 --END Time Query
 Where ltrim(rtrim(b.project_billwith)) <> ''
+	and p.project = '05443413AGY'
 --	and p.pm_id01 = '1A2MK'
--- uncomment later
 /*
-	AND (a.project IN (@sProject) 
+	AND (ltrim(rtrim(p.Project)) IN (@sProject) 
 			OR @sProject IS NULL)
-	AND a.ClientID IN (@sClientID)
-	AND (a.FltClientPO IN (@sClientPO) 
+	AND ltrim(rtrim(p.pm_id01)) IN (@sClientID)
+	AND (p.purchase_order_num IN (@sClientPO) 
 			OR @sClientPO IS NULL)
-	AND a.ProductID IN (@sProductID)
-	AND a.PM IN (@sPM)
-	AND a.ProjectStatus IN (@sStatus)
+	AND ltrim(rtrim(p.pm_id02)) IN (@sProductID)
+	AND ltrim(rtrim(p.manager1)) IN (@sPM)
+	AND p.status_pa IN (@sStatus)
 */
 group by ltrim(rtrim(p.Project)),
 	ltrim(rtrim(b.project_billwith)),
@@ -373,7 +373,7 @@ alter column project varchar(16) not null
 
 alter table ##test add primary key clustered (project)
 
-execute DENVERAPP.dbo.xvr_PA924_FJR
+execute DEN_DEV_APP.dbo.xvr_PA924_FJR
 */
 ---------------------------------------------
 -- permissions

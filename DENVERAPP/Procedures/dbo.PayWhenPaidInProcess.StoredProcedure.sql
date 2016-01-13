@@ -16,7 +16,7 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE [dbo].[PayWhenPaidInProcess]     
-     @Company varchar(30) = 'DENVER'
+     @Company varchar(30)
      
  AS
 /*******************************************************************************************************
@@ -30,6 +30,8 @@ CREATE PROCEDURE [dbo].[PayWhenPaidInProcess]
 *                  
 *
 *   Usage:
+
+		execute DENVERAPP.dbo.PayWhenPaidInProcess @Company = 'DENVER'
 		execute DENVERAPP.dbo.PayWhenPaidInProcess @Company = 'DALLAS'
         execute DENVERAPP.dbo.PayWhenPaidInProcess @Company = 'MIDWEST'
         execute DENVERAPP.dbo.PayWhenPaidInProcess @Company = 'NY'

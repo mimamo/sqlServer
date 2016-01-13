@@ -9,7 +9,71 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="ArPaymentHistory">
+    <DataSet Name="ArPmtHistClientRetrieve">
+      <Query>
+        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@Company">
+            <Value>=Parameters!Company.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@IncludeCredits">
+            <Value>=Parameters!IncludeCredits.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@BeginDate">
+            <Value>=Parameters!BeginDate.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@EndDate">
+            <Value>=Parameters!EndDate.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>select distinct Client
+from(
+select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'DALLAS' as Company
+from dal_dev_app.dbo.pjinvhdr
+group by Customer, invoice_date, inv_status, invoice_type
+
+union
+
+select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'DENVER' as Company
+from den_dev_app.dbo.pjinvhdr
+group by Customer, invoice_date, inv_status, invoice_type
+
+union
+
+select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'MIDWEST' as Company
+from mid_dev_app.dbo.pjinvhdr
+group by Customer, invoice_date, inv_status, invoice_type
+
+union
+
+select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'NY' as Company
+from nyc_dev_app.dbo.pjinvhdr
+group by Customer, invoice_date, inv_status, invoice_type
+
+union
+
+select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'SHOPPER' as Company
+from shopper_dev_app.dbo.pjinvhdr
+group by Customer, invoice_date, inv_status, invoice_type
+) x
+where x.Company = @Company
+	and amt &lt;&gt; 0
+	and CASE WHEN @IncludeCredits = 'N' AND amt &lt; 0 THEN 0 ELSE 1 END = 1
+	and invoice_date between @BeginDate and @EndDate
+	and inv_status = 'PO' 
+	and invoice_type = ''
+order by client	
+	
+	</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Client">
+          <DataField>Client</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="ArPaymentHistoryRetrieve">
       <Query>
         <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
         <QueryParameters>
@@ -30,7 +94,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>ArPaymentHistory</CommandText>
+        <CommandText>ArPaymentHistoryRetrieve</CommandText>
       </Query>
       <Fields>
         <Field Name="Invoice">
@@ -81,57 +145,17 @@
           <DataField>PaymentDays</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="Client">
-      <Query>
-        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@Company">
-            <Value>=Parameters!company.Value</Value>
-          </QueryParameter>
-        </QueryParameters>
-        <CommandText>SELECT     Client, Company
-FROM         (SELECT DISTINCT customer AS Client, 'DALLAS' AS Company
-                       FROM          DAL_DEV_APP.dbo.PJINVHDR
-                       WHERE      (invoice_type = '') AND (inv_status = 'PO')
-                       GROUP BY customer
-                       HAVING      (SUM(gross_amt) &lt;&gt; 0)
-                       UNION
-                       SELECT DISTINCT customer AS Client, 'DENVER' AS Company
-                       FROM         PJINVHDR AS PJINVHDR_4
-                       WHERE     (invoice_type = '') AND (inv_status = 'PO')
-                       GROUP BY customer
-                       HAVING      (SUM(gross_amt) &lt;&gt; 0)
-                       UNION
-                       SELECT DISTINCT customer AS Client, 'MIDWEST' AS Company
-                       FROM         MID_DEV_APP.dbo.PJINVHDR AS PJINVHDR_3
-                       WHERE     (invoice_type = '') AND (inv_status = 'PO')
-                       GROUP BY customer
-                       HAVING      (SUM(gross_amt) &lt;&gt; 0)
-                       UNION
-                       SELECT DISTINCT customer AS Client, 'NEWYORK' AS Company
-                       FROM         NYC_DEV_APP.dbo.PJINVHDR AS PJINVHDR_2
-                       WHERE     (invoice_type = '') AND (inv_status = 'PO')
-                       GROUP BY customer
-                       HAVING      (SUM(gross_amt) &lt;&gt; 0)
-                       UNION
-                       SELECT DISTINCT customer AS Client, 'SHOPPER' AS Company
-                       FROM         SHOPPER_DEV_APP.dbo.PJINVHDR AS PJINVHDR_1
-                       WHERE     (invoice_type = '') AND (inv_status = 'PO')
-                       GROUP BY customer
-                       HAVING      (SUM(gross_amt) &lt;&gt; 0)) AS derived
-WHERE     (Company = @Company)
-ORDER BY Client</CommandText>
-      </Query>
-      <Fields>
+        <Field Name="Company">
+          <DataField>Company</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="Client">
           <DataField>Client</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Company">
-          <DataField>Company</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="runDate">
+          <DataField>runDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -150,10 +174,10 @@ ORDER BY Client</CommandText>
                   <Width>1.25in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.28125in</Width>
+                  <Width>2.27083in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.29167in</Width>
+                  <Width>1.66667in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.32292in</Width>
@@ -847,7 +871,9 @@ ORDER BY Client</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!InvoiceAmount.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -863,6 +889,7 @@ ORDER BY Client</CommandText>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
+                            <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -877,7 +904,9 @@ ORDER BY Client</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!PaidAmount.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -893,6 +922,7 @@ ORDER BY Client</CommandText>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
+                            <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -907,7 +937,9 @@ ORDER BY Client</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!Balance.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -923,6 +955,7 @@ ORDER BY Client</CommandText>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
+                            <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -987,11 +1020,11 @@ ORDER BY Client</CommandText>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>ArPaymentHistory</DataSetName>
+            <DataSetName>ArPaymentHistoryRetrieve</DataSetName>
             <Top>0.50916in</Top>
             <Left>0.36333in</Left>
             <Height>0.5in</Height>
-            <Width>12.02083in</Width>
+            <Width>13.38543in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1331,10 +1364,16 @@ ORDER BY Client</CommandText>
     </ReportParameter>
     <ReportParameter Name="Client">
       <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>ArPmtHistClientRetrieve</DataSetName>
+          <ValueField>Client</ValueField>
+        </DataSetReference>
+      </DefaultValue>
       <Prompt>Client</Prompt>
       <ValidValues>
         <DataSetReference>
-          <DataSetName>Client</DataSetName>
+          <DataSetName>ArPmtHistClientRetrieve</DataSetName>
           <ValueField>Client</ValueField>
           <LabelField>Client</LabelField>
         </DataSetReference>

@@ -9,15 +9,15 @@ GO
 IF EXISTS (
             SELECT 1
             FROM sys.procedures WITH(NOLOCK)
-            WHERE NAME = 'ArPaymentHistory'
+            WHERE NAME = 'ApTransactionRetrieve'
                 AND type = 'P'
            )
-    DROP PROCEDURE [dbo].[ArPaymentHistory]
+    DROP PROCEDURE [dbo].[ApTransactionRetrieve]
 GO
 
-CREATE PROCEDURE [dbo].[ArPaymentHistory]     
+CREATE PROCEDURE [dbo].[ApTransactionRetrieve]     
 	@Company varchar(30),
-	@Client varchar(10),	--> Dynamics Client Code
+	@Client varchar(10) = 'All',	--> Dynamics Client Code
     @BeginDate date,		--> Beginning Date to Run
 	@EndDate date,          --> Ending Date to Run
 	@IncludeCredits int = 0 --> 1 to Include Credit Memos and 0 to Exclude Credit Memos
@@ -25,7 +25,7 @@ CREATE PROCEDURE [dbo].[ArPaymentHistory]
  AS
 
 /*******************************************************************************************************
-*   DEN_DEV_APP.dbo.ArPaymentHistory 
+*   DEN_DEV_APP.dbo.ApTransactionRetrieve 
 *
 *   Creator:       David Martin
 *   Date:          
@@ -36,21 +36,21 @@ CREATE PROCEDURE [dbo].[ArPaymentHistory]
 *
 *   Usage:
 
-		execute DEN_DEV_APP.dbo.ArPaymentHistory @Company = 'DENVER', 
+		execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'DENVER', 
 													@client = '1PGBBY',
 													@BeginDate = '1/1/2015', 
 													@EndDate = '12/31/2015', 
 													@IncludeCredits = 0 
 													
-		execute DEN_DEV_APP.dbo.ArPaymentHistory @Company = 'DALLAS',		
+		execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'DALLAS',		
 													@client = 'CIN',
 													@BeginDate = '1/1/2015', 
 													@EndDate = '12/31/2015', 
 													@IncludeCredits = 0 
 													
-        execute DEN_DEV_APP.dbo.ArPaymentHistory @Company = 'MIDWEST'
-        execute DEN_DEV_APP.dbo.ArPaymentHistory @Company = 'NY'
-        execute DEN_DEV_APP.dbo.ArPaymentHistory @Company = 'SHOPPER'
+        execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'MIDWEST'
+        execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'NY'
+        execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'SHOPPER'
         
        SELECT @@servername  SQLDEV\SQLDEV or SQL1
         
@@ -71,28 +71,7 @@ declare @dbName nvarchar(24)
 ---------------------------------------------
 -- create temp tables
 ---------------------------------------------
-if object_id('tempdb.dbo.##arPmtHistory') is not null drop table ##arPmtHistory
-create table ##arPmtHistory
-(
-	Invoice	varchar(10),
-	Job	varchar(16),
-	JobName	varchar(60),
-	InvoiceContact varchar(20),
-	ClientContactName varchar(30),
-	InvoiceDate	varchar(10),
-	DueDate	varchar(10),
-	PaidDate varchar(10),
-	InvoiceAmount decimal(20,2),
-	PaidAmount decimal(20,2),
-	Balance	decimal(20,2),
-	PaymentDays	int
-)
 
-if object_id('tempdb.dbo.##client') is not null drop table ##client
-create table ##client
-(
-	client varchar(15)
-)
 ---------------------------------------------
 -- set session variables
 ---------------------------------------------
@@ -137,7 +116,9 @@ SELECT Invoice = LTRIM(RTRIM(A.invoice_num)),
 	Balance = ROUND(SUM(A.gross_amt) - COALESCE(COALESCE(SUM(B.Amt),SUM(C.Amt)),0),2),
 	PaymentDays = CASE WHEN ROUND(SUM(A.gross_amt) - COALESCE(COALESCE(SUM(B.Amt),SUM(C.Amt)),0),2) <> 0 THEN '''' 
 						ELSE DATEDIFF(DAY,A.invoice_date,COALESCE(COALESCE(MAX(B.AdjgDocDate),MAX(C.DateAppl)),'''')) 
-					END
+					END,
+	Customer = a.customer,
+	runDate = getdate()
 FROM ' + @dbName + '.dbo.pjinvhdr A
 LEFT OUTER JOIN (SELECT AdjdRefNbr, 
 					AdjdDocType, 
@@ -161,16 +142,20 @@ LEFT OUTER JOIN ' + @dbName + '.dbo.xClientContact E
 WHERE A.invoice_type = '''' -- Only Non-Reversed Invoices
 	AND A.invoice_date BETWEEN ''' + cast(@BeginDate as varchar) + ''' AND ''' + cast(@EndDate as varchar) -- Invoices Between Start/End Date 
 + '''	AND A.inv_status = ''PO'' -- Only Posted Invoices
-	and ltrim(rtrim(A.customer)) = ''' + ltrim(rtrim(@Client)) + '''
-GROUP BY A.invoice_num, A.project_billwith, A.invoice_date, A.ih_id18, D.project_desc, E.CName, D.purchase_order_num
+	and ltrim(rtrim(A.customer)) = case when ''' + @Client + ''' = ''All'' then ltrim(rtrim(A.customer)) else ''' + @Client + ''' end
+GROUP BY A.invoice_num, A.project_billwith, A.invoice_date, A.ih_id18, D.project_desc, E.CName, D.purchase_order_num, a.Customer
 HAVING SUM(A.gross_amt) <> 0
 	AND CASE WHEN ' + cast(@IncludeCredits as nvarchar) + ' = 0 AND SUM(A.gross_amt) < 0 THEN 0 
 			ELSE 1 
 		END = 1
 ORDER BY A.invoice_num '
 
+truncate table DEN_DEV_APP.dbo.arPmtHistory
 
-insert ##arPmtHistory execute sp_executesql @sql
+print @sql
+
+insert DEN_DEV_APP.dbo.arPmtHistory  execute sp_executesql @sql
+
 
 select Invoice,
 	Job,
@@ -183,9 +168,26 @@ select Invoice,
 	InvoiceAmount,
 	PaidAmount,
 	Balance,
-	PaymentDays
-from ##arPmtHistory
+	PaymentDays,
+	Company = @company,
+	Client = Customer,
+	runDate
+from DEN_DEV_APP.dbo.arPmtHistory
 order by invoice, job
 
-drop table ##arPmtHistory
 
+
+/*
+
+execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'DENVER', 
+													@client = '1PGBBY',
+													@BeginDate = '1/1/2015', 
+													@EndDate = '12/31/2015', 
+													@IncludeCredits = 0 
+
+execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'DENVER', 
+													@client = 'All',
+													@BeginDate = '1/1/2015', 
+													@EndDate = '12/31/2015', 
+													@IncludeCredits = 0 													
+*/
