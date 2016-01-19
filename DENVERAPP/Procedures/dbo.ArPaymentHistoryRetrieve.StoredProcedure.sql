@@ -1,4 +1,4 @@
-USE DEN_DEV_APP; -- <<<< Company databse to search
+USE DENVERAPP; -- <<<< Company databse to search
 GO
 
 SET QUOTED_IDENTIFIER OFF
@@ -23,40 +23,39 @@ CREATE PROCEDURE [dbo].[ArPaymentHistoryRetrieve]
 	@IncludeCredits int = 0 --> 1 to Include Credit Memos and 0 to Exclude Credit Memos
 	
  AS
-
 /*******************************************************************************************************
-*   DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve 
+*   DENVERAPP.dbo.ArPaymentHistoryRetrieve 
 *
 *   Creator:       David Martin
 *   Date:          
 *   
 *
-*   Notes:         SELECT Name FROM DEN_DEV_APP.dbo.SplitString('1AMFAM|1PGBBY')
+*   Notes:         SELECT Name FROM DENVERAPP.dbo.SplitString('1AMFAM|1PGBBY')
 *                  
 *
 *   Usage:
 
-		execute DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve @Company = 'DENVER', 
+		execute DENVERAPP.dbo.ArPaymentHistoryRetrieve @Company = 'DENVER', 
 													@client = '1PGBBY',
 													@BeginDate = '1/1/2015', 
 													@EndDate = '12/31/2015', 
 													@IncludeCredits = 0 
 													
-		execute DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve @Company = 'DENVER', 
+		execute DENVERAPP.dbo.ArPaymentHistoryRetrieve @Company = 'DENVER', 
 													@client = '1AMFAM|1PGBBY',
 													@BeginDate = '1/1/2015', 
 													@EndDate = '12/31/2015', 
 													@IncludeCredits = 0 	
 													
-		execute DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve @Company = 'DALLAS',		
+		execute DENVERAPP.dbo.ArPaymentHistoryRetrieve @Company = 'DALLAS',		
 													@client = 'CIN',
 													@BeginDate = '1/1/2015', 
 													@EndDate = '12/31/2015', 
 													@IncludeCredits = 0 
 													
-        execute DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve @Company = 'MIDWEST'
-        execute DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve @Company = 'NY'
-        execute DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve @Company = 'SHOPPER'
+        execute DENVERAPP.dbo.ArPaymentHistoryRetrieve @Company = 'MIDWEST'
+        execute DENVERAPP.dbo.ArPaymentHistoryRetrieve @Company = 'NY'
+        execute DENVERAPP.dbo.ArPaymentHistoryRetrieve @Company = 'SHOPPER'
         
        SELECT @@servername  SQLDEV\SQLDEV or SQL1
         
@@ -163,11 +162,11 @@ HAVING SUM(A.gross_amt) <> 0
 		END = 1
 ORDER BY A.invoice_num '
 
-truncate table DEN_DEV_APP.dbo.arPmtHistory
+truncate table DENVERAPP.dbo.arPmtHistory
 
 print @sql
 
-insert DEN_DEV_APP.dbo.arPmtHistory  execute sp_executesql @sql
+insert DENVERAPP.dbo.arPmtHistory  execute sp_executesql @sql
 
 
 select Invoice,
@@ -185,22 +184,24 @@ select Invoice,
 	Company = @company,
 	Client = Customer,
 	runDate
-from DEN_DEV_APP.dbo.arPmtHistory
+from DENVERAPP.dbo.arPmtHistory
 order by Customer, invoice, job
 
 
 
 /*
 
-execute DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve @Company = 'DENVER', 
+execute DENVERAPP.dbo.ArPaymentHistoryRetrieve @Company = 'DENVER', 
 													@client = '1PGBBY',
 													@BeginDate = '1/1/2015', 
 													@EndDate = '12/31/2015', 
 													@IncludeCredits = 0 
 
-execute DEN_DEV_APP.dbo.ArPaymentHistoryRetrieve @Company = 'DENVER', 
+execute DENVERAPP.dbo.ArPaymentHistoryRetrieve @Company = 'DENVER', 
 													@client = 'All',
 													@BeginDate = '1/1/2015', 
 													@EndDate = '12/31/2015', 
 													@IncludeCredits = 0 													
 */
+GO
+

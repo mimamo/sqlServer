@@ -7,11 +7,16 @@
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>47d02843-b47d-440c-a45a-fa22d17a9162</rd:DataSourceID>
     </DataSource>
+    <DataSource Name="SQL1_DENVERAPP">
+      <DataSourceReference>DENVERAPP</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>78581e89-4cdc-412c-96e6-e51c33ac5d64</rd:DataSourceID>
+    </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="ArPmtHistClientRetrieve">
       <Query>
-        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Company">
             <Value>=Parameters!Company.Value</Value>
@@ -26,44 +31,30 @@
             <Value>=Parameters!EndDate.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select distinct Client
-from(
-select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'DALLAS' as Company
-from dal_dev_app.dbo.pjinvhdr
-group by Customer, invoice_date, inv_status, invoice_type
+        <CommandText>SELECT DISTINCT Client
+FROM         (SELECT     SUM(gross_amt) AS amt, customer AS Client, invoice_date, inv_status, invoice_type, 'DALLAS' AS Company
+                       FROM          DALLASAPP.dbo.PJINVHDR
+                       GROUP BY customer, invoice_date, inv_status, invoice_type
+                       UNION
+                       SELECT     SUM(gross_amt) AS amt, customer AS Client, invoice_date, inv_status, invoice_type, 'DENVER' AS Company
+                       FROM         DENVERAPP.dbo.PJINVHDR AS PJINVHDR_4
+                       GROUP BY customer, invoice_date, inv_status, invoice_type
+                       UNION
+                       SELECT     SUM(gross_amt) AS amt, customer AS Client, invoice_date, inv_status, invoice_type, 'MIDWEST' AS Company
+                       FROM         MIDWESTAPP.dbo.PJINVHDR AS PJINVHDR_3
+                       GROUP BY customer, invoice_date, inv_status, invoice_type
+                       UNION
+                       SELECT     SUM(gross_amt) AS amt, customer AS Client, invoice_date, inv_status, invoice_type, 'NY' AS Company
+                       FROM         NEWYORKAPP.dbo.PJINVHDR AS PJINVHDR_2
+                       GROUP BY customer, invoice_date, inv_status, invoice_type
+                       UNION
+                       SELECT     SUM(gross_amt) AS amt, customer AS Client, invoice_date, inv_status, invoice_type, 'SHOPPER' AS Company
+                       FROM         SHOPPERAPP.dbo.PJINVHDR AS PJINVHDR_1
+                       GROUP BY customer, invoice_date, inv_status, invoice_type) AS x
+WHERE     (Company = @Company) AND (amt &lt;&gt; 0) AND (CASE WHEN @IncludeCredits = 'N' AND amt &lt; 0 THEN 0 ELSE 1 END = 1) AND (invoice_date BETWEEN 
+                      @BeginDate AND @EndDate) AND (inv_status = 'PO') AND (invoice_type = '')
+ORDER BY Client
 
-union
-
-select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'DENVER' as Company
-from den_dev_app.dbo.pjinvhdr
-group by Customer, invoice_date, inv_status, invoice_type
-
-union
-
-select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'MIDWEST' as Company
-from mid_dev_app.dbo.pjinvhdr
-group by Customer, invoice_date, inv_status, invoice_type
-
-union
-
-select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'NY' as Company
-from nyc_dev_app.dbo.pjinvhdr
-group by Customer, invoice_date, inv_status, invoice_type
-
-union
-
-select SUM(gross_amt) as amt, Customer as Client, invoice_date, inv_status, invoice_type, 'SHOPPER' as Company
-from shopper_dev_app.dbo.pjinvhdr
-group by Customer, invoice_date, inv_status, invoice_type
-) x
-where x.Company = @Company
-	and amt &lt;&gt; 0
-	and CASE WHEN @IncludeCredits = 'N' AND amt &lt; 0 THEN 0 ELSE 1 END = 1
-	and invoice_date between @BeginDate and @EndDate
-	and inv_status = 'PO' 
-	and invoice_type = ''
-order by client	
-	
 	</CommandText>
       </Query>
       <Fields>
@@ -75,13 +66,13 @@ order by client
     </DataSet>
     <DataSet Name="ArPaymentHistoryRetrieve">
       <Query>
-        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Company">
             <Value>=Parameters!Company.Value</Value>
           </QueryParameter>
           <QueryParameter Name="@Client">
-            <Value>=Parameters!Client.Value</Value>
+            <Value>=Join(Parameters!Client.Value,"|")</Value>
           </QueryParameter>
           <QueryParameter Name="@BeginDate">
             <Value>=Parameters!BeginDate.Value</Value>
@@ -192,13 +183,16 @@ order by client
                   <Width>0.82292in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.8125in</Width>
+                  <Width>1.02083in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.89583in</Width>
+                  <Width>1.14583in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.76042in</Width>
+                  <Width>1.09376in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
@@ -616,6 +610,40 @@ order by client
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Client</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>Firebrick</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -990,6 +1018,36 @@ order by client
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Client">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Client.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Client</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
@@ -1008,23 +1066,26 @@ order by client
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember>
                   <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details" />
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
+            <RepeatRowHeaders>true</RepeatRowHeaders>
             <DataSetName>ArPaymentHistoryRetrieve</DataSetName>
             <Top>0.50916in</Top>
             <Left>0.36333in</Left>
             <Height>0.5in</Height>
-            <Width>13.38543in</Width>
+            <Width>15.1771in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1032,7 +1093,7 @@ order by client
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>4.32292in</Height>
+        <Height>1.10417in</Height>
         <Style />
       </Body>
       <Width>32.47792in</Width>
@@ -1109,9 +1170,9 @@ order by client
               </Paragraphs>
               <rd:DefaultName>Textbox45</rd:DefaultName>
               <Top>0.19667in</Top>
-              <Left>2.35292in</Left>
+              <Left>2.37375in</Left>
               <Height>0.42708in</Height>
-              <Width>13.48958in</Width>
+              <Width>10.93751in</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
@@ -1132,7 +1193,7 @@ order by client
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.59375in</Height>
+          <Height>0.44792in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1151,10 +1212,10 @@ order by client
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>OverallPageNumber</rd:DefaultName>
-              <Top>0.155in</Top>
-              <Left>8.2175in</Left>
+              <Top>0.17583in</Top>
+              <Left>6.31125in</Left>
               <Height>0.27083in</Height>
-              <Width>3.46875in</Width>
+              <Width>2.78126in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1180,8 +1241,8 @@ order by client
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>UserID</rd:DefaultName>
-              <Top>0.155in</Top>
-              <Left>16.22792in</Left>
+              <Top>0.17709in</Top>
+              <Left>13.60293in</Left>
               <Height>0.27083in</Height>
               <Width>1.9375in</Width>
               <ZIndex>1</ZIndex>
@@ -1242,8 +1303,8 @@ order by client
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>ReportServerUrl</rd:DefaultName>
-              <Top>0.155in</Top>
-              <Left>13.06472in</Left>
+              <Top>0.17583in</Top>
+              <Left>10.53349in</Left>
               <Height>0.27083in</Height>
               <Width>3in</Width>
               <ZIndex>3</ZIndex>
@@ -1378,6 +1439,7 @@ order by client
           <LabelField>Client</LabelField>
         </DataSetReference>
       </ValidValues>
+      <MultiValue>true</MultiValue>
     </ReportParameter>
   </ReportParameters>
   <EmbeddedImages>

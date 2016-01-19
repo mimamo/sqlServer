@@ -11,6 +11,10 @@
       <FullPath>DEN_DEV_APP.rds</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>DENVERAPP.rds</Name>
+      <FullPath>DENVERAPP.rds</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>MID_DEV_APP.rds</Name>
       <FullPath>MID_DEV_APP.rds</FullPath>
     </ProjectItem>
@@ -22,20 +26,24 @@
       <Name>SHOPPER_DEV_APP.rds</Name>
       <FullPath>SHOPPER_DEV_APP.rds</FullPath>
     </ProjectItem>
-    <ProjectItem>
-      <Name>DENVERAPP.rds</Name>
-      <FullPath>DENVERAPP.rds</FullPath>
-    </ProjectItem>
   </DataSources>
   <DataSets />
   <Reports>
+    <ProjectItem>
+      <Name>ApTransaction.rdl</Name>
+      <FullPath>ApTransaction.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>ArPaymentHistory.rdl</Name>
+      <FullPath>ArPaymentHistory.rdl</FullPath>
+    </ProjectItem>
     <ProjectItem>
       <Name>PayWhenPaid.rdl</Name>
       <FullPath>PayWhenPaid.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>ArPaymentHistory.rdl</Name>
-      <FullPath>ArPaymentHistory.rdl</FullPath>
+      <Name>MC_FTE_Report.rdl</Name>
+      <FullPath>MC_FTE_Report.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>

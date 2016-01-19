@@ -1,4 +1,4 @@
-USE DEN_DEV_APP; -- <<<< Company databse to search
+USE DENVERAPP; -- <<<< Company databse to search
 GO
 
 SET QUOTED_IDENTIFIER OFF
@@ -23,7 +23,7 @@ CREATE PROCEDURE [dbo].[ApTransactionRetrieve]
  AS
 
 /*******************************************************************************************************
-*   DEN_DEV_APP.dbo.ApTransactionRetrieve 
+*   DENVERAPP.dbo.ApTransactionRetrieve 
 *
 *   Creator:       David Martin
 *   Date:          
@@ -34,11 +34,11 @@ CREATE PROCEDURE [dbo].[ApTransactionRetrieve]
 *
 *   Usage:
 
-		execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'DENVER', @StartPeriod = '201501', @EndPeriod = '201512'													
-		execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'DALLAS', @StartPeriod = '201501', @EndPeriod = '201512'
-        execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'MIDWEST', @StartPeriod = '201501', @EndPeriod = '201512'
-        execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'NY', @StartPeriod = '201501', @EndPeriod = '201512'
-        execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'SHOPPER', @StartPeriod = '201501', @EndPeriod = '201512'
+		execute DENVERAPP.dbo.ApTransactionRetrieve @Company = 'DENVER', @StartPeriod = '201501', @EndPeriod = '201512'													
+		execute DENVERAPP.dbo.ApTransactionRetrieve @Company = 'DALLAS', @StartPeriod = '201501', @EndPeriod = '201512'
+        execute DENVERAPP.dbo.ApTransactionRetrieve @Company = 'MIDWEST', @StartPeriod = '201501', @EndPeriod = '201512'
+        execute DENVERAPP.dbo.ApTransactionRetrieve @Company = 'NY', @StartPeriod = '201501', @EndPeriod = '201512'
+        execute DENVERAPP.dbo.ApTransactionRetrieve @Company = 'SHOPPER', @StartPeriod = '201501', @EndPeriod = '201512'
         
        SELECT @@servername  SQLDEV\SQLDEV or SQL1
         
@@ -143,7 +143,7 @@ SELECT	DocType = A.DocType,
 	CheckNumber = LTRIM(RTRIM(COALESCE(F.AdjgRefNbr,''''))),
 	CheckPeriodPost = LTRIM(RTRIM(COALESCE(F.AdjgPerPost,''''))),
 	CheckGlAccount =LTRIM(RTRIM(COALESCE(F.AdjgAcct,'''')))
-FROM ' + @dbName + '.dbo.APDoc A (nolock)
+FROM ' + @dbName + '.dbo.APDoc A
 LEFT OUTER JOIN ' + @dbName + '.dbo.APTran B (nolock)
 	ON A.RefNbr = B.RefNbr
 LEFT OUTER JOIN ' + @dbName + '.dbo.Vendor C (nolock)
@@ -223,6 +223,6 @@ drop table #apTransaction
 
 /*
 
-execute DEN_DEV_APP.dbo.ApTransactionRetrieve @Company = 'DENVER', @StartPeriod = '201501', @EndPeriod = '201512'
+execute DENVERAPP.dbo.ApTransactionRetrieve @Company = 'DENVER', @StartPeriod = '201501', @EndPeriod = '201512'
 												
 */
