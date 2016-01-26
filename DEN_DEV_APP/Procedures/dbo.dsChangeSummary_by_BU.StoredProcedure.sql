@@ -25,7 +25,7 @@ CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU]
 /*******************************************************************************************************
 *   DEN_DEV_APP.dbo.dsChangeSummary_by_BU 
 *
-*   Creator:       
+*   Creator: Dan Bertram    
 *   Date:          
 *   
 *
@@ -51,7 +51,7 @@ CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU]
 *   Modifications:   
 *   Developer Name      Date        Brief description
 *   ------------------- ----------- ------------------------------------------------------------
-*   Michelle Morales	01/14/2015	Put query from SSRS into procedure
+*   Michelle Morales	01/14/2016	Put query from SSRS into procedure
 ********************************************************************************************************/
 ---------------------------------------------
 -- declare variables
@@ -81,7 +81,8 @@ create table ##csactual
 	SalesMarketing varchar(20),
 	CurHours decimal(20,5),
 	CurMonth int,
-	primary key clustered (businessUnit, Department, curMonth)
+	id int identity(1,1),
+	primary key clustered (businessUnit, Department, curMonth,id)
 )
 
 ---------------------------------------------
@@ -111,12 +112,17 @@ insert ##csfc
 	Adj_Forecast = sum(adj_fPpl),
 	CurMonth = fMonth  
 from den_dev_app.dbo.xwrk_MC_Forecast 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-	and fMonth <= @iCurMonth
+--WHERE BusinessUnit NOT LIKE ('OOS%')
+	where fMonth <= @iCurMonth
 	and fYear = @iCurYear
-	and not (coalesce(fYear,0) = 2015 and coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-	and not (coalesce(fYear,0) = 2015 and coalesce(BusinessUnit,'') in('Blue Moon','Regions','Brand Solutions','Channel Solutions','Customer Marketing','Digital') and coalesce(Department,'') = 'Digital')
-	and not (coalesce(fYear,0) = 2015 and coalesce(BusinessUnit,'') = 'Sales Dev' and coalesce(Department,'') in('Insight & Strategy', 'iXpress', 'Sales & Dev'))
+/* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise.
+	and coalesce([fYear],0) <> 
+		case when coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
+			when coalesce(BusinessUnit,'') in('Blue Moon','Regions' ,'Brand Solutions','Channel Solutions','Customer Marketing','Digital') and coalesce(Department,'') = 'Digital' then 2015
+			when coalesce(BusinessUnit,'') = 'Sales Dev' and coalesce(Department,'') in('Insight & Strategy', 'iXpress', 'Sales & Dev') then 2015
+			else 1900
+		end
+	remove above when procedures are working properly */
 group by BusinessUnit, Department, SalesMarketing, fMonth
 
 insert ##csactual
@@ -133,22 +139,28 @@ select BusinessUnit,
 	CurHours = (SUM(Hours)/166.67), 
 	CurMonth 
 from den_dev_app.dbo.xwrk_MC_Data
-WHERE BusinessUnit not like ('OOS%')
-	and CurMonth <= @iCurMonth
+--WHERE BusinessUnit not like ('OOS%')
+	where CurMonth <= @iCurMonth
 	and [Year] = @iCurYear
-	and not (coalesce([Year],0) = 2015 AND coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-	and not (coalesce([Year],0) = 2015 AND coalesce(BusinessUnit,'') in('Blue Moon','Regions','Brand Solutions','Channel Solutions','Customer Marketing','Digital') AND coalesce(Department,'') = 'Digital')
-	and not (coalesce([Year],0) = 2015 AND coalesce(BusinessUnit,'') = 'Sales Dev' AND coalesce(Department,'') IN ('Insight & Strategy', 'iXpress', 'Sales & Dev'))
+/* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise. 
+	and coalesce([Year],0) <> 
+		case when coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
+			when coalesce(BusinessUnit,'') in('Blue Moon','Regions' ,'Brand Solutions','Channel Solutions','Customer Marketing','Digital') and coalesce(Department,'') = 'Digital' then 2015
+			when coalesce(BusinessUnit,'') = 'Sales Dev' and coalesce(Department,'') in('Insight & Strategy', 'iXpress', 'Sales & Dev') then 2015
+			else 1900
+		end
+	 remove above when procedures are working properly */
 group by BusinessUnit, Department, SalesMarketing, CurMonth
 
 
+
 select BusinessUnit = coalesce(b.BusinessUnit, a.BusinessUnit),
-	SalesMarketing = case when  coalesce(b.SalesMarketing,a.SalesMarketing) = '10th & Blake' then 'Marketing' 
+	SalesMarketing = case when coalesce(b.SalesMarketing,a.SalesMarketing) = '10th & Blake' then 'Marketing' 
 							when coalesce(b.SalesMarketing,'') = '' then a.SalesMarketing
 							else b.SalesMarketing
 						end,			
 	[Hours] = sum(round(coalesce(b.CurHours,0),5)),
-	FTE = sum(coalesce(a.Forecast,0)),
+	Forecast = sum(coalesce(a.Forecast,0)),
 	FTE = sum(coalesce(a.FTE_Adjust,0)),
 	Adj_Forecast = sum(coalesce(a.Adj_Forecast,0)),
 	CurMonth = coalesce(b.CurMonth, a.CurMonth)
@@ -164,8 +176,8 @@ group by coalesce(b.CurMonth, a.CurMonth),
 		else b.SalesMarketing
 	end,	
 	coalesce(b.BusinessUnit, a.BusinessUnit) 
-having coalesce(sum(round(b.[CurHours],5)),0) <> 0 
-	or coalesce(sum(a.Forecast),0) <> 0
+--having coalesce(sum(round(b.[CurHours],5)),0) <> 0 
+--	or coalesce(sum(a.Forecast),0) <> 0
 order by coalesce(b.CurMonth, a.CurMonth),
 	case when coalesce(b.SalesMarketing,a.SalesMarketing) = '10th & Blake' then 'Marketing' 
 		when coalesce(b.SalesMarketing,'') = '' then a.SalesMarketing

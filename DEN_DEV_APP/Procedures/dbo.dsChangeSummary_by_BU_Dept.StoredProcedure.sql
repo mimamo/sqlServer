@@ -17,8 +17,8 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]     
-	@iCurMonth varchar(2), 
-	@iCurYear varchar(4)
+	@iCurMonth int, 
+	@iCurYear int
 	
  AS
 
@@ -26,7 +26,7 @@ CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]
 /*******************************************************************************************************
 *   DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept 
 *
-*   Creator:       
+*   Creator: Dan Bertram     
 *   Date:          
 *   
 *
@@ -35,7 +35,7 @@ CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]
 *
 *   Usage:	
 	
-		execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth = '12',@iCurYear = '2015'
+		execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth = 12,@iCurYear = 2015
 		
 		select businessUnit, Department, fMonth, count(1)
 		from DEN_DEV_APP.dbo.xwrk_MC_Forecast
@@ -52,7 +52,7 @@ CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]
 *   Modifications:   
 *   Developer Name      Date        Brief description
 *   ------------------- ----------- ------------------------------------------------------------
-*   Michelle Morales	01/15/2015	Put query from SSRS into procedure
+*   Michelle Morales	01/15/2016	Put query from SSRS into procedure
 ********************************************************************************************************/
 ---------------------------------------------
 -- declare variables
@@ -67,7 +67,7 @@ create table ##fc
 	BusinessUnit varchar(50),
 	Department varchar(50),
 	SalesMarketing varchar(20),
-	Forecast	decimal(20,3),
+	Forecast decimal(20,3),
 	FTE_Adjust decimal(20,3),	
 	Adj_Forecast decimal(20,3),
 	CurMonth int,
@@ -80,9 +80,10 @@ create table ##actual
 	BusinessUnit varchar(50),
 	Department varchar(50),
 	SalesMarketing varchar(20),
-	CurHours decimal(20,5),
+	CurHours float,
 	CurMonth int,
-	primary key clustered (businessUnit, Department, curMonth)
+	id int identity(1,1),
+	primary key clustered (businessUnit, Department, curMonth,id)
 )
 
 ---------------------------------------------
@@ -112,12 +113,17 @@ select BusinessUnit,
 	Adj_Forecast = sum(adj_fPpl),
 	CurMonth = fMonth 
 from DEN_DEV_APP.dbo.xwrk_MC_Forecast 
-where BusinessUnit not like ('OOS%')
-	and fMonth <= @iCurMonth
+--where BusinessUnit not like 'OOS%'
+	where fMonth <= @iCurMonth
 	and fYear = @iCurYear
-	and not ([fYear] = 2015 and BusinessUnit in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-	and not ([fYear] = 2015 and BusinessUnit in('Blue Moon','Regions' ,'Brand Solutions','Channel Solutions','Customer Marketing','Digital') and Department = 'Digital')
-	and not ([fYear] = 2015 and BusinessUnit = 'Sales Dev' and Department in('Insight & Strategy', 'iXpress', 'Sales & Dev'))
+/* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise.
+	and coalesce([fYear],0) <> 
+		case when  coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
+			when coalesce(BusinessUnit,'') in('Blue Moon','Regions' ,'Brand Solutions','Channel Solutions','Customer Marketing','Digital') and coalesce(Department,'') = 'Digital' then 2015
+			when coalesce(BusinessUnit,'') = 'Sales Dev' and coalesce(Department,'') in('Insight & Strategy', 'iXpress', 'Sales & Dev') then 2015
+			else 1900
+		end
+ remove above when procedures are working properly */
 group by BusinessUnit, Department, SalesMarketing, fMonth
 
 insert ##actual
@@ -128,23 +134,29 @@ insert ##actual
 	CurHours,
 	CurMonth
 )
-select BusinessUnit, 
+select BusinessUnit = coalesce(BusinessUnit,''), 
 	Department, 
 	SalesMarketing, 
 	CurHours = (sum([Hours])/166.67), 
 	CurMonth 
 from DEN_DEV_APP.dbo.xwrk_MC_Data 
-where BusinessUnit not like('OOS%')
-	and not ([Year] = 2015 and BusinessUnit in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-	and not ([Year] = 2015 and BusinessUnit in('Blue Moon','Regions' ,'Brand Solutions','Channel Solutions','Customer Marketing','Digital') and Department = 'Digital')
-	and not ([Year] = 2015 and BusinessUnit = 'Sales Dev' and Department in('Insight & Strategy', 'iXpress', 'Sales & Dev'))
-	and CurMonth <= @iCurMonth
+--where coalesce(BusinessUnit,'OOS') not like 'OOS%'
+/* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise. 
+	and coalesce([Year],0) <> 
+		case when  coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
+			when coalesce(BusinessUnit,'') in('Blue Moon','Regions' ,'Brand Solutions','Channel Solutions','Customer Marketing','Digital') and coalesce(Department,'') = 'Digital' then 2015
+			when coalesce(BusinessUnit,'') = 'Sales Dev' and coalesce(Department,'') in('Insight & Strategy', 'iXpress', 'Sales & Dev') then 2015
+			else 1900
+		end
+remove above when procedures are working properly */
+	where CurMonth <= @iCurMonth
 	and [Year] = @iCurYear
-group by BusinessUnit, Department, SalesMarketing, CurMonth
+group by coalesce(BusinessUnit,''), Department, SalesMarketing, CurMonth
 
-	
+
 select BusinessUnit = coalesce(m.BusinessUnit, ad.BusinessUnit),
 	Department = coalesce(m.Department, ad.Department),
+	SalesMarketing = coalesce(m.SalesMarketing, ad.SalesMarketing),
 	[Hours] = sum(round(coalesce(m.[CurHours],0),5)),
 	Forecast = sum(coalesce(ad.Forecast,0)),
 	FTE = sum(coalesce(ad.FTE_Adjust,0)),
@@ -157,8 +169,8 @@ full outer join ##fc ad
 	and m.Department = ad.Department 
 	and m.CurMonth = ad.CurMonth
 group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
-having coalesce(sum(round(m.[CurHours],5)),0) <> 0 
-	or coalesce(sum(ad.Forecast),0) <> 0
+--having coalesce(sum(round(m.[CurHours],5)),0) <> 0 
+--	or coalesce(sum(ad.Forecast),0) <> 0
 order by coalesce(m.CurMonth, ad.CurMonth), coalesce(m.BusinessUnit, ad.BusinessUnit), coalesce(m.Department, m.Department)
 
 

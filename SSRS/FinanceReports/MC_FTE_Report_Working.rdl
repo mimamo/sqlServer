@@ -8462,15 +8462,20 @@
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="SQL1_DENVERAPP">
-      <DataSourceReference>SQL1_DENVERAPP</DataSourceReference>
+      <DataSourceReference>DENVERAPP</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>e297b578-ca1d-412c-ad1d-09254f9c6978</rd:DataSourceID>
+    </DataSource>
+    <DataSource Name="SQL1DEV_DEN_DEV_APP">
+      <DataSourceReference>DEN_DEV_APP</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>36e0625c-f85b-44a6-aae0-3c222ae2ea5a</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="dsByBU_w_YTD">
       <Query>
-        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@iCurMonth">
             <Value>=Parameters!iCurMonth.Value</Value>
@@ -8480,85 +8485,9 @@
           </QueryParameter>
         </QueryParameters>
         <CommandText>-- Run SPROC to Populate data if it isn't populated
- EXEC xsp_MC_FTE  @iCurMonth, @iCurYear
+ EXEC DEN_DEV_APP.dbo.xsp_MC_FTE  @iCurMonth, @iCurYear
 
-select tot.* from
-(
-select CASE WHEN m.BusinessUnit IS NULL THEN ad.BusinessUnit ELSE m.BusinessUnit END as BusinessUnit
-, CASE WHEN m.Department IS NULL THEN ad.Department ELSE m.Department END as Department 
---, CASE WHEN m.SalesMarketing = '10th &amp; Blake' then 'Marketing' 
- ,    Case  WHEN m.SalesMarketing IS NULL THEN ad.SalesMarketing ELSE m.SalesMarketing END as SalesMarketing 
-, ISNULL(SUM(round(m.CurHours,5)),0) as 'Hours'
-, ISNULL(SUM(ad.Forecst),0) as 'Forecast'
-, ISNULL(SUM(ad.FTE_Adjust),0) as 'FTE'
-, ISNULL(SUM(ad.Adj_Forecast),0) as 'Adj_Forecast'
-, CASE WHEN m.CurMonth IS NULL THEN ad.CurMonth ELSE m.CurMonth END as CurMonth
-from 
-(select b.BusinessUnit
-, b.Department
---, CASE WHEN b.SalesMarketing = '10th &amp; Blake' then 'Marketing' ELSE b.SalesMarketing end as SalesMarketing
-, b.SalesMarketing as SalesMarketing
-, b.CurHours
-, b.CurMonth
-from 
-(select BusinessUnit, Department, 
--- CASE WHEN SalesMarketing = '10th &amp; Blake' then 'Marketing' ELSE SalesMarketing END as SalesMarketing, 
-SalesMarketing,
-  (SUM(Hours)/166.67) as CurHours, CurMonth from xwrk_MC_Data
- 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-AND NOT (Year = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (Year = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (Year = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (Year = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (Year = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-
-and CurMonth &lt;= @iCurMonth
-and Year = @iCurYear
-group by BusinessUnit, Department, SalesMarketing, CurMonth)b)m full outer join
-(select f.BusinessUnit
-, f.Department 
-, f.SalesMarketing
-, f.Forecst
-, f.FTE_Adjust
-, f.Adj_Forecast
-, f.CurMonth
-from 
-(select BusinessUnit, Department, 
---CASE WHEN SalesMarketing = '10th &amp; Blake' then 'Marketing' ELSE SalesMarketing END as SalesMarketing
-SalesMarketing
-, SUM(fPpl) as 'Forecst'
-, SUM(fte_adj) as 'FTE_Adjust'
-, SUM(adj_fPpl) as 'Adj_Forecast'
-, fMonth as CurMonth from xwrk_MC_Forecast 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-and fMonth &lt;= @iCurMonth
-and fYear = @iCurYear
-AND NOT (fYear = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (fYear = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (fYear = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-group by BusinessUnit, Department, SalesMarketing, fMonth)f)ad on m.BusinessUnit = ad.BusinessUnit 
-and m.SalesMarketing = ad.SalesMarketing 
-and m.Department = ad.Department and m.CurMonth = ad.CurMonth
-group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
-)tot
-WHERE (Hours &lt;&gt; 0 or Forecast &lt;&gt; 0)
-
-order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit, tot.Department</CommandText>
+execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</CommandText>
         <Timeout>90</Timeout>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -8577,19 +8506,19 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit, tot.Department</Com
         </Field>
         <Field Name="Hours">
           <DataField>Hours</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Forecast">
           <DataField>Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="FTE">
           <DataField>FTE</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Adj_Forecast">
           <DataField>Adj_Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="CurMonth">
           <DataField>CurMonth</DataField>
@@ -8599,7 +8528,7 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit, tot.Department</Com
     </DataSet>
     <DataSet Name="dsChangeSummary_by_BU">
       <Query>
-        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@iCurMonth">
             <Value>=Parameters!iCurMonth.Value</Value>
@@ -8608,83 +8537,7 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit, tot.Department</Com
             <Value>=Parameters!iCurYear.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>--dsChangeSummary_by_BU
-Select 
-tot.BusinessUnit
-, CASE WHEN tot.SalesMarketing = '10th &amp; Blake' THEN 'Marketing' 
-			ELSE tot.SalesMarketing END as 'SalesMarketing'
-, ISNULL(SUM(tot.Hours),0) as 'Hours'
-, ISNULL(SUM(tot.Forecast),0) as 'Forecast'
-, ISNULL(SUM(tot.FTE),0) as 'FTE'
-, ISNULL(SUM(tot.Adj_Forecast),0) as 'Adj_Forecast'
-,tot.CurMonth
-from (
-select CASE WHEN m.BusinessUnit IS NULL THEN ad.BusinessUnit ELSE m.BusinessUnit END as BusinessUnit
-, CASE WHEN m.Department IS NULL THEN ad.Department ELSE m.Department END as Department 
-, CASE WHEN m.SalesMarketing IS NULL THEN ad.SalesMarketing ELSE m.SalesMarketing END as SalesMarketing 
-, ISNULL(SUM(round(m.CurHours,5)),0) as 'Hours'
-, ISNULL(SUM(ad.Forecst),0) as 'Forecast'
-, ISNULL(SUM(ad.FTE_Adjust),0) as 'FTE'
-, ISNULL(SUM(ad.Adj_Forecast),0) as 'Adj_Forecast'
-, CASE WHEN m.CurMonth IS NULL THEN ad.CurMonth ELSE m.CurMonth END as CurMonth
-from 
-(select b.BusinessUnit
-, b.Department
-, b.SalesMarketing 
-, b.CurHours
-, b.CurMonth
-from 
-(select BusinessUnit, Department, SalesMarketing, (SUM(Hours)/166.67) as CurHours, CurMonth from xwrk_MC_Data
-WHERE BusinessUnit NOT LIKE ('OOS%')
-and CurMonth &lt;= @iCurMonth
-and Year = @iCurYear
-AND NOT (Year = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (Year = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (Year = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (Year = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (Year = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-
-group by BusinessUnit, Department, SalesMarketing, CurMonth)b)m full outer join
-(select f.BusinessUnit
-, f.Department 
-, f.SalesMarketing
-, f.Forecst
-, f.FTE_Adjust
-, f.Adj_Forecast
-, f.CurMonth
-from 
-(select BusinessUnit, Department, SalesMarketing, SUM(fPpl) as 'Forecst'
-, SUM(fte_adj) as 'FTE_Adjust'
-, SUM(adj_fPpl) as 'Adj_Forecast'
-, fMonth as CurMonth from xwrk_MC_Forecast 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-and fMonth &lt;= @iCurMonth
-and fYear = @iCurYear
-AND NOT (fYear = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (fYear = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (fYear = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-group by BusinessUnit, Department, SalesMarketing, fMonth)f)ad on m.BusinessUnit = ad.BusinessUnit 
-and m.SalesMarketing = ad.SalesMarketing 
-and m.Department = ad.Department and m.CurMonth = ad.CurMonth
-group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
-)tot
-WHERE (Hours &lt;&gt; 0 or Forecast &lt;&gt; 0)
-group by tot.SalesMarketing, tot.BusinessUnit, tot.CurMonth
-order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit</CommandText>
+        <CommandText>execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU @iCurMonth,@iCurYear</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -8698,19 +8551,19 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit</CommandText>
         </Field>
         <Field Name="Hours">
           <DataField>Hours</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Forecast">
           <DataField>Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="FTE">
           <DataField>FTE</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Adj_Forecast">
           <DataField>Adj_Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="CurMonth">
           <DataField>CurMonth</DataField>
@@ -8720,7 +8573,7 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit</CommandText>
     </DataSet>
     <DataSet Name="dsChangeSummary_by_BU_Dept">
       <Query>
-        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@iCurMonth">
             <Value>=Parameters!iCurMonth.Value</Value>
@@ -8729,79 +8582,7 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit</CommandText>
             <Value>=Parameters!iCurYear.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>Select tot.BusinessUnit
-, tot.Department
-, ISNULL(SUM(tot.Hours),0) as 'Hours'
-, ISNULL(SUM(tot.Forecast),0) as 'Forecast'
-, ISNULL(SUM(tot.FTE),0) as 'FTE'
-, ISNULL(SUM(tot.Adj_Forecast),0) as 'Adj_Forecast'
-,tot.CurMonth
-from (
-select CASE WHEN m.BusinessUnit IS NULL THEN ad.BusinessUnit ELSE m.BusinessUnit END as BusinessUnit
-, CASE WHEN m.Department IS NULL THEN ad.Department ELSE m.Department END as Department 
-, CASE WHEN m.SalesMarketing IS NULL THEN ad.SalesMarketing ELSE m.SalesMarketing END as SalesMarketing 
-, ISNULL(SUM(round(m.Hours,5)),0) as 'Hours'
-, ISNULL(SUM(ad.Forecst),0) as 'Forecast'
-, ISNULL(SUM(ad.FTE_Adjust),0) as 'FTE'
-, ISNULL(SUM(ad.Adj_Forecast),0) as 'Adj_Forecast'
-, CASE WHEN m.CurMonth IS NULL THEN ad.CurMonth ELSE m.CurMonth END as CurMonth
-from 
-(select b.BusinessUnit
-, b.Department
-, b.SalesMarketing 
-, b.Hours
-, b.CurMonth
-from 
-(select BusinessUnit, Department, SalesMarketing, (SUM(Hours)/166.67) as Hours, CurMonth from xwrk_MC_Data 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-AND NOT (Year = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (Year = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (Year = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (Year = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (Year = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-and CurMonth &lt;= @iCurMonth
-and Year = @iCurYear
-group by BusinessUnit, Department, SalesMarketing, CurMonth)b)m full outer join
-(select f.BusinessUnit
-, f.Department 
-, f.SalesMarketing
-, f.Forecst
-, f.FTE_Adjust
-, f.Adj_Forecast
-, f.CurMonth
-from 
-(select BusinessUnit, Department, SalesMarketing, SUM(fPpl) as 'Forecst'
-, SUM(fte_adj) as 'FTE_Adjust'
-, SUM(adj_fPpl) as 'Adj_Forecast'
-, fMonth as CurMonth from xwrk_MC_Forecast 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-and fMonth &lt;= @iCurMonth
-and fYear = @iCurYear
-AND NOT (fYear = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift' ))
-AND NOT (fYear = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (fYear = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-group by BusinessUnit, Department, SalesMarketing, fMonth)f)ad on m.BusinessUnit = ad.BusinessUnit 
-and m.SalesMarketing = ad.SalesMarketing 
-and m.Department = ad.Department and m.CurMonth = ad.CurMonth
-group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
-)tot
-WHERE (Hours &lt;&gt; 0 or Forecast &lt;&gt; 0)
-group by tot.BusinessUnit, tot.Department, tot.CurMonth
-order by tot.CurMonth, tot.BusinessUnit, tot.Department</CommandText>
+        <CommandText>execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -8815,19 +8596,23 @@ order by tot.CurMonth, tot.BusinessUnit, tot.Department</CommandText>
         </Field>
         <Field Name="Hours">
           <DataField>Hours</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SalesMarketing">
+          <DataField>SalesMarketing</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Forecast">
           <DataField>Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="FTE">
           <DataField>FTE</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Adj_Forecast">
           <DataField>Adj_Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="CurMonth">
           <DataField>CurMonth</DataField>
