@@ -8475,7 +8475,7 @@
   <DataSets>
     <DataSet Name="dsByBU_w_YTD">
       <Query>
-        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@iCurMonth">
             <Value>=Parameters!iCurMonth.Value</Value>
@@ -8485,10 +8485,10 @@
           </QueryParameter>
         </QueryParameters>
         <CommandText>-- Run SPROC to Populate data if it isn't populated
- EXEC DEN_DEV_APP.dbo.xsp_MC_FTE  @iCurMonth, @iCurYear
+ EXEC DENVERAPP.dbo.xsp_MC_FTE_Working  @iCurMonth, @iCurYear
 
-execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</CommandText>
-        <Timeout>90</Timeout>
+execute DENVERAPP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</CommandText>
+        <Timeout>81</Timeout>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -8506,7 +8506,7 @@ execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</Command
         </Field>
         <Field Name="Hours">
           <DataField>Hours</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="Forecast">
           <DataField>Forecast</DataField>
@@ -8528,7 +8528,7 @@ execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</Command
     </DataSet>
     <DataSet Name="dsChangeSummary_by_BU">
       <Query>
-        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@iCurMonth">
             <Value>=Parameters!iCurMonth.Value</Value>
@@ -8537,7 +8537,7 @@ execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</Command
             <Value>=Parameters!iCurYear.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU @iCurMonth,@iCurYear</CommandText>
+        <CommandText>execute DENVERAPP.dbo.dsChangeSummary_by_BU @iCurMonth,@iCurYear</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -8573,7 +8573,7 @@ execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</Command
     </DataSet>
     <DataSet Name="dsChangeSummary_by_BU_Dept">
       <Query>
-        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@iCurMonth">
             <Value>=Parameters!iCurMonth.Value</Value>
@@ -8582,7 +8582,7 @@ execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</Command
             <Value>=Parameters!iCurYear.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</CommandText>
+        <CommandText>execute DENVERAPP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -8596,7 +8596,7 @@ execute DEN_DEV_APP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</Command
         </Field>
         <Field Name="Hours">
           <DataField>Hours</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="SalesMarketing">
           <DataField>SalesMarketing</DataField>

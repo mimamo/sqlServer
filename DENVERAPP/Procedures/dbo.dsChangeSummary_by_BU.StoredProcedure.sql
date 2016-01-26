@@ -1,4 +1,3 @@
-
 USE DENVERAPP; -- <<<< Company databse to search
 GO
 
@@ -10,23 +9,23 @@ GO
 IF EXISTS (
             SELECT 1
             FROM sys.procedures WITH(NOLOCK)
-            WHERE NAME = 'dsChangeSummary_by_BU_Dept'
+            WHERE NAME = 'dsChangeSummary_by_BU'
                 AND type = 'P'
            )
-    DROP PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]
+    DROP PROCEDURE [dbo].[dsChangeSummary_by_BU]
 GO
 
-CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]     
-	@iCurMonth int, 
-	@iCurYear int
+CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU]     
+	@iCurMonth varchar(2), 
+	@iCurYear varchar(4)
 	
  AS
 
 
 /*******************************************************************************************************
-*   DENVERAPP.dbo.dsChangeSummary_by_BU_Dept 
+*   DENVERAPP.dbo.dsChangeSummary_by_BU 
 *
-*   Creator: Dan Bertram     
+*   Creator: Dan Bertram    
 *   Date:          
 *   
 *
@@ -35,7 +34,7 @@ CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]
 *
 *   Usage:	
 	
-		execute DENVERAPP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth = 12,@iCurYear = 2015
+		execute DENVERAPP.dbo.dsChangeSummary_by_BU @iCurMonth = '12',@iCurYear = '2015'
 		
 		select businessUnit, Department, fMonth, count(1)
 		from DENVERAPP.dbo.xwrk_MC_Forecast
@@ -52,17 +51,17 @@ CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]
 *   Modifications:   
 *   Developer Name      Date        Brief description
 *   ------------------- ----------- ------------------------------------------------------------
-*   Michelle Morales	01/15/2016	Put query from SSRS into procedure
+*   Michelle Morales	01/14/2016	Put query from SSRS into procedure
 ********************************************************************************************************/
 ---------------------------------------------
 -- declare variables
 ---------------------------------------------
-	
+
 ---------------------------------------------
 -- create temp tables
 ---------------------------------------------
-if object_id('tempdb.dbo.##fc') > 0 drop table ##fc
-create table ##fc
+if object_id('tempdb.dbo.##csfc') > 0 drop table ##csfc
+create table ##csfc
 (
 	BusinessUnit varchar(50),
 	Department varchar(50),
@@ -74,13 +73,13 @@ create table ##fc
 	primary key clustered (businessUnit, Department, curMonth)
 )
 
-if object_id('tempdb.dbo.##actual') > 0 drop table ##actual
-create table ##actual
+if object_id('tempdb.dbo.##csactual') > 0 drop table ##csactual
+create table ##csactual
 (
 	BusinessUnit varchar(50),
 	Department varchar(50),
 	SalesMarketing varchar(20),
-	CurHours float,
+	CurHours decimal(20,5),
 	CurMonth int,
 	id int identity(1,1),
 	primary key clustered (businessUnit, Department, curMonth,id)
@@ -95,7 +94,7 @@ SET NOCOUNT ON
 ---------------------------------------------
 -- body of stored procedure
 ---------------------------------------------
-insert ##fc
+insert ##csfc
 (
 	BusinessUnit,
 	Department,
@@ -105,28 +104,28 @@ insert ##fc
 	Adj_Forecast,
 	CurMonth
 )
-select BusinessUnit, 
+ select BusinessUnit, 
 	Department, 
 	SalesMarketing, 
 	Forecast = sum(fPpl),
 	FTE_Adjust = sum(fte_adj),
 	Adj_Forecast = sum(adj_fPpl),
-	CurMonth = fMonth 
+	CurMonth = fMonth  
 from DENVERAPP.dbo.xwrk_MC_Forecast 
---where BusinessUnit not like 'OOS%'
+--WHERE BusinessUnit NOT LIKE ('OOS%')
 	where fMonth <= @iCurMonth
 	and fYear = @iCurYear
 /* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise.
 	and coalesce([fYear],0) <> 
-		case when  coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
+		case when coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
 			when coalesce(BusinessUnit,'') in('Blue Moon','Regions' ,'Brand Solutions','Channel Solutions','Customer Marketing','Digital') and coalesce(Department,'') = 'Digital' then 2015
 			when coalesce(BusinessUnit,'') = 'Sales Dev' and coalesce(Department,'') in('Insight & Strategy', 'iXpress', 'Sales & Dev') then 2015
 			else 1900
 		end
- remove above when procedures are working properly */
+	remove above when procedures are working properly */
 group by BusinessUnit, Department, SalesMarketing, fMonth
 
-insert ##actual
+insert ##csactual
 (
 	BusinessUnit,
 	Department,
@@ -134,45 +133,57 @@ insert ##actual
 	CurHours,
 	CurMonth
 )
-select BusinessUnit = coalesce(BusinessUnit,''), 
+select BusinessUnit, 
 	Department, 
 	SalesMarketing, 
-	CurHours = (sum([Hours])/166.67), 
+	CurHours = (SUM(Hours)/166.67), 
 	CurMonth 
-from DENVERAPP.dbo.xwrk_MC_Data 
---where coalesce(BusinessUnit,'OOS') not like 'OOS%'
+from DENVERAPP.dbo.xwrk_MC_Data
+--WHERE BusinessUnit not like ('OOS%')
+	where CurMonth <= @iCurMonth
+	and [Year] = @iCurYear
 /* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise. 
 	and coalesce([Year],0) <> 
-		case when  coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
+		case when coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
 			when coalesce(BusinessUnit,'') in('Blue Moon','Regions' ,'Brand Solutions','Channel Solutions','Customer Marketing','Digital') and coalesce(Department,'') = 'Digital' then 2015
 			when coalesce(BusinessUnit,'') = 'Sales Dev' and coalesce(Department,'') in('Insight & Strategy', 'iXpress', 'Sales & Dev') then 2015
 			else 1900
 		end
-remove above when procedures are working properly */
-	where CurMonth <= @iCurMonth
-	and [Year] = @iCurYear
-group by coalesce(BusinessUnit,''), Department, SalesMarketing, CurMonth
+	 remove above when procedures are working properly */
+group by BusinessUnit, Department, SalesMarketing, CurMonth
 
 
-select BusinessUnit = coalesce(m.BusinessUnit, ad.BusinessUnit),
-	Department = coalesce(m.Department, ad.Department),
-	SalesMarketing = coalesce(m.SalesMarketing, ad.SalesMarketing),
-	[Hours] = sum(round(coalesce(m.[CurHours],0),5)),
-	Forecast = sum(coalesce(ad.Forecast,0)),
-	FTE = sum(coalesce(ad.FTE_Adjust,0)),
-	Adj_Forecast = coalesce(sum(ad.Adj_Forecast),0),
-	CurMonth = coalesce(m.CurMonth, ad.CurMonth)
-from ##actual m 
-full outer join ##fc ad 
-	on m.BusinessUnit = ad.BusinessUnit 
-	and m.SalesMarketing = ad.SalesMarketing 
-	and m.Department = ad.Department 
-	and m.CurMonth = ad.CurMonth
-group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
---having coalesce(sum(round(m.[CurHours],5)),0) <> 0 
---	or coalesce(sum(ad.Forecast),0) <> 0
-order by coalesce(m.CurMonth, ad.CurMonth), coalesce(m.BusinessUnit, ad.BusinessUnit), coalesce(m.Department, m.Department)
 
-
-drop table ##fc
-drop table ##actual
+select BusinessUnit = coalesce(b.BusinessUnit, a.BusinessUnit),
+	SalesMarketing = case when coalesce(b.SalesMarketing,a.SalesMarketing) = '10th & Blake' then 'Marketing' 
+							when coalesce(b.SalesMarketing,'') = '' then a.SalesMarketing
+							else b.SalesMarketing
+						end,			
+	[Hours] = sum(round(coalesce(b.CurHours,0),5)),
+	Forecast = sum(coalesce(a.Forecast,0)),
+	FTE = sum(coalesce(a.FTE_Adjust,0)),
+	Adj_Forecast = sum(coalesce(a.Adj_Forecast,0)),
+	CurMonth = coalesce(b.CurMonth, a.CurMonth)
+from ##csactual b
+full outer join ##csfc a 
+	on b.BusinessUnit = a.BusinessUnit 
+	and b.Department = a.Department 
+	and b.SalesMarketing = a.SalesMarketing 					
+	and b.CurMonth = a.CurMonth
+group by case when coalesce(b.SalesMarketing,a.SalesMarketing) = '10th & Blake' then 'Marketing' 
+			when coalesce(b.SalesMarketing,'') = '' then a.SalesMarketing
+			else b.SalesMarketing
+		end,	
+	coalesce(b.BusinessUnit, a.BusinessUnit) ,
+	coalesce(b.CurMonth, a.CurMonth)
+--having coalesce(sum(round(b.[CurHours],5)),0) <> 0 
+--	or coalesce(sum(a.Forecast),0) <> 0
+order by coalesce(b.CurMonth, a.CurMonth),
+	case when coalesce(b.SalesMarketing,a.SalesMarketing) = '10th & Blake' then 'Marketing' 
+		when coalesce(b.SalesMarketing,'') = '' then a.SalesMarketing
+		else b.SalesMarketing
+	end,	
+	coalesce(b.BusinessUnit, a.BusinessUnit)
+	
+drop table ##csfc
+drop table ##csactual
