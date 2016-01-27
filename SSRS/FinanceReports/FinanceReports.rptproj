@@ -38,6 +38,10 @@
       <FullPath>ArPaymentHistory.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>MC_FTE_Report_original.rdl</Name>
+      <FullPath>MC_FTE_Report_original.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>MC_FTE_Report_Working.rdl</Name>
       <FullPath>MC_FTE_Report_Working.rdl</FullPath>
     </ProjectItem>
@@ -46,8 +50,8 @@
       <FullPath>PayWhenPaid.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>MC_FTE_Report_original.rdl</Name>
-      <FullPath>MC_FTE_Report_original.rdl</FullPath>
+      <Name>MC_FTE_Data_Dump.rdl</Name>
+      <FullPath>MC_FTE_Data_Dump.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>
