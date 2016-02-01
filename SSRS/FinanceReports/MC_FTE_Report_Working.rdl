@@ -3854,7 +3854,7 @@
         </TablixRowHierarchy>
         <RepeatColumnHeaders>true</RepeatColumnHeaders>
         <RepeatRowHeaders>true</RepeatRowHeaders>
-        <DataSetName>dsByBU_w_YTD</DataSetName>
+        <DataSetName>dsChangeSummary_by_BU_Dept</DataSetName>
         <PageBreak>
           <BreakLocation>End</BreakLocation>
         </PageBreak>
@@ -5386,7 +5386,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <KeepTogether>true</KeepTogether>
-        <DataSetName>dsByBU_w_YTD</DataSetName>
+        <DataSetName>dsChangeSummary_by_BU_Dept</DataSetName>
         <PageBreak>
           <BreakLocation>End</BreakLocation>
         </PageBreak>
@@ -8463,69 +8463,11 @@
   <DataSources>
     <DataSource Name="SQL1_DENVERAPP">
       <DataSourceReference>DENVERAPP</DataSourceReference>
-      <rd:SecurityType>None</rd:SecurityType>
+      <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>e297b578-ca1d-412c-ad1d-09254f9c6978</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="SQL1DEV_DEN_DEV_APP">
-      <DataSourceReference>DEN_DEV_APP</DataSourceReference>
-      <rd:SecurityType>None</rd:SecurityType>
-      <rd:DataSourceID>36e0625c-f85b-44a6-aae0-3c222ae2ea5a</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="dsByBU_w_YTD">
-      <Query>
-        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@iCurMonth">
-            <Value>=Parameters!iCurMonth.Value</Value>
-          </QueryParameter>
-          <QueryParameter Name="@iCurYear">
-            <Value>=Parameters!iCurYear.Value</Value>
-          </QueryParameter>
-        </QueryParameters>
-        <CommandText>-- Run SPROC to Populate data if it isn't populated
- EXEC DENVERAPP.dbo.xsp_MC_FTE_Working  @iCurMonth, @iCurYear
-
-execute DENVERAPP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</CommandText>
-        <Timeout>81</Timeout>
-        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
-      </Query>
-      <Fields>
-        <Field Name="BusinessUnit">
-          <DataField>BusinessUnit</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Department">
-          <DataField>Department</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="SalesMarketing">
-          <DataField>SalesMarketing</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Hours">
-          <DataField>Hours</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-        <Field Name="Forecast">
-          <DataField>Forecast</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="FTE">
-          <DataField>FTE</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="Adj_Forecast">
-          <DataField>Adj_Forecast</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="CurMonth">
-          <DataField>CurMonth</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
     <DataSet Name="dsChangeSummary_by_BU">
       <Query>
         <DataSourceName>SQL1_DENVERAPP</DataSourceName>

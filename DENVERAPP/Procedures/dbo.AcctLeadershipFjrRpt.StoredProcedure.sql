@@ -1,4 +1,4 @@
-USE DEN_DEV_APP; 
+USE DENVERAPP; 
 GO
 
 SET QUOTED_IDENTIFIER OFF
@@ -16,19 +16,19 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE [dbo].[AcctLeadershipFjrRpt]     
-	@Company varchar(30),
-	@sProject varchar(20) = '',
-	@sClientID varchar(30) = '',
-	@sClientPO varchar(20) = '',
-	@sProductID varchar(20) = '',
-	@sPM varchar(10) = '',
-	@sStatus varchar(1) = ''
+	@company varchar(30),
+	@sProject varchar(20) = null,
+	@sClientID varchar(30),
+	@sClientPO varchar(20)= null,
+	@sProductID varchar(20),
+	@sPM varchar(10),
+	@sStatus varchar(1)
 	
  AS
 
 
 /*******************************************************************************************************
-*   DEN_DEV_APP.dbo.AcctLeadershipFjrRpt 
+*   DENVERAPP.dbo.AcctLeadershipFjrRpt 
 *
 *   Creator:   
 *   Date:          
@@ -37,11 +37,11 @@ CREATE PROCEDURE [dbo].[AcctLeadershipFjrRpt]
 *   Notes:         
 *                  
 *
-*   Usage:	
+*   Usage:	set statistics io on
 	
-		execute DEN_DEV_APP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sProject = '06388515NYC', @sClientId = '1LFSU', @sProductId = 'TRDE', @sPM = 'SAPPEL', @sStatus = 'A'
-		execute DEN_DEV_APP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1JJVC', @sProductId = 'CUST', @sPM = 'CUST', @sStatus = 'A'
-		execute DEN_DEV_APP.dbo.AcctLeadershipFjrRpt @company = 'DENVER', @sClientId = '1IZZE', @sProductId = 'IZZE', @sPM = 'ALUU', @sStatus = 'A'
+		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU', @sProductId = 'TRDE', @sPM = 'SAPPEL', @sStatus = 'A'
+		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1JJVC', @sProductId = 'CUST', @sPM = 'CUST', @sStatus = 'A'
+		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'DENVER', @sClientId = '1IZZE', @sProductId = 'IZZE', @sPM = 'ALUU', @sStatus = 'A'
 		
 
 *
@@ -58,7 +58,7 @@ DECLARE @CurrentDate Date	--Would have been used in used in WIP AGING logic
 DECLARE @iYear as int
 
 SET @CurrentDate = getdate()
-SET @iYear = YEAR(@CurrentDate)
+SET @iYear = year(@CurrentDate)
 
 declare @sql nvarchar(max)
 declare @sql1 nvarchar(max)
@@ -104,8 +104,15 @@ create table ##fjrResults
 	ProjectHours float, 
 	ProjectStatus varchar(1), 
 	FltClientPO varchar(20),
-	ContractType varchar(5)
+	ContractType varchar(5),
+	ParentFlag int,
+	rowId int,
+	constraint pkc_##fjrResults primary key (ClientId, ProductId, PM, [Status], Project, rowId)
 )
+
+create nonclustered index ix_##fjrResults on ##fjrResults (project_billwith, Project)
+
+
 ---------------------------------------------
 -- set session variables
 ---------------------------------------------
@@ -115,17 +122,51 @@ SET NOCOUNT ON
 ---------------------------------------------
 -- body of stored procedure
 ---------------------------------------------
-select @serverName = (select @@servername)
+select @sProject = coalesce(@sProject, '')
+select @sClientPO = coalesce(@sClientPO, '')
+
+
+select @serverName =  @@servername
 
 select @dbName = null
 
-select @dbName = case 	when @serverName = 'SQLDEV\SQLDEV' and @company = 'DENVER' then 'DEN_DEV_APP' 
+select @dbName = case 	when @serverName = 'SQLDEV\SQLDEV' and @company = 'DENVER' then 'DENVERAPP' 
 						when @serverName = 'SQL1' and @company = 'DENVER' then 'DENVERAPP'
 						when @serverName = 'SQLDEV\SQLDEV' and @company = 'SHOPPERNY' then 'SHOPPER_DEV_APP' 
 						when @serverName = 'SQL1' and @company = 'SHOPPERNY' then 'SHOPPERAPP'
 					end
 
 set @sql1 = '
+
+if object_id(''tempdb.dbo.##uni123'') > 0 drop table ##uni123
+create table ##uni123
+(
+	Project	varchar(16),
+	ClientID varchar(30), 
+	ProductID varchar(30), 	
+	PM varchar(10),
+	[Status] varchar(10),
+	AcctService varchar(10),
+	Project_Desc varchar(60), 
+	ClientRefNo varchar(20),
+	OnShelfDate datetime, 
+	[Final On-Shelf Date] datetime, 
+	CloseDate datetime, 
+	OfferNum varchar(30),
+	ProjectStatus varchar(1),
+	FltClientPO varchar(20),
+	ContractType varchar(5),
+	user2 varchar(30),
+	project_billwith varchar(16),  
+	ClientName varchar(60),
+	ProductDesc varchar(30),  
+	ClientContact varchar(30),
+	ContactEmailAddress varchar(50),
+	ECD datetime,  
+	rowId int,
+	primary key clustered (Project, rowId)
+)
+
 
 if object_id(''tempdb.dbo.##fjr'') > 0 drop table ##fjr
 create table ##fjr
@@ -139,13 +180,95 @@ create table ##fjr
 if object_id(''tempdb.dbo.##fjrSums'') > 0 drop table ##fjrSums
 create table ##fjrSums
 (
-	Project	char(16),
+	Project	varchar(16),
 	SumType	varchar(14),
 	SumValue float,
 	primary key clustered (Project, SumType)
 )
 
+
+
 SET NOCOUNT ON
+
+insert ##uni123
+(
+	Project,
+	ClientID, 
+	ProductID, 	
+	PM,
+	[Status],
+	AcctService,
+	Project_Desc, 
+	ClientRefNo,
+	OnShelfDate, 
+	[Final On-Shelf Date], 
+	CloseDate, 
+	OfferNum,
+	ProjectStatus,
+	FltClientPO,
+	ContractType,
+	user2,
+	project_billwith,  
+	ClientName,
+	ProductDesc,  
+	ClientContact,
+	ContactEmailAddress,
+	ECD,
+	RowId
+)
+select Project = ltrim(rtrim(ip.Project)), 
+	ClientID = ltrim(rtrim(ip.pm_id01)), 
+	ProductID = ltrim(rtrim(ip.pm_id02)), 
+	PM = ltrim(rtrim(ip.manager1)), 	
+	[Status] = case when ip.status_pa = ''I'' then ''INACTIVE'' else ''ACTIVE'' end,
+	AcctService = ltrim(rtrim(ip.manager2)), 
+	Project_Desc = ltrim(rtrim(ip.Project_Desc)),
+	ClientRefNo = ltrim(rtrim(ip.purchase_order_num)),
+	OnShelfDate = ltrim(rtrim(ip.end_date)), 
+	[Final On-Shelf Date] = case when x.pm_id28 = '''' then ip.end_date else ltrim(rtrim(x.pm_id28)) end,	
+	CloseDate = ltrim(rtrim(ip.pm_id08)), 
+	OfferNum = ltrim(rtrim(ip.pm_id32)),  
+	ProjectStatus = ip.status_pa,
+	FltClientPO = ip.purchase_order_num,
+	ContractType = case when ip.contract_type IN (''BPRD'',''FEE'',''MED'',''PARN'',''PDNT'',''PRNT'',''PROD'',''RET'',''NYK'') then ''PROD''
+						when ip.contract_type = ''TIME'' then ''TIME''
+					  end,	
+	ip.user2,
+	project_billwith = ltrim(rtrim(a.project_billwith)),  
+	ClientName = coalesce(ltrim(rtrim(c.[name])),''Customer Name Unavailable''), 
+	ProductDesc = ltrim(rtrim(pc.descr)), 
+	ClientContact = ltrim(rtrim(xc.CName)), 
+	ContactEmailAddress = ltrim(rtrim(xc.EmailAddress)),
+	ECD = ltrim(rtrim(x.pm_id28)),
+	RowId = rank() over (partition by 1 order by a.project_billwith) 
+from ' + @dbName + '.dbo.PJBILL A with (nolock) 
+INNER JOIN ' + @dbName + '.dbo.PJPROJ p with (nolock)  -- parent  
+	ON A.project_billwith = case when A.project_billwith <> '''' then p.Project else A.project_billwith end
+INNER JOIN ' + @dbName + '.dbo.PJPROJ ip with (nolock)  -- child
+	ON a.project = ip.project
+LEFT OUTER JOIN ' + @dbName + '.dbo.xIGProdCode pc with (nolock)
+	ON ip.pm_id02 = pc.code_ID
+LEFT OUTER JOIN ' + @dbName + '.dbo.CUSTOMER c with (nolock)
+	ON ip.pm_id01 = C.CustId
+LEFT OUTER JOIN ' + @dbName + '.dbo.PJPROJEX x with (nolock)
+	ON ip.project = x.project
+LEFT JOIN ' + @dbName + '.dbo.xClientContact xc with (nolock)
+	ON ip.user2 = xc.EA_ID '
+
+set @sql2 = '
+
+--!!!!!! ALL FILTER CRITERIA MUST BE ON IP AND NOT P OR PARENT CHILD JOBS WILL NOT ALWAYS BE PULLED TOGETHER!!!!!!
+where ip.contract_type IN (''BPRD'',''FEE'',''MED'',''PARN'',''PDNT'',''PRNT'',''PROD'',''RET'',''TIME'',''NYK'')
+	and (ltrim(rtrim(ip.Project)) = ''' + @sProject + '''
+		or ''' + @sProject + ''' = '''')
+	and ltrim(rtrim(ip.pm_id01)) = ''' + @sClientId + '''
+	and (ip.purchase_order_num = ''' + @sClientPO + '''
+		or ''' + @sClientPO + ''' = '''')
+	and ltrim(rtrim(ip.pm_id02)) = ''' + @sProductID + '''
+	and ltrim(rtrim(ip.manager1)) = ''' + @sPM + '''
+	and ip.status_pa = ''' + @sStatus + ''' 
+
+
 
 --FJR query.  To get down to one line for reporting pulling as main source
 insert ##fjr
@@ -155,21 +278,23 @@ insert ##fjr
 	Actuals,
 	BTD
 )
-select Project,
-	OpenPO = coalesce((max(ExtCost) - max(CostVouched)),0), 
+select m.Project,
+	OpenPO = coalesce((max(m.ExtCost) - max(m.CostVouched)),0), 
 	--Removing month logic as no period sensitivity.  Leaving code in as easy to uncomment.
-	Actuals = sum (CASE WHEN AcctGroupCode IN (''WA'',''WP'',''CM'',''FE'') then
-						AmountBF + Amount01 + Amount02 + Amount03 + Amount04 + Amount05 + Amount06 + Amount07 + Amount08 + Amount09 + Amount10 + Amount11 + Amount12 + Amount13 + Amount14 + Amount15
+	Actuals = sum (CASE WHEN m.AcctGroupCode IN (''WA'',''WP'',''CM'',''FE'') then
+						m.AmountBF + m.Amount01 + m.Amount02 + m.Amount03 + m.Amount04 + m.Amount05 + m.Amount06 + m.Amount07 + m.Amount08 + m.Amount09 + m.Amount10 + m.Amount11 + m.Amount12 + m.Amount13 + m.Amount14 + m.Amount15
 						ELSE 0  
 					END), 
 	--Removing month logic as no period sensitivity.  Leaving code in as easy to uncomment.
-	BTD = SUM (CASE WHEN ControlCode = ''BTD'' OR AcctGroupCode = ''PB'' THEN
-					AmountBF + Amount01 + Amount02 + Amount03 + Amount04 + Amount05 + Amount06 + Amount07 + Amount08 + Amount09 + Amount10 + Amount11 + Amount12 + Amount13 + Amount14 + Amount15
+	BTD = SUM (CASE WHEN m.ControlCode = ''BTD'' OR AcctGroupCode = ''PB'' THEN
+					m.AmountBF + m.Amount01 + m.Amount02 + m.Amount03 + m.Amount04 + m.Amount05 + m.Amount06 + m.Amount07 + m.Amount08 + m.Amount09 + m.Amount10 + m.Amount11 + m.Amount12 + m.Amount13 + m.Amount14 + m.Amount15
 					ELSE 0  
 				END) 
-from ' + @dbName + '.dbo.xvr_PA924_Main with (nolock)
-where FSYearNum = ' + cast(@iYear as varchar) + '
-group by Project
+from ' + @dbName + '.dbo.xvr_PA924_Main m with (nolock)
+inner join ##uni123 u
+	on m.project = u.project
+where m.FSYearNum = ' + cast(@iYear as varchar) + '
+group by m.Project   
 
 
 /*Using Current Locked Estimate view with functions.  Must roll up to project or cartestion joins */
@@ -185,7 +310,10 @@ select CLE.Project,
 from ' + @dbName + '.dbo.xvr_Est_CLE CLE with (nolock)
 inner join ' + @dbName + '.dbo.xIGFunctionCode FC with (nolock)
 	on CLE.pjt_entity = FC.code_ID
+inner join ##uni123 u
+	on cle.project = u.project
 group by CLE.Project
+
 
 insert ##fjrSums
 (
@@ -201,6 +329,7 @@ inner join ' + @dbName + '.dbo.xIGFunctionCode FC with (nolock)
 	on CLE.pjt_entity = FC.code_ID
 group by CLE.Project
 
+
  -- Get the Travel Actuals
 insert ##fjrSums
 (
@@ -215,8 +344,11 @@ FROM ' + @dbName + '.dbo.xvr_BU96C_Actuals act
 inner join ' + @dbName + '.dbo.xIGFunctionCode fc with (nolock)
 	on act.[function] = fc.code_id
 	and fc.code_group = ''TRAV''
+inner join ##uni123 u
+	on act.project = u.project
 where act.acct = ''Billable''
 group by act.project
+
 
 -- Get the Out of Pocket Actuals
 insert ##fjrSums
@@ -231,13 +363,15 @@ SELECT act.project,
 FROM ' + @dbName + '.dbo.xvr_BU96C_Actuals act with (nolock)
 inner join ' + @dbName + '.dbo.xIGFunctionCode fc with (nolock)
 	on act.[function] = fc.code_id
+inner join ##uni123 u
+	on act.project = u.project
 where act.acct IN (''Billable'',''BILLABLE APS'',''BILLABLE FEES'') 
 	and (coalesce(fc.code_group,'''') not in (''TRAV'',''FEE'') 
 		or coalesce(fc.code_id,'''') = ''00975'')
-group by act.project ' 
+group by act.project  '
 
+select @sql3 = '
 
-set @sql2 = '
 --Per Email, include all WIP transactions.  Leaving in as easy to uncomment if decisions change.	   
 insert ##fjrSums
 (
@@ -250,7 +384,9 @@ select d.Project,
 	 SumValue = SUM(CASE WHEN d.li_type NOT IN (''D'', ''A'') AND DateDiff(day, d.source_trx_date, GETDATE()) > 60 THEN d.amount
 							ELSE 0
 						END) 						
-from ' + @dbName + '.dbo.PJINVDET d with (nolock)
+from ##uni123 u
+inner join ' + @dbName + '.dbo.PJINVDET d with (nolock)
+	on u.project = d.project
 left join ' + @dbName + '.dbo.PJINVHDR h with (nolock)
 	ON d.draft_num = h.draft_num
 inner join ' + @dbName + '.dbo.PJPROJ p with (nolock)
@@ -265,7 +401,7 @@ where d.hold_status <> ''PG''
 	and (substring(d.acct, 1, 6) <> ''OFFSET'' 
 		or d.acct = ''OFFSET PREBILL'')
 	and ae.JobId is null
-group By d.project		
+group By d.project	
 
 insert ##fjrSums
 (
@@ -273,34 +409,35 @@ insert ##fjrSums
 	SumType,
 	SumValue
 )
-select project,
+select t.project,
 	SumType = ''TTLHrs'',
-	SumValue = sum(units) 
-from ' + @dbName + '.dbo.PJTRAN with (nolock)
-where acct = ''LABOR''
-group By Project 
+	SumValue = sum(t.units) 
+from ' + @dbName + '.dbo.PJTRAN t with (nolock)
+inner join ##uni123 u
+	on t.project = u.project
+where t.acct = ''LABOR''
+group By t.Project 
 		
-
 select Company = ''' + @company + ''',
-	Project = ltrim(rtrim(p.Project)), 
-	[Status] = case when p.status_pa = ''I'' then ''INACTIVE'' else ''ACTIVE'' end,  
-	project_billwith = ltrim(rtrim(b.project_billwith)),  
-	ClientID = ltrim(rtrim(p.pm_id01)), 
-	ClientName = coalesce(ltrim(rtrim(c.[name])),''Customer Name Unavailable''), 
-	ProductID = ltrim(rtrim(p.pm_id02)), 
-	ProductDesc = ltrim(rtrim(pc.descr)), 
-	PM = ltrim(rtrim(p.manager1)), 
-	AcctService = ltrim(rtrim(p.manager2)), 
-	Project_Desc = ltrim(rtrim(p.Project_Desc)), 
-	ClientContact = ltrim(rtrim(xc.CName)), 
-	ContactEmailAddress = ltrim(rtrim(xc.EmailAddress)),
-	ClientRefNo = ltrim(rtrim(p.purchase_order_num)),
-	ECD = ltrim(rtrim(x.pm_id28)), 
-	OnShelfDate = ltrim(rtrim(p.end_date)), 
-	[Final On-Shelf Date] = case when x.pm_id28 = '''' then p.end_date else ltrim(rtrim(x.pm_id28)) end,
-	CloseDate = ltrim(rtrim(p.pm_id08)), 
-	OfferNum = ltrim(rtrim(p.pm_id32)), 
-	ULEAmount = coalesce(ULE.ULEAmount, 0), 
+	u.Project, 
+	u.[Status],  
+	u.project_billwith,  
+	u.ClientID, 
+	u.ClientName, 
+	u.ProductID, 
+	u.ProductDesc, 
+	u.PM, 
+	u.AcctService, 
+	u.Project_Desc, 
+	u.ClientContact, 
+	u.ContactEmailAddress,
+	u.ClientRefNo,
+	u.ECD, 
+	u.OnShelfDate, 
+	u.[Final On-Shelf Date],
+	u.CloseDate, 
+	u.OfferNum, 
+	ULEAmount = coalesce(ULE.UleAmount, 0), 
 	CLEAmount = coalesce(CleAmount.SumValue, 0), 
 	CLEFeeAmount = coalesce(CleFee.SumValue, 0), 
 	TRVActuals = coalesce(TRV.SumValue, 0), 
@@ -311,90 +448,50 @@ select Company = ''' + @company + ''',
 	BTD = coalesce(FJR.BTD, 0), 
 	WIPOver60Amount = coalesce(RptWIP.SumValue, 0),  --Period Sensitive being removed
 	ProjectHours = coalesce(ProjectHrs.SumValue, 0), 
-	ProjectStatus = p.status_pa,
-	-- Filtering fields required when adding logic for all parent child to return when either is pulled.
-	--FltClientID = ip.pm_id01, 
-	--FltProductCode = ip.pm_id02, 
-	--FltProject = ip.project, 
-	--FltProjectDesc = ip.project_desc, 
-	--FltProjectStatus = ip.status_pa, 
-	FltClientPO = p.purchase_order_num,
-	--FltPM = ip.manager1, 
-	--FltAcctSvc = ip.manager2,
-	--FltOfferNum = ip.pm_id32, 
-	--- ip.contract_type as FltContractType,
-	ContractType = case when p.contract_type IN (''BPRD'',''FEE'',''MED'',''PARN'',''PDNT'',''PRNT'',''PROD'',''RET'',''NYK'') then ''PROD''
-						when p.contract_type = ''TIME'' then ''TIME''
-					  end '
-					  
-select @sql3 = '
-from ' + @dbName + '.dbo.PJPROJ ip with (nolock)
-INNER JOIN ' + @dbName + '.dbo.PJBILL A with (nolock)
-	ON ip.Project = A.Project
-INNER JOIN ' + @dbName + '.dbo.PJBILL B with (nolock)
-	ON A.project_billwith = B.project_billwith 
-INNER JOIN ' + @dbName + '.dbo.PJPROJ p with (nolock)
-	ON b.project = p.project
-LEFT OUTER JOIN ' + @dbName + '.dbo.xIGProdCode pc with (nolock)
-	ON p.pm_id02 = pc.code_ID
-LEFT OUTER JOIN ' + @dbName + '.dbo.CUSTOMER c with (nolock)
-	ON p.pm_id01 = C.CustId
-LEFT OUTER JOIN ' + @dbName + '.dbo.PJPROJEX x with (nolock)
-	ON p.project = x.project
-LEFT JOIN ' + @dbName + '.dbo.xClientContact xc with (nolock)
-	ON p.user2 = xc.EA_ID
-LEFT OUTER JOIN ##fjr FJR 
-	ON p.project = FJR.Project
+	u.ProjectStatus,
+	u.FltClientPO,
+	u.ContractType,
+	ParentFlag = case when u.project_billwith <> '''' and u.project_billwith = u.Project then 1 else 0 end,
+	u.RowId
+from ##uni123 u
 --Unlocked Estimate view by project
 LEFT OUTER JOIN ' + @dbName + '.dbo.xvr_Est_ULE_Project ULE with (nolock)
-	ON p.Project = ULE.Project
+	ON u.Project = ULE.Project
+LEFT OUTER JOIN ##fjr FJR 
+	ON u.project = FJR.Project
 LEFT OUTER JOIN ##fjrSums CleFee
-	ON p.Project = CleFee.Project
+	ON u.Project = CleFee.Project
 	and CleFee.SumType = ''CLEFee''		
 LEFT OUTER JOIN ##fjrSums CleAmount 
-	ON p.Project = CleAmount.Project
+	ON u.Project = CleAmount.Project
 	and CleAmount.SumType = ''CLEAmount''
 /*Using Travel with functions.  Must roll up to project or cartestion joins */
 LEFT OUTER JOIN ##fjrSums trv
-	ON p.Project = trv.Project
+	ON u.Project = trv.Project
 	and trv.SumType = ''TRAVActuals''
 /*Using Out Of Pocket functions. This is all functions except TRAV and FEE Must roll up to project or cartestion joins */
 LEFT OUTER JOIN ##fjrSums OOP
-	ON p.Project = OOP.Project
+	ON u.Project = OOP.Project
 	and OOP.SumType = ''OOPActuals'' 
 /*Logic taken from BI902 and stripped down.  Including aging days for reuse*/	   
 LEFT OUTER JOIN ##fjrSums RptWIP
-	ON p.Project = RptWip.project
+	ON u.Project = RptWip.project
 	and rptWip.SumType =  ''WIPOvr60Amount''
 --Time query taken from Client P&L
 LEFT OUTER JOIN ##fjrSums ProjectHrs 
-	ON p.Project = ProjectHrs.project
+	ON u.Project = ProjectHrs.project
 	and ProjectHrs.SumType = ''TTLHrs''
---!!!!!! ALL FILTER CRITERIA MUST BE ON IP AND NOT P OR PARENT CHILD JOBS WILL NOT ALWAYS BE PULLED TOGETHER!!!!!!
-where ip.contract_type IN (''BPRD'',''FEE'',''MED'',''PARN'',''PDNT'',''PRNT'',''PROD'',''RET'',''TIME'',''NYK'')
-	and coalesce(b.project_billwith,'''') <> ''''
-	and (ltrim(rtrim(ip.Project)) = ''' + @sProject + '''
-		or ''' + @sProject + ''' = '''')
-	and ltrim(rtrim(ip.pm_id01)) = ''' + @sClientId + '''
-	and (ip.purchase_order_num = ''' + @sClientPO + '''
-		or ''' + @sClientPO + ''' = '''')
-	and ltrim(rtrim(ip.pm_id02)) = ''' + @sProductID + '''
-	and ltrim(rtrim(ip.manager1)) = ''' + @sPM + '''
-	and ip.status_pa = ''' + @sStatus + ''' 
-order by ltrim(rtrim(p.manager1)), ltrim(rtrim(p.pm_id01)), ltrim(rtrim(p.pm_id02)), ltrim(rtrim(p.Project)), 
-	case when p.contract_type IN (''BPRD'',''FEE'',''MED'',''PARN'',''PDNT'',''PRNT'',''PROD'',''RET'',''NYK'') then ''PROD''
-		when p.contract_type = ''TIME'' then ''TIME''
-	end 
-
 
 drop table ##fjr
-drop table ##fjrSums '
+drop table ##fjrSums 
+drop table ##uni123 '
 
---print @sql3
+print @sql3
 
 select @sql = (@sql1 + @sql2 + @sql3)
 
 insert ##fjrResults execute sp_executesql @sql
+
 
 select Company = ltrim(rtrim(Company)),
 	Project = ltrim(rtrim(Project)), 
@@ -428,5 +525,14 @@ select Company = ltrim(rtrim(Company)),
 	ProjectHours, 
 	ProjectStatus = ltrim(rtrim(ProjectStatus)), 
 	FltClientPO = ltrim(rtrim(FltClientPO)),
-	ContractType = ltrim(rtrim(ContractType))
+	ContractType = ltrim(rtrim(ContractType)),
+	ParentFlag,
+	RowId
 from ##fjrResults
+order by rowId
+
+/*
+
+execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU', @sProductId = 'TRDE', @sPM = 'SAPPEL', @sStatus = 'A'
+
+*/

@@ -38,6 +38,10 @@
       <FullPath>ArPaymentHistory.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>MC_FTE_Data_Dump.rdl</Name>
+      <FullPath>MC_FTE_Data_Dump.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>MC_FTE_Report_original.rdl</Name>
       <FullPath>MC_FTE_Report_original.rdl</FullPath>
     </ProjectItem>
@@ -50,8 +54,12 @@
       <FullPath>PayWhenPaid.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>MC_FTE_Data_Dump.rdl</Name>
-      <FullPath>MC_FTE_Data_Dump.rdl</FullPath>
+      <Name>Account Leadership FJR_original.rdl</Name>
+      <FullPath>Account Leadership FJR_original.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Account Leadership FJR_working.rdl</Name>
+      <FullPath>Account Leadership FJR_working.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>
