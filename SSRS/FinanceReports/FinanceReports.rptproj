@@ -30,6 +30,14 @@
   <DataSets />
   <Reports>
     <ProjectItem>
+      <Name>Account Leadership FJR_original.rdl</Name>
+      <FullPath>Account Leadership FJR_original.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Account Leadership FJR_working.rdl</Name>
+      <FullPath>Account Leadership FJR_working.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>ApTransaction.rdl</Name>
       <FullPath>ApTransaction.rdl</FullPath>
     </ProjectItem>
@@ -42,24 +50,24 @@
       <FullPath>MC_FTE_Data_Dump.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>MC_FTE_Report_original.rdl</Name>
-      <FullPath>MC_FTE_Report_original.rdl</FullPath>
+      <Name>MC_FTE_Report.rdl</Name>
+      <FullPath>MC_FTE_Report.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>MC_FTE_Report_Working.rdl</Name>
       <FullPath>MC_FTE_Report_Working.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>MC_FTE_Report_original.rdl</Name>
+      <FullPath>MC_FTE_Report_original.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>MC_FTE_Report_Test.rdl</Name>
+      <FullPath>MC_FTE_Report_Test.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>PayWhenPaid.rdl</Name>
       <FullPath>PayWhenPaid.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Account Leadership FJR_original.rdl</Name>
-      <FullPath>Account Leadership FJR_original.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>Account Leadership FJR_working.rdl</Name>
-      <FullPath>Account Leadership FJR_working.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>

@@ -112,7 +112,7 @@ insert ##csfc
 	Adj_Forecast = sum(adj_fPpl),
 	CurMonth = fMonth  
 from DENVERAPP.dbo.xwrk_MC_Forecast 
-where BusinessUnit NOT LIKE 'OOS%'
+where BusinessUnit not like 'OOS%'
 	and fMonth <= @iCurMonth
 	and fYear = @iCurYear
 /* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise.
@@ -176,8 +176,8 @@ group by case when coalesce(b.SalesMarketing,a.SalesMarketing) = '10th & Blake' 
 		end,	
 	coalesce(b.BusinessUnit, a.BusinessUnit) ,
 	coalesce(b.CurMonth, a.CurMonth)
---having coalesce(sum(round(b.[CurHours],5)),0) <> 0 
---	or coalesce(sum(a.Forecast),0) <> 0
+having coalesce(sum(round(b.[CurHours],5)),0) <> 0 
+	or coalesce(sum(a.Forecast),0) <> 0
 order by coalesce(b.CurMonth, a.CurMonth),
 	case when coalesce(b.SalesMarketing,a.SalesMarketing) = '10th & Blake' then 'Marketing' 
 		when coalesce(b.SalesMarketing,'') = '' then a.SalesMarketing

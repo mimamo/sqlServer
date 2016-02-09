@@ -173,8 +173,8 @@ full outer join ##fcxyz ad
 	and m.Department = ad.Department 
 	and m.CurMonth = ad.CurMonth
 group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
---having coalesce(sum(round(m.[CurHours],5)),0) <> 0 
---	or coalesce(sum(ad.Forecast),0) <> 0
+having coalesce(sum(round(m.[CurHours],5)),0) <> 0 
+	or coalesce(sum(ad.Forecast),0) <> 0
 order by coalesce(m.CurMonth, ad.CurMonth), coalesce(m.BusinessUnit, ad.BusinessUnit), coalesce(m.Department, m.Department)
 
 drop table ##fcxyz 

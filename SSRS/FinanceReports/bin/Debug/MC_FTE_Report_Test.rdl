@@ -2648,18 +2648,17 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Hours">
+                    <Textbox Name="Textbox1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Hours.Value)</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
-                                <Format>#,0.00;(#,0.00);'-'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -2668,7 +2667,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Hours</rd:DefaultName>
+                      <rd:DefaultName>Textbox1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -2684,18 +2683,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox35">
+                    <Textbox Name="Textbox2">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Hours.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
-                                <Format>#,0.00;(#,0.00);'-'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -2704,7 +2702,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox35</rd:DefaultName>
+                      <rd:DefaultName>Textbox2</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -2720,18 +2718,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Forecast">
+                    <Textbox Name="Textbox3">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Forecast.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
-                                <Format>#,0.00;(#,0.00);'-'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -2740,7 +2737,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Forecast</rd:DefaultName>
+                      <rd:DefaultName>Textbox3</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -2752,23 +2749,21 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="FTE">
+                    <Textbox Name="Textbox4">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!FTE.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
-                                <Format>#,0.00;(#,0.00);'-'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -2777,7 +2772,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>FTE</rd:DefaultName>
+                      <rd:DefaultName>Textbox4</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -2800,7 +2795,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Adj_Forecast.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -2829,19 +2824,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox43">
+                    <Textbox Name="Textbox7">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=(Sum(Fields!Hours.Value)/Parameters!iCurMonth.Value)
--(Sum(Fields!Adj_Forecast.Value)/Parameters!iCurMonth.Value)</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
-                                <Format>#,0.00;(#,0.00);'-'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -2850,7 +2843,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox43</rd:DefaultName>
+                      <rd:DefaultName>Textbox7</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -2878,7 +2871,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Hours.Value)</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -2916,7 +2909,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Hours.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -2954,7 +2947,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Forecast.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -2985,19 +2978,18 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox118">
+                    <Textbox Name="Textbox5">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!FTE.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Format>#,0.00;(#,0.00);'-'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -3006,7 +2998,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox118</rd:DefaultName>
+                      <rd:DefaultName>Textbox5</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -3023,19 +3015,18 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox119">
+                    <Textbox Name="Textbox6">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Adj_Forecast.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Format>#,0.00;(#,0.00);'-'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -3044,7 +3035,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox119</rd:DefaultName>
+                      <rd:DefaultName>Textbox6</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -3068,7 +3059,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=(Sum(Fields!Hours.Value)/Parameters!iCurMonth.Value)-(Sum(Fields!Adj_Forecast.Value)/Parameters!iCurMonth.Value)</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3111,7 +3102,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Hours.Value)</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3149,7 +3140,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Hours.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3187,7 +3178,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Forecast.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3225,7 +3216,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!FTE.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3263,7 +3254,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Adj_Forecast.Value)/Parameters!iCurMonth.Value</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3301,7 +3292,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=(Sum(Fields!Hours.Value)/Parameters!iCurMonth.Value)-(Sum(Fields!Adj_Forecast.Value)/Parameters!iCurMonth.Value)</Value>
+                              <Value />
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3674,24 +3665,53 @@
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
-              <Group Name="SalesMarketing">
-                <GroupExpressions>
-                  <GroupExpression>=Fields!SalesMarketing.Value</GroupExpression>
-                </GroupExpressions>
-              </Group>
+              <TablixHeader>
+                <Size>0.85in</Size>
+                <CellContents>
+                  <Textbox Name="SalesMarketing1">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!SalesMarketing.Value</Value>
+                            <Style>
+                              <FontFamily>Tahoma</FontFamily>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>SalesMarketing1</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Color>LightGrey</Color>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
                     <Size>0.85in</Size>
                     <CellContents>
-                      <Textbox Name="SalesMarketing1">
+                      <Textbox Name="Group6">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>=Fields!SalesMarketing.Value</Value>
+                                <Value>=Fields!BusinessUnit.Value</Value>
                                 <Style>
                                   <FontFamily>Tahoma</FontFamily>
                                   <FontSize>8pt</FontSize>
@@ -3701,106 +3721,12 @@
                             <Style />
                           </Paragraph>
                         </Paragraphs>
-                        <rd:DefaultName>SalesMarketing1</rd:DefaultName>
+                        <rd:DefaultName>Group6</rd:DefaultName>
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
                             <Style>Solid</Style>
                           </Border>
-                          <PaddingLeft>2pt</PaddingLeft>
-                          <PaddingRight>2pt</PaddingRight>
-                          <PaddingTop>2pt</PaddingTop>
-                          <PaddingBottom>2pt</PaddingBottom>
-                        </Style>
-                      </Textbox>
-                    </CellContents>
-                  </TablixHeader>
-                  <TablixMembers>
-                    <TablixMember>
-                      <Group Name="BusinessUnit">
-                        <GroupExpressions>
-                          <GroupExpression>=Fields!BusinessUnit.Value</GroupExpression>
-                        </GroupExpressions>
-                      </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!BusinessUnit.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
-                      <TablixHeader>
-                        <Size>0.85in</Size>
-                        <CellContents>
-                          <Textbox Name="Group6">
-                            <CanGrow>true</CanGrow>
-                            <KeepTogether>true</KeepTogether>
-                            <Paragraphs>
-                              <Paragraph>
-                                <TextRuns>
-                                  <TextRun>
-                                    <Value>=Fields!BusinessUnit.Value</Value>
-                                    <Style>
-                                      <FontFamily>Tahoma</FontFamily>
-                                      <FontSize>8pt</FontSize>
-                                    </Style>
-                                  </TextRun>
-                                </TextRuns>
-                                <Style />
-                              </Paragraph>
-                            </Paragraphs>
-                            <rd:DefaultName>Group6</rd:DefaultName>
-                            <Style>
-                              <Border>
-                                <Color>LightGrey</Color>
-                                <Style>Solid</Style>
-                              </Border>
-                              <PaddingLeft>2pt</PaddingLeft>
-                              <PaddingRight>2pt</PaddingRight>
-                              <PaddingTop>2pt</PaddingTop>
-                              <PaddingBottom>2pt</PaddingBottom>
-                            </Style>
-                          </Textbox>
-                        </CellContents>
-                      </TablixHeader>
-                    </TablixMember>
-                  </TablixMembers>
-                </TablixMember>
-                <TablixMember>
-                  <TablixHeader>
-                    <Size>1.7in</Size>
-                    <CellContents>
-                      <Textbox Name="SalesMarketing">
-                        <CanGrow>true</CanGrow>
-                        <KeepTogether>true</KeepTogether>
-                        <Paragraphs>
-                          <Paragraph>
-                            <TextRuns>
-                              <TextRun>
-                                <Value>=Fields!SalesMarketing.Value</Value>
-                                <Style>
-                                  <FontFamily>Tahoma</FontFamily>
-                                  <FontSize>8pt</FontSize>
-                                  <FontWeight>Bold</FontWeight>
-                                </Style>
-                              </TextRun>
-                              <TextRun>
-                                <Value> Total</Value>
-                                <Style>
-                                  <FontFamily>Tahoma</FontFamily>
-                                  <FontSize>8pt</FontSize>
-                                  <FontWeight>Bold</FontWeight>
-                                </Style>
-                              </TextRun>
-                            </TextRuns>
-                            <Style />
-                          </Paragraph>
-                        </Paragraphs>
-                        <rd:DefaultName>SalesMarketing</rd:DefaultName>
-                        <Style>
-                          <Border>
-                            <Color>LightGrey</Color>
-                            <Style>Solid</Style>
-                          </Border>
-                          <BackgroundColor>LightGrey</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -3811,6 +3737,52 @@
                   </TablixHeader>
                 </TablixMember>
               </TablixMembers>
+            </TablixMember>
+            <TablixMember>
+              <TablixHeader>
+                <Size>1.7in</Size>
+                <CellContents>
+                  <Textbox Name="SalesMarketing">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!SalesMarketing.Value</Value>
+                            <Style>
+                              <FontFamily>Tahoma</FontFamily>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                          <TextRun>
+                            <Value> Total</Value>
+                            <Style>
+                              <FontFamily>Tahoma</FontFamily>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>SalesMarketing</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Color>LightGrey</Color>
+                        <Style>Solid</Style>
+                      </Border>
+                      <BackgroundColor>LightGrey</BackgroundColor>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
             </TablixMember>
             <TablixMember>
               <TablixHeader>
@@ -3849,13 +3821,12 @@
                   </Textbox>
                 </CellContents>
               </TablixHeader>
-              <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <RepeatColumnHeaders>true</RepeatColumnHeaders>
         <RepeatRowHeaders>true</RepeatRowHeaders>
-        <DataSetName>dsByBU_w_YTD</DataSetName>
+        <DataSetName>dsChangeSummary_by_BU_Dept</DataSetName>
         <PageBreak>
           <BreakLocation>End</BreakLocation>
         </PageBreak>
@@ -5387,7 +5358,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <KeepTogether>true</KeepTogether>
-        <DataSetName>dsByBU_w_YTD</DataSetName>
+        <DataSetName>dsChangeSummary_by_BU_Dept</DataSetName>
         <PageBreak>
           <BreakLocation>End</BreakLocation>
         </PageBreak>
@@ -6162,16 +6133,6 @@
               </Group>
               <TablixMembers>
                 <TablixMember>
-                  <Group Name="Group3">
-                    <GroupExpressions>
-                      <GroupExpression>=Fields!BusinessUnit.Value</GroupExpression>
-                    </GroupExpressions>
-                  </Group>
-                  <SortExpressions>
-                    <SortExpression>
-                      <Value>=Fields!BusinessUnit.Value</Value>
-                    </SortExpression>
-                  </SortExpressions>
                   <TablixHeader>
                     <Size>1.75in</Size>
                     <CellContents>
@@ -6290,7 +6251,6 @@
                       </Textbox>
                     </CellContents>
                   </TablixHeader>
-                  <KeepWithGroup>Before</KeepWithGroup>
                 </TablixMember>
               </TablixMembers>
             </TablixMember>
@@ -8464,140 +8424,11 @@
   <DataSources>
     <DataSource Name="SQL1_DENVERAPP">
       <DataSourceReference>DENVERAPP</DataSourceReference>
-      <rd:SecurityType>None</rd:SecurityType>
+      <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>e297b578-ca1d-412c-ad1d-09254f9c6978</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="dsByBU_w_YTD">
-      <Query>
-        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@iCurMonth">
-            <Value>=Parameters!iCurMonth.Value</Value>
-          </QueryParameter>
-          <QueryParameter Name="@iCurYear">
-            <Value>=Parameters!iCurYear.Value</Value>
-          </QueryParameter>
-        </QueryParameters>
-        <CommandText>-- Run SPROC to Populate data if it isn't populated
- EXEC xsp_MC_FTE  @iCurMonth, @iCurYear
-
-select tot.* from
-(
-select CASE WHEN m.BusinessUnit IS NULL THEN ad.BusinessUnit ELSE m.BusinessUnit END as BusinessUnit
-, CASE WHEN m.Department IS NULL THEN ad.Department ELSE m.Department END as Department 
---, CASE WHEN m.SalesMarketing = '10th &amp; Blake' then 'Marketing' 
- ,    Case  WHEN m.SalesMarketing IS NULL THEN ad.SalesMarketing ELSE m.SalesMarketing END as SalesMarketing 
-, ISNULL(SUM(round(m.CurHours,5)),0) as 'Hours'
-, ISNULL(SUM(ad.Forecst),0) as 'Forecast'
-, ISNULL(SUM(ad.FTE_Adjust),0) as 'FTE'
-, ISNULL(SUM(ad.Adj_Forecast),0) as 'Adj_Forecast'
-, CASE WHEN m.CurMonth IS NULL THEN ad.CurMonth ELSE m.CurMonth END as CurMonth
-from 
-(select b.BusinessUnit
-, b.Department
---, CASE WHEN b.SalesMarketing = '10th &amp; Blake' then 'Marketing' ELSE b.SalesMarketing end as SalesMarketing
-, b.SalesMarketing as SalesMarketing
-, b.CurHours
-, b.CurMonth
-from 
-(select BusinessUnit, Department, 
--- CASE WHEN SalesMarketing = '10th &amp; Blake' then 'Marketing' ELSE SalesMarketing END as SalesMarketing, 
-SalesMarketing,
-  (SUM(Hours)/166.67) as CurHours, CurMonth from xwrk_MC_Data
- 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-AND NOT (Year = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (Year = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (Year = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (Year = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (Year = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-
-and CurMonth &lt;= @iCurMonth
-and Year = @iCurYear
-group by BusinessUnit, Department, SalesMarketing, CurMonth)b)m full outer join
-(select f.BusinessUnit
-, f.Department 
-, f.SalesMarketing
-, f.Forecst
-, f.FTE_Adjust
-, f.Adj_Forecast
-, f.CurMonth
-from 
-(select BusinessUnit, Department, 
---CASE WHEN SalesMarketing = '10th &amp; Blake' then 'Marketing' ELSE SalesMarketing END as SalesMarketing
-SalesMarketing
-, SUM(fPpl) as 'Forecst'
-, SUM(fte_adj) as 'FTE_Adjust'
-, SUM(adj_fPpl) as 'Adj_Forecast'
-, fMonth as CurMonth from xwrk_MC_Forecast 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-and fMonth &lt;= @iCurMonth
-and fYear = @iCurYear
-AND NOT (fYear = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (fYear = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (fYear = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-group by BusinessUnit, Department, SalesMarketing, fMonth)f)ad on m.BusinessUnit = ad.BusinessUnit 
-and m.SalesMarketing = ad.SalesMarketing 
-and m.Department = ad.Department and m.CurMonth = ad.CurMonth
-group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
-)tot
-WHERE (Hours &lt;&gt; 0 or Forecast &lt;&gt; 0)
-
-order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit, tot.Department</CommandText>
-        <Timeout>90</Timeout>
-        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
-      </Query>
-      <Fields>
-        <Field Name="BusinessUnit">
-          <DataField>BusinessUnit</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Department">
-          <DataField>Department</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="SalesMarketing">
-          <DataField>SalesMarketing</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Hours">
-          <DataField>Hours</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-        <Field Name="Forecast">
-          <DataField>Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-        <Field Name="FTE">
-          <DataField>FTE</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-        <Field Name="Adj_Forecast">
-          <DataField>Adj_Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-        <Field Name="CurMonth">
-          <DataField>CurMonth</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
     <DataSet Name="dsChangeSummary_by_BU">
       <Query>
         <DataSourceName>SQL1_DENVERAPP</DataSourceName>
@@ -8609,83 +8440,7 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit, tot.Department</Com
             <Value>=Parameters!iCurYear.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>--dsChangeSummary_by_BU
-Select 
-tot.BusinessUnit
-, CASE WHEN tot.SalesMarketing = '10th &amp; Blake' THEN 'Marketing' 
-			ELSE tot.SalesMarketing END as 'SalesMarketing'
-, ISNULL(SUM(tot.Hours),0) as 'Hours'
-, ISNULL(SUM(tot.Forecast),0) as 'Forecast'
-, ISNULL(SUM(tot.FTE),0) as 'FTE'
-, ISNULL(SUM(tot.Adj_Forecast),0) as 'Adj_Forecast'
-,tot.CurMonth
-from (
-select CASE WHEN m.BusinessUnit IS NULL THEN ad.BusinessUnit ELSE m.BusinessUnit END as BusinessUnit
-, CASE WHEN m.Department IS NULL THEN ad.Department ELSE m.Department END as Department 
-, CASE WHEN m.SalesMarketing IS NULL THEN ad.SalesMarketing ELSE m.SalesMarketing END as SalesMarketing 
-, ISNULL(SUM(round(m.CurHours,5)),0) as 'Hours'
-, ISNULL(SUM(ad.Forecst),0) as 'Forecast'
-, ISNULL(SUM(ad.FTE_Adjust),0) as 'FTE'
-, ISNULL(SUM(ad.Adj_Forecast),0) as 'Adj_Forecast'
-, CASE WHEN m.CurMonth IS NULL THEN ad.CurMonth ELSE m.CurMonth END as CurMonth
-from 
-(select b.BusinessUnit
-, b.Department
-, b.SalesMarketing 
-, b.CurHours
-, b.CurMonth
-from 
-(select BusinessUnit, Department, SalesMarketing, (SUM(Hours)/166.67) as CurHours, CurMonth from xwrk_MC_Data
-WHERE BusinessUnit NOT LIKE ('OOS%')
-and CurMonth &lt;= @iCurMonth
-and Year = @iCurYear
-AND NOT (Year = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (Year = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (Year = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (Year = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (Year = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-
-group by BusinessUnit, Department, SalesMarketing, CurMonth)b)m full outer join
-(select f.BusinessUnit
-, f.Department 
-, f.SalesMarketing
-, f.Forecst
-, f.FTE_Adjust
-, f.Adj_Forecast
-, f.CurMonth
-from 
-(select BusinessUnit, Department, SalesMarketing, SUM(fPpl) as 'Forecst'
-, SUM(fte_adj) as 'FTE_Adjust'
-, SUM(adj_fPpl) as 'Adj_Forecast'
-, fMonth as CurMonth from xwrk_MC_Forecast 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-and fMonth &lt;= @iCurMonth
-and fYear = @iCurYear
-AND NOT (fYear = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (fYear = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (fYear = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-group by BusinessUnit, Department, SalesMarketing, fMonth)f)ad on m.BusinessUnit = ad.BusinessUnit 
-and m.SalesMarketing = ad.SalesMarketing 
-and m.Department = ad.Department and m.CurMonth = ad.CurMonth
-group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
-)tot
-WHERE (Hours &lt;&gt; 0 or Forecast &lt;&gt; 0)
-group by tot.SalesMarketing, tot.BusinessUnit, tot.CurMonth
-order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit</CommandText>
+        <CommandText>execute DENVERAPP.dbo.dsChangeSummary_by_BU @iCurMonth,@iCurYear</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -8699,19 +8454,19 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit</CommandText>
         </Field>
         <Field Name="Hours">
           <DataField>Hours</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Forecast">
           <DataField>Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="FTE">
           <DataField>FTE</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Adj_Forecast">
           <DataField>Adj_Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="CurMonth">
           <DataField>CurMonth</DataField>
@@ -8730,79 +8485,7 @@ order by tot.CurMonth, tot.SalesMarketing, tot.BusinessUnit</CommandText>
             <Value>=Parameters!iCurYear.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>Select tot.BusinessUnit
-, tot.Department
-, ISNULL(SUM(tot.Hours),0) as 'Hours'
-, ISNULL(SUM(tot.Forecast),0) as 'Forecast'
-, ISNULL(SUM(tot.FTE),0) as 'FTE'
-, ISNULL(SUM(tot.Adj_Forecast),0) as 'Adj_Forecast'
-,tot.CurMonth
-from (
-select CASE WHEN m.BusinessUnit IS NULL THEN ad.BusinessUnit ELSE m.BusinessUnit END as BusinessUnit
-, CASE WHEN m.Department IS NULL THEN ad.Department ELSE m.Department END as Department 
-, CASE WHEN m.SalesMarketing IS NULL THEN ad.SalesMarketing ELSE m.SalesMarketing END as SalesMarketing 
-, ISNULL(SUM(round(m.Hours,5)),0) as 'Hours'
-, ISNULL(SUM(ad.Forecst),0) as 'Forecast'
-, ISNULL(SUM(ad.FTE_Adjust),0) as 'FTE'
-, ISNULL(SUM(ad.Adj_Forecast),0) as 'Adj_Forecast'
-, CASE WHEN m.CurMonth IS NULL THEN ad.CurMonth ELSE m.CurMonth END as CurMonth
-from 
-(select b.BusinessUnit
-, b.Department
-, b.SalesMarketing 
-, b.Hours
-, b.CurMonth
-from 
-(select BusinessUnit, Department, SalesMarketing, (SUM(Hours)/166.67) as Hours, CurMonth from xwrk_MC_Data 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-AND NOT (Year = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (Year = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (Year = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (Year = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (Year = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-and CurMonth &lt;= @iCurMonth
-and Year = @iCurYear
-group by BusinessUnit, Department, SalesMarketing, CurMonth)b)m full outer join
-(select f.BusinessUnit
-, f.Department 
-, f.SalesMarketing
-, f.Forecst
-, f.FTE_Adjust
-, f.Adj_Forecast
-, f.CurMonth
-from 
-(select BusinessUnit, Department, SalesMarketing, SUM(fPpl) as 'Forecst'
-, SUM(fte_adj) as 'FTE_Adjust'
-, SUM(adj_fPpl) as 'Adj_Forecast'
-, fMonth as CurMonth from xwrk_MC_Forecast 
-WHERE BusinessUnit NOT LIKE ('OOS%')
-and fMonth &lt;= @iCurMonth
-and fYear = @iCurYear
-AND NOT (fYear = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift' ))
-AND NOT (fYear = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
---AND NOT (fYear = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev'))
---AND NOT (fYear = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (fYear = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
-group by BusinessUnit, Department, SalesMarketing, fMonth)f)ad on m.BusinessUnit = ad.BusinessUnit 
-and m.SalesMarketing = ad.SalesMarketing 
-and m.Department = ad.Department and m.CurMonth = ad.CurMonth
-group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
-)tot
-WHERE (Hours &lt;&gt; 0 or Forecast &lt;&gt; 0)
-group by tot.BusinessUnit, tot.Department, tot.CurMonth
-order by tot.CurMonth, tot.BusinessUnit, tot.Department</CommandText>
+        <CommandText>execute DENVERAPP.dbo.dsChangeSummary_by_BU_Dept @iCurMonth,@iCurYear</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -8818,17 +8501,21 @@ order by tot.CurMonth, tot.BusinessUnit, tot.Department</CommandText>
           <DataField>Hours</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
+        <Field Name="SalesMarketing">
+          <DataField>SalesMarketing</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="Forecast">
           <DataField>Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="FTE">
           <DataField>FTE</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Adj_Forecast">
           <DataField>Adj_Forecast</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="CurMonth">
           <DataField>CurMonth</DataField>
