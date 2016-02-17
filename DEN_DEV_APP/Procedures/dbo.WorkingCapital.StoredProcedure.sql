@@ -1,4 +1,4 @@
-/*
+
 USE DEN_DEV_APP; 
 GO
 
@@ -17,10 +17,15 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE [dbo].[WorkingCapital]     
-	
+
+	@Period CHAR(6),
+	@AgingDate date,
+--	@AgencyHyperionCode NVARCHAR(15),
+	@OverheadClientHyperionCode NVARCHAR(15),
+	@SmallClientHyperionCode NVARCHAR(15)
 	
  AS
-*/
+
 
 /*******************************************************************************************************
 *   DEN_DEV_APP.dbo.WorkingCapital 
@@ -34,7 +39,8 @@ CREATE PROCEDURE [dbo].[WorkingCapital]
 *
 *   Usage:	
 	
-		execute DEN_DEV_APP.dbo.WorkingCapital @iCurMonth = 12, @iCurYear = 2015
+	execute DEN_DEV_APP.dbo.WorkingCapital @Period = '201509', @AgingDate = '09/30/2015', @OverheadClientHyperionCode = '4_G9_OVRHD', @SmallClientHyperionCode = '4_G9_Small'
+
 		
 		select businessUnit, Department, fMonth, count(1)
 		from DEN_DEV_APP.dbo.xwrk_MC_Forecast
@@ -51,22 +57,11 @@ CREATE PROCEDURE [dbo].[WorkingCapital]
 *   Modifications:   
 *   Developer Name      Date        Brief description
 *   ------------------- ----------- ------------------------------------------------------------
-*   Michelle Morales	02/03/2016	Put query into procedure
+*   Michelle Morales	02/03/2016	Put query into procedure, made it runnable for Denver.
 ********************************************************************************************************/
 ---------------------------------------------
 -- declare variables
 ---------------------------------------------
--- Variables
-DECLARE @Period CHAR(6);
-DECLARE @AgingDate date;
-DECLARE @AgencyHyperionCode NVARCHAR(15);
-DECLARE @OverheadClientHyperionCode NVARCHAR(15);
-DECLARE @SmallClientHyperionCode NVARCHAR(15);
-SET @Period = '201509';
-SET @AgingDate = '09/30/2015';
-SET @AgencyHyperionCode = '4usINDAL';
-SET @OverheadClientHyperionCode = '4_G9_OVRHD';
-SET @SmallClientHyperionCode = '4_G9_Small';
 
 ---------------------------------------------
 -- create temp tables
@@ -75,7 +70,7 @@ SET @SmallClientHyperionCode = '4_G9_Small';
 IF OBJECT_ID('tempdb.dbo.##ApAgingBalanceTbl') IS NOT NULL DROP TABLE ##ApAgingBalanceTbl
 create table ##ApAgingBalanceTbl
 (
-	UniqueKey varchar(20),
+	UniqueKey varchar(20) primary key clustered,
 	VendId varchar(15),
 	InvcNbr	varchar(15),
 	InvcDate datetime,
@@ -86,7 +81,6 @@ create table ##ApAgingBalanceTbl
 	PaymentAmt float
 )
 
-
 IF OBJECT_ID('tempdb.dbo.##ApAgingJobsTbl') IS NOT NULL DROP TABLE ##ApAgingJobsTbl
 create table ##ApAgingJobsTbl
 (
@@ -94,8 +88,10 @@ create table ##ApAgingJobsTbl
 	ProjectID varchar(16),
 	JobAmt float,
 	TotalJobAmt float,
-	JobPercent float
+	JobPercent float,
+	primary key clustered (VoucherUniqueKey, ProjectID)
 )
+
 
 IF OBJECT_ID('tempdb.dbo.##ApAgingTbl') IS NOT NULL DROP TABLE ##ApAgingTbl
 create table ##ApAgingTbl
@@ -108,13 +104,14 @@ create table ##ApAgingTbl
 	ProjectID varchar(16),
 	Balance	float,
 	HyperionAccount	varchar(2),
-	ClientHyperionCode	nvarchar(80)
+	ClientHyperionCode	nvarchar(80),
+	primary key clustered (UniqueKey, ProjectID)
 )
 
 IF OBJECT_ID('tempdb.dbo.##ApInputBalanceTbl') IS NOT NULL DROP TABLE ##ApInputBalanceTbl
 create table ##ApInputBalanceTbl
 (
-	UniqueKey varchar(12),
+	UniqueKey varchar(12) primary key clustered,
 	VendId varchar(15),
 	InvcNbr	varchar(15),
 	Amt	float
@@ -127,7 +124,8 @@ create table ##ApInputJobsTbl
 	ProjectID varchar(16),
 	JobAmt float,
 	TotalJobAmt	float,
-	JobPercent float
+	JobPercent float,
+	primary key clustered (VoucherUniqueKey, ProjectID)
 )
 
 IF OBJECT_ID('tempdb.dbo.##ApInputTbl') IS NOT NULL DROP TABLE ##ApInputTbl
@@ -139,14 +137,31 @@ create table ##ApInputTbl
 	ProjectID varchar(16),
 	Balance	float,
 	HyperionAccount	varchar(8),
-	ClientHyperionCode nvarchar(80)
+	ClientHyperionCode nvarchar(80),
+	primary key clustered (UniqueKey, ProjectID)
 )
 
-IF OBJECT_ID('tempdb..#WorkCapJobUsed') IS NOT NULL DROP TABLE #WorkCapJobUsed
-IF OBJECT_ID('tempdb..#ResultsTbl') IS NOT NULL DROP TABLE #ResultsTbl;
+IF OBJECT_ID('tempdb.dbo.##WorkCapJobUsed') IS NOT NULL DROP TABLE ##WorkCapJobUsed
+create table ##WorkCapJobUsed
+(
+	ProjectID varchar(16) primary key clustered,
+	AssetClientHyperionCode	nvarchar(80),
+	LiabilityClientHyperionCode	nvarchar(80)
+)
+
+-- Create Results Temp Table, Keep The 'Amt' Field As A Char 
+IF OBJECT_ID('tempdb.dbo.##ResultsTbl') IS NOT NULL DROP TABLE ##ResultsTbl
+CREATE TABLE ##ResultsTbl 
+(
+	HyperionAccount NVARCHAR(40),
+	ClientHyperionCode NVARCHAR(40), 
+	Amt NVARCHAR(100),
+	primary key clustered (HyperionAccount, ClientHyperionCode)
+)
+
 
 IF OBJECT_ID('tempdb.dbo.##ArAgingBalanceTbl') IS NOT NULL DROP TABLE ##ArAgingBalanceTbl
-create table 
+create table ##ArAgingBalanceTbl
 (
 	UniqueKey varchar(12),
 	CustID varchar(15),
@@ -156,24 +171,85 @@ create table
 	DueDate	datetime,
 	DocDate	datetime,
 	Amt	float,
-	PaymentAmt float
+	PaymentAmt float,
+	primary key clustered (UniqueKey, ProjectID)
 )
 
-IF OBJECT_ID('tempdb..#ArAgingTbl') IS NOT NULL DROP TABLE #ArAgingTbl;
-IF OBJECT_ID('tempdb..#ArInputTbl') IS NOT NULL DROP TABLE #ArInputTbl;
-IF OBJECT_ID('tempdb..#UnbillBalTbl') IS NOT NULL DROP TABLE #UnbillBalTbl;
-IF OBJECT_ID('tempdb..#WipBalTbl') IS NOT NULL DROP TABLE #WipBalTbl;
-IF OBJECT_ID('tempdb..#PrebillBalTbl') IS NOT NULL DROP TABLE #PrebillBalTbl;
-IF OBJECT_ID('tempdb..#VendorLiabBalTbl') IS NOT NULL DROP TABLE #VendorLiabBalTbl;
-IF OBJECT_ID('tempdb..#WorkCapClientHyperionCodes') IS NOT NULL DROP TABLE #WorkCapClientHyperionCodes;
-IF OBJECT_ID('tempdb..#JobOverrideTbl') IS NOT NULL DROP TABLE #JobOverrideTbl;
+IF OBJECT_ID('tempdb.dbo.##ArAgingTbl') IS NOT NULL DROP TABLE ##ArAgingTbl
+create table ##ArAgingTbl
+(
+	CustId	varchar(15),
+	Balance	float,
+	ClientHyperionCode nvarchar(80),
+	HyperionAccount	varchar(7)
+)
 
+IF OBJECT_ID('tempdb.dbo.##ArInputTbl') IS NOT NULL DROP TABLE ##ArInputTbl
+create table ##ArInputTbl
+(
+	UniqueKey varchar(12) primary key clustered,
+	CustID	varchar(15),
+	ProjectID varchar(16),
+	Balance	float,
+	HyperionAccount	varchar(8),
+	ClientHyperionCode nvarchar(80)
+)
+
+IF OBJECT_ID('tempdb.dbo.##UnbillBalTbl') IS NOT NULL DROP TABLE ##UnbillBalTbl
+create table ##UnbillBalTbl
+(
+	ProjectID varchar(16) primary key clustered,
+	Balance	float,
+	HyperionAccount	varchar(11),
+	ClientHyperionCode nvarchar(80)
+)
+
+IF OBJECT_ID('tempdb.dbo.##WipBalTbl') IS NOT NULL DROP TABLE ##WipBalTbl
+create table ##WipBalTbl
+(
+	ProjectID varchar(16) primary key clustered,
+	Balance	float,
+	HyperionAccount	varchar(4),
+	ClientHyperionCode nvarchar(80)
+)
+
+IF OBJECT_ID('tempdb.dbo.##PrebillBalTbl') IS NOT NULL DROP TABLE ##PrebillBalTbl
+create table ##PrebillBalTbl
+(
+	ProjectID varchar(16) primary key clustered,
+	Balance	float,
+	HyperionAccount	varchar(7),
+	ClientHyperionCode nvarchar(80)
+)
+
+IF OBJECT_ID('tempdb.dbo.##VendorLiabBalTbl') IS NOT NULL DROP TABLE ##VendorLiabBalTbl
+create table ##VendorLiabBalTbl
+(
+	ProjectID varchar(16) primary key clustered,
+	Balance	float,
+	HyperionAccount	varchar(11),
+	ClientHyperionCode	nvarchar(80)
+)
+
+IF OBJECT_ID('tempdb.dbo.##WorkCapClientHyperionCodes') IS NOT NULL DROP TABLE ##WorkCapClientHyperionCodes
+create table ##WorkCapClientHyperionCodes
+(
+	CustID	varchar(15) primary key clustered,
+	LiabilityClientHyperionCode	nvarchar(60),
+	AssetClientHyperionCode	nvarchar(60)
+)
+IF OBJECT_ID('tempdb.dbo.##JobOverrideTbl') IS NOT NULL DROP TABLE ##JobOverrideTbl
+create table ##JobOverrideTbl
+(
+	ProjectID varchar(16) primary key clustered,
+	AssetClientHyperionCode	nvarchar(160),
+	LiabilityClientHyperionCode	nvarchar(160)
+)
 ---------------------------------------------
 -- set session variables
 ---------------------------------------------
 -- SET NOCOUNT ON to prevent row count messages
 SET NOCOUNT ON;
-
 
 /*-------------------------------------------------------*/
 /*	GET A/P AGING DATA									 */
@@ -424,7 +500,7 @@ insert ##ArAgingBalanceTbl
 	PaymentAmt
 )
 	
-SELECT	(DocType + RefNbr) AS 'UniqueKey',
+SELECT	UniqueKey = (DocType + RefNbr),
 	CustID,
 	ProjectID,
 	PerPost,
@@ -437,170 +513,220 @@ SELECT	(DocType + RefNbr) AS 'UniqueKey',
 	PaymentAmt = CAST(0.00 AS FLOAT)
 FROM den_dev_app.dbo.ARDoc
 WHERE Rlsed = 1 --Released
-	AND PerPost <= @Period 
-	AND (PerClosed > @Period 
-		OR PerClosed = '') -- Only include AR documents not closed during the period
-	AND DocType NOT IN ('VT','RC','NS','RP')
-	AND RefNbr NOT LIKE 'P%' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
-	AND RefNbr NOT LIKE 'F%' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
-	AND DocDate >= '10/01/2006' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
-	AND BankAcct NOT IN('1041')) AS Tbl; -- Exclude interco AR
+	and PerPost <= @Period 
+	and (PerClosed > @Period 
+		or PerClosed = '') -- Only include AR documents not closed during the period
+	and DocType not in ('VT','RC','NS','RP')
+	and RefNbr not like 'P%' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
+	and RefNbr not like 'F%' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
+	and DocDate >= '10/01/2006' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
+	and BankAcct <> '1041' -- Exclude interco AR
 
 -- Payments and Small Balance Adjustments
-UPDATE	##ArAgingBalanceTbl
-SET		##ArAgingBalanceTbl.PaymentAmt = ##ArAgingBalanceTbl.PaymentAmt + COALESCE(AA.Amt,0)
-FROM	##ArAgingBalanceTbl
-		LEFT OUTER JOIN	(SELECT		SUM(AdjAmt) AS 'Amt', (AdjdDocType + AdjdRefNbr) AS 'UniqueKey'
-						FROM        den_dev_app.dbo.ARAdjust
-						WHERE		AdjgDocType IN ('PA','SB','CM') and PerAppl <= @Period
-						GROUP BY	(AdjdDocType + AdjdRefNbr)) AA ON AA.UniqueKey = ##ArAgingBalanceTbl.UniqueKey;
+;with aa as
+(
+	select Amt = sum(AdjAmt), 
+		UniqueKey = (AdjdDocType + AdjdRefNbr)
+	from den_dev_app.dbo.ARAdjust
+	where AdjgDocType in ('PA','SB','CM') 
+		and PerAppl <= @Period
+	group by (AdjdDocType + AdjdRefNbr)
+)
+update arAge
+	set	PaymentAmt = PaymentAmt + coalesce(AA.Amt,0)
+from ##ArAgingBalanceTbl arAge
+left outer join	aa 
+	on aa.UniqueKey = arAge.UniqueKey
 
 -- Credit Memo Applications (Needed to Reflect partial use of credit memos)
-UPDATE	##ArAgingBalanceTbl
-SET		##ArAgingBalanceTbl.PaymentAmt = ##ArAgingBalanceTbl.PaymentAmt + COALESCE(AA.Amt,0)
-FROM	##ArAgingBalanceTbl
-		LEFT OUTER JOIN	(SELECT		0 - SUM(AdjAmt) AS 'Amt', (AdjgDocType + AdjgRefNbr) AS 'UniqueKey'
-						FROM        den_dev_app.dbo.ARAdjust
-						WHERE		AdjgDocType IN ('CM') and PerAppl <= @Period
-						GROUP BY	(AdjgDocType + AdjgRefNbr)) AA ON AA.UniqueKey = ##ArAgingBalanceTbl.UniqueKey;
+;with ab as
+(
+	select Amt = 0 - sum(AdjAmt), 
+		UniqueKey = (AdjgDocType + AdjgRefNbr)
+	from den_dev_app.dbo.ARAdjust
+	where AdjgDocType in ('CM') 
+		and PerAppl <= @Period
+	group by (AdjgDocType + AdjgRefNbr)
+)
+update arAge
+	set PaymentAmt = arAge.PaymentAmt + coalesce(ab.Amt,0)
+from ##ArAgingBalanceTbl arAge
+left outer join	ab 
+	on ab.UniqueKey = arAge.UniqueKey;
 
 -- Small Credit Adjustments
-UPDATE	##ArAgingBalanceTbl
-SET		##ArAgingBalanceTbl.PaymentAmt = ##ArAgingBalanceTbl.PaymentAmt + COALESCE(AA.Amt,0)
-FROM	##ArAgingBalanceTbl
-		LEFT OUTER JOIN	(SELECT		0 - SUM(AdjAmt) AS 'Amt', (AdjdDocType + AdjdRefNbr) AS 'UniqueKey'
-						FROM        den_dev_app.dbo.ARAdjust
-						WHERE		AdjgDocType = 'SC' and PerAppl <= @Period
-						GROUP BY	(AdjdDocType + AdjdRefNbr)) AA ON AA.UniqueKey = ##ArAgingBalanceTbl.UniqueKey
+;with ac as
+(
+	select Amt = 0 - sum(AdjAmt), 
+		UniqueKey = (AdjdDocType + AdjdRefNbr)
+	from den_dev_app.dbo.ARAdjust
+	where AdjgDocType = 'SC' and PerAppl <= @Period
+	group by (AdjdDocType + AdjdRefNbr)
+)
+update arAge
+	set	PaymentAmt = PaymentAmt + coalesce(ac.Amt,0)
+from  ##ArAgingBalanceTbl arAge
+left outer join	ac 
+	ON ac.UniqueKey = arAge.UniqueKey
 
 -- On Account Payments Applied
-UPDATE	##ArAgingBalanceTbl
-SET		##ArAgingBalanceTbl.PaymentAmt = ##ArAgingBalanceTbl.PaymentAmt + COALESCE(AA.Amt,0)
-FROM	##ArAgingBalanceTbl
-		LEFT OUTER JOIN	(SELECT		0 - SUM(AdjAmt) AS 'Amt', (AdjgDocType + AdjgRefNbr) AS 'UniqueKey', CustID
-						FROM        den_dev_app.dbo.ARAdjust
-						WHERE		AdjgDocType = 'PA' and PerAppl <= @Period
-						GROUP BY	(AdjgDocType + AdjgRefNbr), CustID) AA ON AA.UniqueKey = ##ArAgingBalanceTbl.UniqueKey AND AA.CustID = ##ArAgingBalanceTbl.CustId
+;with ad as
+(
+	select Amt = 0 - sum(AdjAmt), 
+		UniqueKey = (AdjgDocType + AdjgRefNbr), 
+		CustID
+	from den_dev_app.dbo.ARAdjust
+	where AdjgDocType = 'PA' 
+		and PerAppl <= @Period
+	group by (AdjgDocType + AdjgRefNbr), CustID
+)
+update arAge
+	set	PaymentAmt = PaymentAmt + coalesce(ad.Amt,0)
+from ##ArAgingBalanceTbl arAge
+left outer join ad 
+	on ad.UniqueKey = arAge.UniqueKey 
+	and ad.CustID = arAge.CustId
+
 
 -- Update the Due Date for On Account Balances to a Default of 30 Days
-UPDATE	##ArAgingBalanceTbl
-SET		##ArAgingBalanceTbl.DueDate = DATEADD(d,30,##ArAgingBalanceTbl.DocDate)
-WHERE	##ArAgingBalanceTbl.DueDate = '01/01/1900'
+update ##ArAgingBalanceTbl
+	set DueDate = DATEADD(d, 30, DocDate)
+where DueDate = '01/01/1900'
 
 -- Age the Invoice into Buckets by Due Date
-SELECT		Tbl.CustId,
-			SUM(Tbl.Balance) AS 'Balance',
-			Tbl.ClientHyperionCode,
-			Tbl.HyperionAccount
-INTO		#ArAgingTbl
-FROM		(SELECT		CustId,
-						ROUND(Amt - PaymentAmt,2) AS 'Balance',
-						CASE -- Put into aging buckets
-							WHEN DATEDIFF(d,DueDate, @AgingDate) <= 0 THEN 'ARCTCUR'
-							WHEN DATEDIFF(d,DueDate, @AgingDate) BETWEEN 1 AND 30 THEN 'ARCT1'
-							WHEN DATEDIFF(d,DueDate, @AgingDate) BETWEEN 31 AND 60 THEN 'ARCT31'
-							WHEN DATEDIFF(d,DueDate, @AgingDate) BETWEEN 61 AND 90 THEN 'ARCT61'
-							WHEN DATEDIFF(d,DueDate, @AgingDate) BETWEEN 91 AND 120 THEN 'ARCT91'
-							WHEN DATEDIFF(d,DueDate, @AgingDate) BETWEEN 121 AND 150 THEN 'ARCT121'
-							WHEN DATEDIFF(d,DueDate, @AgingDate) BETWEEN 151 AND 180 THEN 'ARCT151'
-							ELSE 'ARCT180'
-						END AS 'HyperionAccount',
-						CAST('' AS NVARCHAR(40)) AS 'ClientHyperionCode'
-			FROM		##ArAgingBalanceTbl) AS Tbl
-GROUP BY	Tbl.CustId, Tbl.ClientHyperionCode, Tbl.HyperionAccount;
+insert ##ArAgingTbl
+(
+	CustId,
+	Balance,
+	ClientHyperionCode,
+	HyperionAccount
+)
+SELECT CustId,
+	Balance = sum(round(Amt - PaymentAmt,2)),
+	ClientHyperionCode = cast('' as nvarchar(40)),
+	HyperionAccount = case -- Put into aging buckets
+							when DATEDIFF(d,DueDate, @AgingDate) <= 0 THEN 'ARCTCUR'
+							when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 1 AND 30 THEN 'ARCT1'
+							when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 31 AND 60 THEN 'ARCT31'
+							when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 61 AND 90 THEN 'ARCT61'
+							when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 91 AND 120 THEN 'ARCT91'
+							when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 121 AND 150 THEN 'ARCT121'
+							when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 151 AND 180 THEN 'ARCT151'
+							else 'ARCT180'
+						end
+from ##ArAgingBalanceTbl
+GROUP BY CustId, case when DATEDIFF(d,DueDate, @AgingDate) <= 0 THEN 'ARCTCUR'
+						when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 1 AND 30 THEN 'ARCT1'
+						when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 31 AND 60 THEN 'ARCT31'
+						when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 61 AND 90 THEN 'ARCT61'
+						when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 91 AND 120 THEN 'ARCT91'
+						when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 121 AND 150 THEN 'ARCT121'
+						when DATEDIFF(d,DueDate, @AgingDate) BETWEEN 151 AND 180 THEN 'ARCT151'
+						else 'ARCT180'
+					end
 
-/*
--- Drop AR Tables
-IF OBJECT_ID('tempdb..##ArAgingBalanceTbl') IS NOT NULL DROP TABLE ##ArAgingBalanceTbl;
-*/
 /*-------------------------------------------------------*/
 /*	GET A/R INPUT DATA									 */
 /*-------------------------------------------------------*/
 
 -- Populate AR Aging Documents Entered in Current Period
-SELECT	*
-INTO	#ArInputTbl
-FROM	(SELECT	(DocType + RefNbr) AS 'UniqueKey',
-				CustID,
-				ProjectID,
-				CASE 
-					WHEN DocType IN ('IN','DM','FI','NC','AD') THEN 1 
-					ELSE -1 
-				END * OrigDocAmt AS 'Balance',
-				'CurMonAR' AS 'HyperionAccount',
-				CAST('' AS NVARCHAR(40)) AS 'ClientHyperionCode'
-		FROM	den_dev_app.dbo.ARDoc
-		WHERE	Rlsed = 1 --Released
-				AND PerPost = @Period -- Only include AR documents entered in current period
-				AND DocType NOT IN ('VT','RC','NS','RP')
-				AND RefNbr NOT LIKE 'P%' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
-				AND RefNbr NOT LIKE 'F%' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
-				AND DocDate >= '10/01/2006' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
-				AND BankAcct IN('1040')) AS Tbl; -- Include only AR GL accounts to get documents generated; exclude interco AR
+insert ##ArInputTbl
+(
+	UniqueKey,
+	CustID,
+	ProjectID,
+	Balance,
+	HyperionAccount,
+	ClientHyperionCode
+)
+
+select UniqueKey = (DocType + RefNbr),
+	CustID,
+	ProjectID,
+	Balance = case when DocType IN ('IN','DM','FI','NC','AD') then 1 
+					else -1 
+				end * OrigDocAmt,
+	HyperionAccount = 'CurMonAR',
+	ClientHyperionCode = cast('' as nvarchar(40))
+from den_dev_app.dbo.ARDoc
+where Rlsed = 1 --Released
+	and PerPost = @Period -- Only include AR documents entered in current period
+	and DocType not in ('VT','RC','NS','RP')
+	and RefNbr not like 'P%' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
+	and RefNbr not like 'F%' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
+	and DocDate >= '10/01/2006' -- DALLAS ONLY, exclude certain invoice from 2006 DSL conversion
+	and BankAcct = '1040' -- Include only AR GL accounts to get documents generated; exclude interco AR
 
 /*-------------------------------------------------------*/
 /*	GET UNBILLED A/R DATA								 */
 /*-------------------------------------------------------*/
 
 -- Get the Data from GL Tran Table
-SELECT	CASE WHEN Tbl.ProjectID = 'NON POST' THEN '' ELSE LTRIM(RTRIM(Tbl.ProjectID)) END AS 'ProjectID',
-		Tbl.Balance,
-		Tbl.HyperionAccount,
-		Tbl.ClientHyperionCode
-INTO	#UnbillBalTbl
-FROM	(SELECT		ProjectID,
-					ROUND(SUM(DrAmt - CrAmt),2) AS 'Balance',
-					'UnbilledAR1' AS 'HyperionAccount',
-					CAST('' AS NVARCHAR(40)) AS 'ClientHyperionCode'
-		FROM		den_dev_app.dbo.GLTran
-		WHERE		Acct IN ('1310')
-					AND PerPost <= @Period
-		GROUP BY	ProjectID
-		HAVING		ROUND(SUM(DrAmt - CrAmt),2) <> 0) AS Tbl;
+insert ##UnbillBalTbl
+(
+	ProjectID,
+	Balance,
+	HyperionAccount,
+	ClientHyperionCode
+)
+select ProjectID = case when ProjectID = 'NON POST' then '' else LTRIM(RTRIM(ProjectID)) end,
+	Balance = round(sum(DrAmt - CrAmt),2),
+	HyperionAccount = 'UnbilledAR1',
+	ClientHyperionCode = cast('' as nvarchar(40))
+from den_dev_app.dbo.GLTran
+where Acct = '1310'
+	and PerPost <= @Period
+group by case when ProjectID = 'NON POST' then '' else LTRIM(RTRIM(ProjectID)) end
+having round(sum(DrAmt - CrAmt),2) <> 0
 
 /*-------------------------------------------------------*/
 /*	GET WIP DATA										 */
 /*-------------------------------------------------------*/
 
 -- Get the Data from GL Tran Table
-SELECT	CASE WHEN Tbl.ProjectID = 'NON POST' THEN '' ELSE LTRIM(RTRIM(Tbl.ProjectID)) END AS 'ProjectID',
-		Tbl.Balance,
-		Tbl.HyperionAccount,
-		Tbl.ClientHyperionCode
-INTO	#WipBalTbl
-FROM	(SELECT		ProjectID,
-					ROUND(SUM(DrAmt - CrAmt),2) AS 'Balance',
-					'WIP1' AS 'HyperionAccount',
-					CAST('' AS NVARCHAR(40)) AS 'ClientHyperionCode'
-		FROM		den_dev_app.dbo.GLTran
-		WHERE		(Acct LIKE '12%' OR Acct IN ('1321'))
-					AND PerPost <= @Period
-		GROUP BY	ProjectID
-		HAVING		ROUND(SUM(DrAmt - CrAmt),2) <> 0) AS Tbl;
+insert ##WipBalTbl
+(
+	ProjectID,
+	Balance,
+	HyperionAccount,
+	ClientHyperionCode
+)
+select ProjectID = case when ProjectID = 'NON POST' then '' else ltrim(rtrim(ProjectID)) end,
+		Balance = round(sum(DrAmt - CrAmt),2),
+		HyperionAccount = 'WIP1',
+		ClientHyperionCode = cast('' as nvarchar(40))
+from den_dev_app.dbo.GLTran
+where (Acct like '12%' 
+		or Acct = ('1321'))
+	and PerPost <= @Period
+group by case when ProjectID = 'NON POST' then '' else ltrim(rtrim(ProjectID)) end
+having round(sum(DrAmt - CrAmt),2) <> 0
 
 /*-------------------------------------------------------*/
 /*	GET PREBILL DATA									 */
 /*-------------------------------------------------------*/
 
 -- Get the Data from GL Tran Table FOR AGENCY
-SELECT	CASE WHEN Tbl.ProjectID = 'NON POST' THEN '' ELSE LTRIM(RTRIM(Tbl.ProjectID)) END AS 'ProjectID',
-		Tbl.Balance,
-		Tbl.HyperionAccount,
-		Tbl.ClientHyperionCode
-INTO	#PrebillBalTbl
-FROM	(SELECT		ProjectID,
-					ROUND(SUM(CrAmt - DrAmt),2) AS 'Balance',
-					'CustAdv' AS 'HyperionAccount',
-					CAST('' AS NVARCHAR(40)) AS 'ClientHyperionCode'
-		FROM		den_dev_app.dbo.GLTran
-		WHERE		Acct IN ('2100','2120')
-					AND PerPost <= @Period
-		GROUP BY	ProjectID
-		HAVING		ROUND(SUM(CrAmt - DrAmt),2) <> 0) AS Tbl;
+insert ##PrebillBalTbl
+(
+	ProjectId,
+	Balance,
+	HyperionAccount,
+	ClientHyperionCode
+)
+select ProjectID = case when ProjectID = 'NON POST' then '' else ltrim(rtrim(ProjectID)) end,
+	Balance = round(sum(CrAmt - DrAmt),2),
+	HyperionAccount = 'CustAdv',
+	ClientHyperionCode = cast('' as nvarchar(40))
+from den_dev_app.dbo.GLTran
+where Acct in ('2100','2120')
+	and PerPost <= @Period
+group by case when ProjectID = 'NON POST' then '' else ltrim(rtrim(ProjectID)) end
+having round(sum(CrAmt - DrAmt),2) <> 0
 
 /*
 -- Get the Data from GL Tran Table FOR STUDIO
-INSERT INTO	#PrebillBalTbl
+INSERT INTO	##PrebillBalTbl
 SELECT		CASE WHEN Tbl.ProjectID = 'NON POST' THEN '' ELSE LEFT(LTRIM(RTRIM(Tbl.ProjectID)),11) + 'AG' END AS 'ProjectID', -- Change Studio Job Suffix to AG to Project Mapping Table
 			Tbl.Balance,
 			Tbl.HyperionAccount,
@@ -621,224 +747,414 @@ FROM		(SELECT		ProjectID,
 /*-------------------------------------------------------*/
 
 -- Get the Data from GL Tran Table
-SELECT	CASE WHEN Tbl.ProjectID = 'NON POST' THEN '' ELSE LTRIM(RTRIM(Tbl.ProjectID)) END AS 'ProjectID',
-		Tbl.Balance,
-		Tbl.HyperionAccount,
-		Tbl.ClientHyperionCode
-INTO	#VendorLiabBalTbl
-FROM	(SELECT		ProjectID,
-					ROUND(SUM(CrAmt - DrAmt),2) AS 'Balance',
-					'AccrVenLiab' AS 'HyperionAccount',
-					CAST('' AS NVARCHAR(40)) AS 'ClientHyperionCode'
-		FROM		den_dev_app.dbo.GLTran
-		WHERE		Acct IN ('2290','2295','2298','2300')
-					AND PerPost <= @Period
-		GROUP BY	ProjectID
-		HAVING		ROUND(SUM(CrAmt - DrAmt),2) <> 0) AS Tbl;
+insert ##VendorLiabBalTbl
+(
+	ProjectID,
+	Balance,
+	HyperionAccount,
+	ClientHyperionCode
+)
+select ProjectID = case when ProjectID = 'NON POST' THEN '' ELSE ltrim(rtrim(ProjectID)) end,
+	Balance = round(sum(CrAmt - DrAmt),2),
+	HyperionAccount = 'AccrVenLiab',
+	ClientHyperionCode = cast('' as nvarchar(40))
+from den_dev_app.dbo.GLTran
+where Acct in ('2290','2295','2298','2300')
+	and PerPost <= @Period
+group by case when ProjectID = 'NON POST' THEN '' ELSE ltrim(rtrim(ProjectID)) end
+having round(sum(CrAmt - DrAmt),2) <> 0
 
 /*-------------------------------------------------------*/
 /*	ASSIGN CLIENT HYPERION CODES						 */
 /*-------------------------------------------------------*/
 
 -- Generate a Table of All Clients and Hyperion Codes
-SELECT		*
-INTO		#WorkCapClientHyperionCodes
-FROM		(SELECT CustID,
-					(CASE
-						WHEN CustID IN('INT','BGT') THEN @OverheadClientHyperionCode --Override the interal client codes to overhead DALLAS ONLY
-						WHEN User2 IS NULL THEN @OverheadClientHyperionCode -- If no client, assume overhead
-						ELSE LTRIM(RTRIM(User2))
-					END) AS 'LiabilityClientHyperionCode',	
-					(CASE
-						WHEN CustID IN('INT','BGT') THEN @SmallClientHyperionCode --Override the interal client codes to overhead DALLAS ONLY
-						WHEN User2 IS NULL THEN @SmallClientHyperionCode -- If no client, assume overhead
-						ELSE LTRIM(RTRIM(User2))
-					END) AS 'AssetClientHyperionCode'
-			FROM	den_dev_app.dbo.Customer) AS Tbl;
+insert ##WorkCapClientHyperionCodes
+(
+	CustID,
+	LiabilityClientHyperionCode,
+	AssetClientHyperionCode
+)
+select CustID,
+	LiabilityClientHyperionCode = case when CustID in('INT','BGT') then @OverheadClientHyperionCode --Override the interal client codes to overhead DALLAS ONLY
+										when User2 is null then @OverheadClientHyperionCode -- If no client, assume overhead
+										else LTRIM(RTRIM(User2))
+									end,	
+	AssetClientHyperionCode = case when CustID in('INT','BGT') then @SmallClientHyperionCode --Override the interal client codes to overhead DALLAS ONLY
+									when User2 is null then @SmallClientHyperionCode -- If no client, assume overhead
+									else ltrim(rtrim(User2))
+								end
+from den_dev_app.dbo.Customer
 
 -- Generate a Table of All Jobs Used in This Extract From The Temp Tables
-SELECT DISTINCT	Tbl.ProjectID,
-				CAST('' AS NVARCHAR(40)) AS 'AssetClientHyperionCode',
-				CAST('' AS NVARCHAR(40)) AS 'LiabilityClientHyperionCode'
-INTO			#WorkCapJobUsed
-FROM			(SELECT ProjectID FROM ##ApAgingTbl
-				UNION ALL
-				SELECT ProjectID FROM ##ApInputTbl
-				UNION ALL
-				SELECT ProjectID FROM #UnbillBalTbl
-				UNION ALL
-				SELECT ProjectID FROM #WipBalTbl
-				UNION ALL
-				SELECT ProjectID FROM #PrebillBalTbl
-				UNION ALL
-				SELECT ProjectID FROM #VendorLiabBalTbl) AS Tbl;
+insert ##WorkCapJobUsed
+(
+	ProjectID,
+	AssetClientHyperionCode,
+	LiabilityClientHyperionCode
+)
+SELECT DISTINCT	ProjectID,
+	AssetClientHyperionCode = cast('' as nvarchar(40)),
+	LiabilityClientHyperionCode = cast('' as nvarchar(40))
+FROM ##ApAgingTbl
+
+UNION 
+
+SELECT DISTINCT	ProjectID,
+	AssetClientHyperionCode = cast('' as nvarchar(40)),
+	LiabilityClientHyperionCode = cast('' as nvarchar(40))
+FROM ##ApInputTbl
+
+UNION
+
+SELECT DISTINCT	ProjectID,
+	AssetClientHyperionCode = cast('' as nvarchar(40)),
+	LiabilityClientHyperionCode = cast('' as nvarchar(40))
+FROM ##UnbillBalTbl
+
+UNION
+
+SELECT DISTINCT	ProjectID,
+	AssetClientHyperionCode = cast('' as nvarchar(40)),
+	LiabilityClientHyperionCode = cast('' as nvarchar(40))
+FROM ##WipBalTbl
+
+UNION
+
+SELECT DISTINCT	ProjectID,
+	AssetClientHyperionCode = cast('' as nvarchar(40)),
+	LiabilityClientHyperionCode = cast('' as nvarchar(40))
+FROM ##PrebillBalTbl
+
+UNION
+
+SELECT DISTINCT	ProjectID,
+	AssetClientHyperionCode = cast('' as nvarchar(40)),
+	LiabilityClientHyperionCode = cast('' as nvarchar(40))
+FROM ##VendorLiabBalTbl
 
 -- Get Add Client Hyperion Codes to Job List
-UPDATE	#WorkCapJobUsed
-SET		#WorkCapJobUsed.LiabilityClientHyperionCode = D.LiabilityClientHyperionCode,
-		#WorkCapJobUsed.AssetClientHyperionCode = D.AssetClientHyperionCode
-FROM	#WorkCapJobUsed LEFT OUTER JOIN
-		(SELECT	A.ProjectID, C.CustId, C.AssetClientHyperionCode, C.LiabilityClientHyperionCode
-		FROM	#WorkCapJobUsed A
-				LEFT OUTER JOIN den_dev_app.dbo.PJPROJ B ON A.ProjectID = B.project
-				LEFT OUTER JOIN #WorkCapClientHyperionCodes C ON B.customer = C.CustId) AS D ON #WorkCapJobUsed.ProjectID = D.ProjectID;
+UPDATE wcj
+	SET LiabilityClientHyperionCode = c.LiabilityClientHyperionCode,
+		AssetClientHyperionCode = c.AssetClientHyperionCode
+FROM ##WorkCapJobUsed wcj
+LEFT OUTER JOIN	den_dev_app.dbo.PJPROJ B 
+	ON wcj.ProjectID = B.project
+LEFT OUTER JOIN ##WorkCapClientHyperionCodes C 
+	ON B.customer = C.CustId
 
 -- Generate Job Manual Override List
-SELECT * INTO #JobOverrideTbl FROM #WorkCapJobUsed WHERE 1 = 0; -- Copy the structure of the job table
 
 -------------------------
 -- Job Override Values --
 -------------------------
-INSERT INTO #JobOverrideTbl VALUES ('', @SmallClientHyperionCode, @OverheadClientHyperionCode);
-INSERT INTO #JobOverrideTbl VALUES ('ZZZZZZ00000ZZ', @SmallClientHyperionCode, @OverheadClientHyperionCode);
+INSERT ##JobOverrideTbl 
+(
+	ProjectID,
+	AssetClientHyperionCode,
+	LiabilityClientHyperionCode
+)
+select '',
+	@SmallClientHyperionCode, 
+	@OverheadClientHyperionCode
+	
+INSERT ##JobOverrideTbl 
+(
+	ProjectID,
+	AssetClientHyperionCode,
+	LiabilityClientHyperionCode
+)
+select 'ZZZZZZ00000ZZ', 
+	@SmallClientHyperionCode, 
+	@OverheadClientHyperionCode
 
 -- Populate the Manual Override List into the Job Used Table
-UPDATE	#WorkCapJobUsed -- Populate override values
-SET		#WorkCapJobUsed.AssetClientHyperionCode = #JobOverrideTbl.AssetClientHyperionCode,
-		#WorkCapJobUsed.LiabilityClientHyperionCode = #JobOverrideTbl.LiabilityClientHyperionCode
-FROM	#WorkCapJobUsed
-		LEFT OUTER JOIN #JobOverrideTbl ON #WorkCapJobUsed.ProjectID = #JobOverrideTbl.ProjectID
-WHERE	#JobOverrideTbl.ProjectID IS NOT NULL;
-
--- Drop Job Override List Table
-DROP TABLE #JobOverrideTbl;
+UPDATE wcj -- Populate override values
+	SET	AssetClientHyperionCode = jo.AssetClientHyperionCode,
+		LiabilityClientHyperionCode = jo.LiabilityClientHyperionCode
+FROM ##WorkCapJobUsed wcj
+LEFT OUTER JOIN ##JobOverrideTbl jo
+	ON wcj.ProjectID = jo.ProjectID
+WHERE jo.ProjectID IS NOT NULL
 
 --Assign Hyperion Codes to AP Aging Table
-UPDATE	##ApAgingTbl
-SET		##ApAgingTbl.ClientHyperionCode = COALESCE(#WorkCapJobUsed.LiabilityClientHyperionCode,'NO CLIENT HYPERION CODE')
-FROM	##ApAgingTbl LEFT OUTER JOIN #WorkCapJobUsed ON ##ApAgingTbl.ProjectID = #WorkCapJobUsed.ProjectID;
+UPDATE apa
+	SET	ClientHyperionCode = COALESCE(wcj.LiabilityClientHyperionCode,'NO CLIENT HYPERION CODE')
+FROM ##ApAgingTbl apa
+LEFT OUTER JOIN ##WorkCapJobUsed wcj
+	ON apa.ProjectID = wcj.ProjectID;
 
 --Assign Hyperion Codes to AP Input Table
-UPDATE	##ApInputTbl
-SET		##ApInputTbl.ClientHyperionCode = COALESCE(#WorkCapJobUsed.LiabilityClientHyperionCode,'NO CLIENT HYPERION CODE')
-FROM	##ApInputTbl LEFT OUTER JOIN #WorkCapJobUsed ON ##ApInputTbl.ProjectID = #WorkCapJobUsed.ProjectID;
+UPDATE api
+	SET	ClientHyperionCode = COALESCE(wcj.LiabilityClientHyperionCode,'NO CLIENT HYPERION CODE')
+FROM ##ApInputTbl api
+LEFT OUTER JOIN ##WorkCapJobUsed wcj
+	ON api.ProjectID = wcj.ProjectID;
 
 --Assign Hyperion Codes to AR Aging Table
-UPDATE	#ArAgingTbl
-SET		#ArAgingTbl.ClientHyperionCode = COALESCE(#WorkCapClientHyperionCodes.AssetClientHyperionCode,'NO CLIENT HYPERION CODE')
-FROM	#ArAgingTbl LEFT OUTER JOIN #WorkCapClientHyperionCodes ON #ArAgingTbl.CustId = #WorkCapClientHyperionCodes.CustId;
+UPDATE ara
+	SET	ClientHyperionCode = COALESCE(wcchc.AssetClientHyperionCode,'NO CLIENT HYPERION CODE')
+FROM ##ArAgingTbl ara 
+LEFT OUTER JOIN ##WorkCapClientHyperionCodes wcchc 
+	ON ara.CustId = wcchc.CustId
 
 --Assign Hyperion Codes to AR Input Table
-UPDATE	#ArInputTbl
-SET		#ArInputTbl.ClientHyperionCode = COALESCE(#WorkCapClientHyperionCodes.AssetClientHyperionCode,'NO CLIENT HYPERION CODE')
-FROM	#ArInputTbl LEFT OUTER JOIN #WorkCapClientHyperionCodes ON #ArInputTbl.CustId = #WorkCapClientHyperionCodes.CustId;
+UPDATE ari
+	SET	ClientHyperionCode = COALESCE(wcchc.AssetClientHyperionCode,'NO CLIENT HYPERION CODE')
+FROM ##ArInputTbl ari
+LEFT OUTER JOIN ##WorkCapClientHyperionCodes wcchc
+	ON ari.CustId = wcchc.CustId
 
 --Assign Hyperion Codes to Unbilled AR Table
-UPDATE	#UnbillBalTbl
-SET		#UnbillBalTbl.ClientHyperionCode = COALESCE(#WorkCapJobUsed.AssetClientHyperionCode,'NO CLIENT HYPERION CODE')
-FROM	#UnbillBalTbl LEFT OUTER JOIN #WorkCapJobUsed ON #UnbillBalTbl.ProjectID = #WorkCapJobUsed.ProjectID;
+UPDATE ubb
+	SET	ClientHyperionCode = COALESCE(wcj.AssetClientHyperionCode,'NO CLIENT HYPERION CODE')
+FROM ##UnbillBalTbl ubb
+LEFT OUTER JOIN ##WorkCapJobUsed wcj
+	ON ubb.ProjectID = wcj.ProjectID
 
 --Assign Hyperion Codes to WIP Table
-UPDATE	#WipBalTbl
-SET		#WipBalTbl.ClientHyperionCode = COALESCE(#WorkCapJobUsed.AssetClientHyperionCode,'NO CLIENT HYPERION CODE')
-FROM	#WipBalTbl LEFT OUTER JOIN #WorkCapJobUsed ON #WipBalTbl.ProjectID = #WorkCapJobUsed.ProjectID;
+UPDATE wb
+	SET	ClientHyperionCode = COALESCE(wcj.AssetClientHyperionCode,'NO CLIENT HYPERION CODE')
+FROM ##WipBalTbl wb
+LEFT OUTER JOIN ##WorkCapJobUsed wcj
+	ON wb.ProjectID = wcj.ProjectID
 
 --Assign Hyperion Codes to Prebill Table
-UPDATE	#PrebillBalTbl
-SET		#PrebillBalTbl.ClientHyperionCode = COALESCE(#WorkCapJobUsed.LiabilityClientHyperionCode,'NO CLIENT HYPERION CODE')
-FROM	#PrebillBalTbl LEFT OUTER JOIN #WorkCapJobUsed ON #PrebillBalTbl.ProjectID = #WorkCapJobUsed.ProjectID;
+UPDATE pb
+	SET ClientHyperionCode = COALESCE(wcj.LiabilityClientHyperionCode,'NO CLIENT HYPERION CODE')
+FROM ##PrebillBalTbl pb
+LEFT OUTER JOIN ##WorkCapJobUsed wcj
+	ON pb.ProjectID = wcj.ProjectID
 
 --Assign Hyperion Codes to Vendor Table
-UPDATE	#VendorLiabBalTbl
-SET		#VendorLiabBalTbl.ClientHyperionCode = COALESCE(#WorkCapJobUsed.LiabilityClientHyperionCode,'NO CLIENT HYPERION CODE')
-FROM	#VendorLiabBalTbl LEFT OUTER JOIN #WorkCapJobUsed ON #VendorLiabBalTbl.ProjectID = #WorkCapJobUsed.ProjectID;
+UPDATE vlb
+	SET	ClientHyperionCode = COALESCE(wcj.LiabilityClientHyperionCode,'NO CLIENT HYPERION CODE')
+FROM ##VendorLiabBalTbl vlb
+LEFT OUTER JOIN ##WorkCapJobUsed wcj
+	ON vlb.ProjectID = wcj.ProjectID
 
 
 /*-------------------------------------------------------*/
 /*	BUILD RESULTS TABLE WITH DATA						 */
 /*-------------------------------------------------------*/
 
--- Create Results Temp Table, Keep The 'Amt' Field As A Char 
-CREATE TABLE #ResultsTbl (HyperionAccount NVARCHAR(40), ClientHyperionCode NVARCHAR(40), Amt NVARCHAR(100));
-
 -- Add Control Totals
-INSERT INTO #ResultsTbl VALUES ('WCCurMonAR','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #ArInputTbl));
-INSERT INTO #ResultsTbl VALUES ('WCAR','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #ArAgingTbl));
-INSERT INTO #ResultsTbl VALUES ('WCAccrInc','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #UnbillBalTbl));
-INSERT INTO #ResultsTbl VALUES ('WCWIP','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #WipBalTbl));
-INSERT INTO #ResultsTbl VALUES ('WCCurMonAP','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##ApInputTbl));
-INSERT INTO #ResultsTbl VALUES ('WCAP','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##ApAgingTbl));
-INSERT INTO #ResultsTbl VALUES ('WCAccrCOS','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #VendorLiabBalTbl));
-INSERT INTO #ResultsTbl VALUES ('WCCustAdv','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #PrebillBalTbl));
+INSERT INTO ##ResultsTbl VALUES ('WCCurMonAR','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##ArInputTbl));
+INSERT INTO ##ResultsTbl VALUES ('WCAR','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##ArAgingTbl));
+INSERT INTO ##ResultsTbl VALUES ('WCAccrInc','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##UnbillBalTbl));
+INSERT INTO ##ResultsTbl VALUES ('WCWIP','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##WipBalTbl));
+INSERT INTO ##ResultsTbl VALUES ('WCCurMonAP','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##ApInputTbl));
+INSERT INTO ##ResultsTbl VALUES ('WCAP','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##ApAgingTbl));
+INSERT INTO ##ResultsTbl VALUES ('WCAccrCOS','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##VendorLiabBalTbl));
+INSERT INTO ##ResultsTbl VALUES ('WCCustAdv','[None]',(SELECT LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##PrebillBalTbl));
 
 -- Populate Results Table From Detail Temp Tables
-INSERT INTO #ResultsTbl (HyperionAccount, ClientHyperionCode, Amt) SELECT HyperionAccount, ClientHyperionCode, LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##ApAgingTbl GROUP BY HyperionAccount, ClientHyperionCode HAVING ROUND(SUM(Balance),2) <> 0;
-INSERT INTO #ResultsTbl (HyperionAccount, ClientHyperionCode, Amt) SELECT HyperionAccount, ClientHyperionCode, LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM ##ApInputTbl GROUP BY HyperionAccount, ClientHyperionCode HAVING ROUND(SUM(Balance),2) <> 0;
-INSERT INTO #ResultsTbl (HyperionAccount, ClientHyperionCode, Amt) SELECT HyperionAccount, ClientHyperionCode, LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #ArAgingTbl GROUP BY HyperionAccount, ClientHyperionCode HAVING ROUND(SUM(Balance),2) <> 0;
-INSERT INTO #ResultsTbl (HyperionAccount, ClientHyperionCode, Amt) SELECT HyperionAccount, ClientHyperionCode, LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #ArInputTbl GROUP BY HyperionAccount, ClientHyperionCode HAVING ROUND(SUM(Balance),2) <> 0;
-INSERT INTO #ResultsTbl (HyperionAccount, ClientHyperionCode, Amt) SELECT HyperionAccount, ClientHyperionCode, LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #UnbillBalTbl GROUP BY HyperionAccount, ClientHyperionCode HAVING ROUND(SUM(Balance),2) <> 0;
-INSERT INTO #ResultsTbl (HyperionAccount, ClientHyperionCode, Amt) SELECT HyperionAccount, ClientHyperionCode, LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #WipBalTbl GROUP BY HyperionAccount, ClientHyperionCode HAVING ROUND(SUM(Balance),2) <> 0;
-INSERT INTO #ResultsTbl (HyperionAccount, ClientHyperionCode, Amt) SELECT HyperionAccount, ClientHyperionCode, LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #PrebillBalTbl GROUP BY HyperionAccount, ClientHyperionCode HAVING ROUND(SUM(Balance),2) <> 0;
-INSERT INTO #ResultsTbl (HyperionAccount, ClientHyperionCode, Amt) SELECT HyperionAccount, ClientHyperionCode, LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) FROM #VendorLiabBalTbl GROUP BY HyperionAccount, ClientHyperionCode HAVING ROUND(SUM(Balance),2) <> 0;
+INSERT INTO ##ResultsTbl 
+(
+	HyperionAccount, 
+	ClientHyperionCode, 
+	Amt
+) 
+SELECT coalesce(HyperionAccount,''), 
+	coalesce(ClientHyperionCode,''), 
+	LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) 
+FROM ##ApAgingTbl 
+GROUP BY coalesce(HyperionAccount,''), coalesce(ClientHyperionCode,'') 
+HAVING ROUND(SUM(Balance),2) <> 0;
+
+INSERT INTO ##ResultsTbl 
+(
+	HyperionAccount, 
+	ClientHyperionCode, 
+	Amt
+) 
+SELECT coalesce(HyperionAccount,''),
+	coalesce(ClientHyperionCode,''), 
+	LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) 
+FROM ##ApInputTbl 
+GROUP BY coalesce(HyperionAccount,''), coalesce(ClientHyperionCode,'')
+HAVING ROUND(SUM(Balance),2) <> 0;
+
+INSERT INTO ##ResultsTbl 
+(
+	HyperionAccount, 
+	ClientHyperionCode, 
+	Amt
+) 
+SELECT coalesce(HyperionAccount,''),
+	coalesce(ClientHyperionCode,''), 
+	LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) 
+FROM ##ArAgingTbl 
+GROUP BY coalesce(HyperionAccount,''), coalesce(ClientHyperionCode,'')
+HAVING ROUND(SUM(Balance),2) <> 0;
+
+INSERT INTO ##ResultsTbl 
+(
+	HyperionAccount, 
+	ClientHyperionCode, 
+	Amt
+) 
+SELECT coalesce(HyperionAccount,''),
+	coalesce(ClientHyperionCode,''), 
+	LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) 
+FROM ##ArInputTbl 
+GROUP BY coalesce(HyperionAccount,''), coalesce(ClientHyperionCode,'')
+HAVING ROUND(SUM(Balance),2) <> 0;
+
+INSERT INTO ##ResultsTbl 
+(
+	HyperionAccount, 
+	ClientHyperionCode, 
+	Amt
+) 
+SELECT coalesce(HyperionAccount,''),
+	coalesce(ClientHyperionCode,''),  
+	LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) 
+FROM ##UnbillBalTbl 
+GROUP BY coalesce(HyperionAccount,''), coalesce(ClientHyperionCode,'')
+HAVING ROUND(SUM(Balance),2) <> 0;
+
+INSERT INTO ##ResultsTbl 
+(	
+	HyperionAccount, 
+	ClientHyperionCode, 
+	Amt
+) 
+SELECT coalesce(HyperionAccount,''),
+	coalesce(ClientHyperionCode,''),  
+	LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) 
+FROM ##WipBalTbl 
+GROUP BY coalesce(HyperionAccount,''), coalesce(ClientHyperionCode,'')
+HAVING ROUND(SUM(Balance),2) <> 0;
+
+INSERT INTO ##ResultsTbl 
+(
+	HyperionAccount, 
+	ClientHyperionCode, 
+	Amt
+) 
+SELECT coalesce(HyperionAccount,''),
+	coalesce(ClientHyperionCode,''), 
+	LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) 
+FROM ##PrebillBalTbl 
+GROUP BY coalesce(HyperionAccount,''), coalesce(ClientHyperionCode,'')
+HAVING ROUND(SUM(Balance),2) <> 0;
+
+INSERT INTO ##ResultsTbl 
+(
+	HyperionAccount, 
+	ClientHyperionCode, 
+	Amt
+) 
+SELECT coalesce(HyperionAccount,''),
+	coalesce(ClientHyperionCode,''), 
+	LTRIM(RTRIM(Str(ROUND(SUM(Balance),2),20,2))) 
+FROM ##VendorLiabBalTbl 
+GROUP BY coalesce(HyperionAccount,''), coalesce(ClientHyperionCode,'')
+HAVING ROUND(SUM(Balance),2) <> 0;
 
 -- Populate Client Terms, Default 30 Days Unless Overridden
-INSERT INTO #ResultsTbl (Amt, HyperionAccount, ClientHyperionCode)
-SELECT	CASE
-			WHEN A.ClientHyperionCode = '4_B4_SBC' THEN '60' -- AT&T retainer is on 60 days
+INSERT ##ResultsTbl 
+(
+	Amt, 
+	HyperionAccount, 
+	ClientHyperionCode
+)
+SELECT distinct Amt = CASE WHEN ClientHyperionCode = '4_B4_SBC' THEN '60' -- AT&T retainer is on 60 days
 			ELSE '30'
-		END AS 'Amt',
-		'PayTerms' As 'HyperionAccount',
-		A.ClientHyperionCode
-FROM	(SELECT DISTINCT ClientHyperionCode
-		FROM	#ArAgingTbl) A;
+		END,
+	HyperionAccount = 'PayTerms',
+	coalesce(ClientHyperionCode,'') 
+FROM ##ArAgingTbl
 
 -- Populate Fund Balance Reservation Type, Default 4 (Not Reserved) Unless Overridden
-INSERT INTO #ResultsTbl (Amt, HyperionAccount, ClientHyperionCode)
-SELECT	CASE
-			WHEN A.ClientHyperionCode = '4_B4_SBC' THEN '4' -- Sample override
-			ELSE '4'
-		END AS 'Amt',
-		'ReserveType' As 'HyperionAccount',
-		A.ClientHyperionCode
-FROM	(SELECT DISTINCT ClientHyperionCode
-		FROM	#ArAgingTbl) A;
+INSERT ##ResultsTbl 
+(
+	Amt, 
+	HyperionAccount, 
+	ClientHyperionCode
+)
+SELECT distinct Amt = CASE WHEN ClientHyperionCode = '4_B4_SBC' THEN '4' -- Sample override
+				ELSE '4'
+			END,
+	HyperionAccount = 'ReserveType',
+	coalesce(ClientHyperionCode,'')
+FROM ##ArAgingTbl
 
 -- Populate Client Term Yes/No, Default 1 (Terms Exist) Unless Overridden
-INSERT INTO #ResultsTbl (Amt, HyperionAccount, ClientHyperionCode)
-SELECT	CASE
-			WHEN A.ClientHyperionCode = '4_B4_SBC' THEN '1' -- Sample override
-			ELSE '1'
-		END AS 'Amt',
-		'CreTerms' As 'HyperionAccount',
-		A.ClientHyperionCode
-FROM	(SELECT DISTINCT ClientHyperionCode
-		FROM	#ArAgingTbl) A;
+INSERT ##ResultsTbl 
+(
+	Amt, 
+	HyperionAccount, 
+	ClientHyperionCode
+)
+SELECT distinct Amt = CASE WHEN ClientHyperionCode = '4_B4_SBC' THEN '1' -- Sample override
+				ELSE '1'
+			END,
+		HyperionAccount = 'CreTerms',
+		coalesce(ClientHyperionCode,'')
+FROM ##ArAgingTbl
 		
 -- Populate Receivable Type, Default 4 (Combinations) Unless Overridden
-INSERT INTO #ResultsTbl (Amt, HyperionAccount, ClientHyperionCode)
-SELECT	CASE
-			WHEN A.ClientHyperionCode = '4_B4_SBC' THEN '4' -- Sample override
-			ELSE '4'
-		END AS 'Amt',
-		'RecType' As 'HyperionAccount',
-		A.ClientHyperionCode
-FROM	(SELECT DISTINCT ClientHyperionCode
-		FROM	#ArAgingTbl) A;
+INSERT ##ResultsTbl 
+(
+	Amt, 
+	HyperionAccount, 
+	ClientHyperionCode
+)
+SELECT distinct Amt = CASE WHEN ClientHyperionCode = '4_B4_SBC' THEN '4' -- Sample override
+				ELSE '4'
+			END,
+		HyperionAccount = 'RecType',
+		coalesce(ClientHyperionCode,'')
+FROM ##ArAgingTbl
 		
 -- Populate Credit Insurance Yes/No, Default 2 (No) Unless Overridden
-INSERT INTO #ResultsTbl (Amt, HyperionAccount, ClientHyperionCode)
-SELECT	CASE
-			WHEN A.ClientHyperionCode = '4_B4_SBC' THEN '2' -- Sample override
-			ELSE '2'
-		END AS 'Amt',
-		'ClientIns' As 'HyperionAccount',
-		A.ClientHyperionCode
-FROM	(SELECT DISTINCT ClientHyperionCode
-		FROM	#ArAgingTbl
-		UNION 
-		SELECT DISTINCT ClientHyperionCode
-		FROM #UnbillBalTbl
-		UNION
-		SELECT DISTINCT ClientHyperionCode
-		FROM #WipBalTbl) A;
+INSERT ##ResultsTbl 
+(
+	Amt, 
+	HyperionAccount, 
+	ClientHyperionCode
+)
+SELECT distinct Amt = CASE WHEN ClientHyperionCode = '4_B4_SBC' THEN '2' -- Sample override
+				ELSE '2'
+			END,
+		HyperionAccount = 'ClientIns',
+		coalesce(ClientHyperionCode,'')
+FROM ##ArAgingTbl
+
+UNION 
+
+SELECT distinct Amt = CASE WHEN ClientHyperionCode = '4_B4_SBC' THEN '2' -- Sample override
+				ELSE '2'
+			END,
+		HyperionAccount = 'ClientIns',
+		coalesce(ClientHyperionCode,'')
+FROM ##UnbillBalTbl
+
+UNION
+
+SELECT distinct Amt = CASE WHEN ClientHyperionCode = '4_B4_SBC' THEN '2' -- Sample override
+				ELSE '2'
+			END,
+		HyperionAccount = 'ClientIns',
+		coalesce(ClientHyperionCode,'')
+FROM ##WipBalTbl
+
 		
 -- Populate the Month-End AP Adjustment Amount for the Balance in the Cash Accounts
-INSERT INTO #ResultsTbl (Amt, HyperionAccount)
-SELECT	LTRIM(RTRIM(Str(ROUND(SUM(DrAmt-CrAmt)*-1,2),20,2))) AS 'Amt', --Reverse the sign for Hyperion Upload
-		'WCAPUndepChecks' As 'HyperionAccount'
-FROM	den_dev_app.dbo.GLTran A
-WHERE	A.Acct IN ('1003','1004','1006','1015') -- Bank Account GLs
-		AND A.PerPost <= @Period
+INSERT ##ResultsTbl 
+(
+	Amt, 
+	HyperionAccount,
+	ClientHyperionCode
+)
+SELECT Amt = LTRIM(RTRIM(Str(ROUND(SUM(DrAmt - CrAmt) * -1, 2), 20, 2))), --Reverse the sign for Hyperion Upload
+	HyperionAccount = 'WCAPUndepChecks',
+	ClientHyperionCode = ''
+FROM den_dev_app.dbo.GLTran
+WHERE Acct IN ('1003','1004','1006','1015') -- Bank Account GLs
+	AND PerPost <= @Period
 
 /*-------------------------------------------------------*/
 /*	OUTPUT RESULTS TABLE IN CSV FORMAT					 */
@@ -871,12 +1187,13 @@ SELECT	'Actual; ' +
 		COALESCE(LTRIM(RTRIM(ClientHyperionCode)) + '; ','[None]; ') +
 		'[None]; ' +
 		Amt
-FROM	#ResultsTbl
+FROM	##ResultsTbl
 
-/*
+
 /*-------------------------------------------------------*/
 /*	CLEAN UP											 */
 /*-------------------------------------------------------*/
+
 -- Drop Temp Tables
 IF OBJECT_ID('tempdb..##ApAgingBalanceTbl') IS NOT NULL DROP TABLE ##ApAgingBalanceTbl;
 IF OBJECT_ID('tempdb..##ApAgingJobsTbl') IS NOT NULL DROP TABLE ##ApAgingJobsTbl;
@@ -884,15 +1201,15 @@ IF OBJECT_ID('tempdb..##ApAgingTbl') IS NOT NULL DROP TABLE ##ApAgingTbl;
 IF OBJECT_ID('tempdb..##ApInputBalanceTbl') IS NOT NULL DROP TABLE ##ApInputBalanceTbl;
 IF OBJECT_ID('tempdb..##ApInputJobsTbl') IS NOT NULL DROP TABLE ##ApInputJobsTbl;
 IF OBJECT_ID('tempdb..##ApInputTbl') IS NOT NULL DROP TABLE ##ApInputTbl;
-IF OBJECT_ID('tempdb..#WorkCapJobUsed') IS NOT NULL DROP TABLE #WorkCapJobUsed;
-IF OBJECT_ID('tempdb..#ResultsTbl') IS NOT NULL DROP TABLE #ResultsTbl;
+IF OBJECT_ID('tempdb..##WorkCapJobUsed') IS NOT NULL DROP TABLE ##WorkCapJobUsed;
+IF OBJECT_ID('tempdb..##ResultsTbl') IS NOT NULL DROP TABLE ##ResultsTbl;
 IF OBJECT_ID('tempdb..##ArAgingBalanceTbl') IS NOT NULL DROP TABLE ##ArAgingBalanceTbl;
-IF OBJECT_ID('tempdb..#ArAgingTbl') IS NOT NULL DROP TABLE #ArAgingTbl;
-IF OBJECT_ID('tempdb..#ArInputTbl') IS NOT NULL DROP TABLE #ArInputTbl;
-IF OBJECT_ID('tempdb..#UnbillBalTbl') IS NOT NULL DROP TABLE #UnbillBalTbl;
-IF OBJECT_ID('tempdb..#WipBalTbl') IS NOT NULL DROP TABLE #WipBalTbl;
-IF OBJECT_ID('tempdb..#PrebillBalTbl') IS NOT NULL DROP TABLE #PrebillBalTbl;
-IF OBJECT_ID('tempdb..#VendorLiabBalTbl') IS NOT NULL DROP TABLE #VendorLiabBalTbl;
-IF OBJECT_ID('tempdb..#WorkCapClientHyperionCodes') IS NOT NULL DROP TABLE #WorkCapClientHyperionCodes;
-IF OBJECT_ID('tempdb..#JobOverrideTbl') IS NOT NULL DROP TABLE #JobOverrideTbl;
-*/
+IF OBJECT_ID('tempdb..##ArAgingTbl') IS NOT NULL DROP TABLE ##ArAgingTbl;
+IF OBJECT_ID('tempdb..##ArInputTbl') IS NOT NULL DROP TABLE ##ArInputTbl;
+IF OBJECT_ID('tempdb..##UnbillBalTbl') IS NOT NULL DROP TABLE ##UnbillBalTbl;
+IF OBJECT_ID('tempdb..##WipBalTbl') IS NOT NULL DROP TABLE ##WipBalTbl;
+IF OBJECT_ID('tempdb..##PrebillBalTbl') IS NOT NULL DROP TABLE ##PrebillBalTbl;
+IF OBJECT_ID('tempdb..##VendorLiabBalTbl') IS NOT NULL DROP TABLE ##VendorLiabBalTbl;
+IF OBJECT_ID('tempdb..##WorkCapClientHyperionCodes') IS NOT NULL DROP TABLE ##WorkCapClientHyperionCodes;
+IF OBJECT_ID('tempdb..##JobOverrideTbl') IS NOT NULL DROP TABLE ##JobOverrideTbl;
+

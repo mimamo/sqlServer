@@ -536,3 +536,18 @@ order by rowId
 execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU', @sProductId = 'TRDE', @sPM = 'SAPPEL', @sStatus = 'A'
 
 */
+
+---------------------------------------------
+-- permissions
+---------------------------------------------
+grant execute on AcctLeadershipFjrRpt to BFGROUP
+go
+
+grant execute on AcctLeadershipFjrRpt to MSDSL
+go
+
+grant control on AcctLeadershipFjrRpt to MSDSL
+go
+
+grant execute on AcctLeadershipFjrRpt to MSDynamicsSL
+go

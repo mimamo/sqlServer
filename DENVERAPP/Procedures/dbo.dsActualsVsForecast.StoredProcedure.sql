@@ -8,7 +8,7 @@ GO
 
 IF EXISTS (
             SELECT 1
-            FROM sys.procedures WITH(NOLOCK)
+            FROM sys.procedures WITHwith (nolock)
             WHERE NAME = 'dsActualsVsForecast'
                 AND type = 'P'
            )
@@ -119,7 +119,7 @@ select BusinessUnitAct = act.BusinessUnit,
 	FTE = 0, -- sum(case when coalesce(fc.fte_adj,0) = 0 then 0 else fc.fte_adj / 1.00 end),
 	Adj_Forecast = 0, -- sum(case when coalesce(fc.adj_fPpl,0) = 0 then 0 else fc.adj_fPpl / 1.00 end),
 	CurMonth = act.CurMonth
-from DENVERAPP.dbo.xwrk_MC_Data act (nolock)
+from DENVERAPP.dbo.xwrk_MC_Data act with (nolock)
 where coalesce(act.BusinessUnit, 'OOS') not like 'OOS%'
 	and act.CurMonth <= @iCurMonth
 	and act.[Year] = @iCurYear
@@ -135,7 +135,7 @@ select BusinessUnit,
 	FTE = sum(case when coalesce(fte_adj,0) = 0 then 0 else fte_adj / 1.00 end),
 	Adj_Forecast = sum(case when coalesce(adj_fPpl,0) = 0 then 0 else adj_fPpl / 1.00 end),
 	fMonth
-from DENVERAPP.dbo.xwrk_MC_Forecast (nolock) 
+from DENVERAPP.dbo.xwrk_MC_Forecast with (nolock) 
 where BusinessUnit not like 'OOS%'
 	and fMonth <= @iCurMonth
 	and fYear = @iCurYear
@@ -184,7 +184,7 @@ select BusinessUnitAct = fc.BusinessUnit,
 	FTE = sum(case when coalesce(fc.fte_adj,0) = 0 then 0 else fc.fte_adj / 1.00 end),
 	Adj_Forecast = sum(case when coalesce(fc.adj_fPpl,0) = 0 then 0 else fc.adj_fPpl / 1.00 end),
 	CurMonth = fc.fMonth
-from DENVERAPP.dbo.xwrk_MC_Forecast fc (nolock) 
+from DENVERAPP.dbo.xwrk_MC_Forecast fc with (nolock) 
 left join ##mcFte mc
 	on fc.BusinessUnit = mc.BusinessUnitAct
 	and fc.SalesMarketing = mc.SalesMarketingAct
@@ -244,3 +244,18 @@ where SalesMarketingAct = '10th & Blake'
 group by BusinessUnitAct
 */
 drop table ##mcFte
+
+---------------------------------------------
+-- permissions
+---------------------------------------------
+grant execute on dsActualsVsForecast to BFGROUP
+go
+
+grant execute on dsActualsVsForecast to MSDSL
+go
+
+grant control on dsActualsVsForecast to MSDSL
+go
+
+grant execute on dsActualsVsForecast to MSDynamicsSL
+go

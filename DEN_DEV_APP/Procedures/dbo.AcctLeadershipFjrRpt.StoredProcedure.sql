@@ -430,3 +430,18 @@ select Company = ltrim(rtrim(Company)),
 	FltClientPO = ltrim(rtrim(FltClientPO)),
 	ContractType = ltrim(rtrim(ContractType))
 from ##fjrResults
+
+---------------------------------------------
+-- permissions
+---------------------------------------------
+grant execute on AcctLeadershipFjrRpt to BFGROUP
+go
+
+grant execute on AcctLeadershipFjrRpt to MSDSL
+go
+
+grant control on AcctLeadershipFjrRpt to MSDSL
+go
+
+grant execute on AcctLeadershipFjrRpt to MSDynamicsSL
+go
