@@ -3296,7 +3296,7 @@
         <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@sClientID">
-            <Value>=Parameters!sClientID.Value</Value>
+            <Value>=Join(Parameters!sClientID.Value,"|")</Value>
           </QueryParameter>
           <QueryParameter Name="@company">
             <Value>=Parameters!company.Value</Value>
@@ -3308,13 +3308,13 @@
             <Value>=Parameters!sClientPO.Value</Value>
           </QueryParameter>
           <QueryParameter Name="@sProductID">
-            <Value>=Parameters!sProductID.Value</Value>
+            <Value>=Join(Parameters!sProductID.Value,"|")</Value>
           </QueryParameter>
           <QueryParameter Name="@sPM">
-            <Value>=Parameters!sPM.Value</Value>
+            <Value>=Join(Parameters!sPM.Value,"|")</Value>
           </QueryParameter>
           <QueryParameter Name="@sStatus">
-            <Value>=Parameters!sStatus.Value</Value>
+            <Value>=Join(Parameters!sStatus.Value,"|")</Value>
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
@@ -3461,7 +3461,7 @@
         </Field>
         <Field Name="RowId">
           <DataField>RowId</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -3547,11 +3547,6 @@ order by pm_id02</CommandText>
   <ReportParameters>
     <ReportParameter Name="sClientID">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>1LFSU</Value>
-        </Values>
-      </DefaultValue>
       <Prompt>Client Code:</Prompt>
       <ValidValues>
         <DataSetReference>

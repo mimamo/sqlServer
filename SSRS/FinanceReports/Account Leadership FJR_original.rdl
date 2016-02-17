@@ -3938,7 +3938,7 @@
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="SQL1_DENVERAPP">
-      <DataSourceReference>SQL1_DENVERAPP</DataSourceReference>
+      <DataSourceReference>DENVERAPP</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>987fb9ad-fb45-4bd6-9657-f6aa607063c0</rd:DataSourceID>
     </DataSource>

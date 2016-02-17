@@ -1,4 +1,4 @@
-USE DENVERAPP; 
+USE DENVERAPP
 GO
 
 SET QUOTED_IDENTIFIER OFF
@@ -16,13 +16,13 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE [dbo].[AcctLeadershipFjrRpt]     
-	@company varchar(30),
-	@sProject varchar(20) = null,
-	@sClientID varchar(30),
+	@company varchar(50),
+	@sProject varchar(16) = null,
+	@sClientID varchar(max),
 	@sClientPO varchar(20)= null,
-	@sProductID varchar(20),
-	@sPM varchar(10),
-	@sStatus varchar(1)
+	@sProductID varchar(max),
+	@sPM varchar(max),
+	@sStatus varchar(5)
 	
  AS
 
@@ -34,12 +34,16 @@ CREATE PROCEDURE [dbo].[AcctLeadershipFjrRpt]
 *   Date:          
 *   
 *
-*   Notes:         
-*                  
+*   Notes:         select distinct manager1 from SHOPPERAPP.dbo.PJPROJ 
+					where contract_type IN ('BPRD','FEE','MED','PARN','PDNT','PRNT','PROD','RET','TIME') 
+			
+                  
 *
 *   Usage:	set statistics io on
 	
+		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU|1JJVC', @sProductId = 'TRDE|JJHW', @sPM = 'SAPPEL|MMULDOON', @sStatus = 'A|I'
 		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU', @sProductId = 'TRDE', @sPM = 'SAPPEL', @sStatus = 'A'
+		
 		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1JJVC', @sProductId = 'CUST', @sPM = 'CUST', @sStatus = 'A'
 		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'DENVER', @sClientId = '1IZZE', @sProductId = 'IZZE', @sPM = 'ALUU', @sStatus = 'A'
 		
@@ -64,6 +68,7 @@ declare @sql nvarchar(max)
 declare @sql1 nvarchar(max)
 declare @sql2 nvarchar(max)
 declare @sql3 nvarchar(max)
+declare @sql4 nvarchar(max)
 declare @serverName varchar(13)
 declare @dbName nvarchar(24)
 ---------------------------------------------
@@ -186,9 +191,30 @@ create table ##fjrSums
 	primary key clustered (Project, SumType)
 )
 
-
-
 SET NOCOUNT ON
+
+--declare @ParsedCompany table (company varchar(20))
+declare @ParsedClientID table (clientId varchar(255))
+declare @ParsedProductID table (productId varchar(255))
+declare @ParsedPM table (PM varchar(255))
+declare @ParsedStatus table ([status] varchar(255))
+
+
+insert @ParsedClientID (clientId)
+SELECT Name
+FROM DENVERAPP.dbo.SplitString(''' + @sClientId + ''')
+
+insert @ParsedProductID (productId)
+SELECT Name
+FROM DENVERAPP.dbo.SplitString(''' + @sProductId + ''')
+
+insert @ParsedPM (PM)
+SELECT Name
+FROM DENVERAPP.dbo.SplitString(''' + @sPM + ''')
+
+insert @ParsedStatus ([status])
+SELECT Name
+FROM DENVERAPP.dbo.SplitString(''' + @sStatus + ''')
 
 insert ##uni123
 (
@@ -240,12 +266,22 @@ select Project = ltrim(rtrim(ip.Project)),
 	ClientContact = ltrim(rtrim(xc.CName)), 
 	ContactEmailAddress = ltrim(rtrim(xc.EmailAddress)),
 	ECD = ltrim(rtrim(x.pm_id28)),
-	RowId = rank() over (partition by 1 order by a.project_billwith) 
+	RowId = row_number() over (partition by 1 order by a.project_billwith) 
 from ' + @dbName + '.dbo.PJBILL A with (nolock) 
 INNER JOIN ' + @dbName + '.dbo.PJPROJ p with (nolock)  -- parent  
 	ON A.project_billwith = case when A.project_billwith <> '''' then p.Project else A.project_billwith end
 INNER JOIN ' + @dbName + '.dbo.PJPROJ ip with (nolock)  -- child
-	ON a.project = ip.project
+	ON a.project = ip.project 
+inner join @parsedClientId pcl 
+	on ltrim(rtrim(pcl.clientId)) = ltrim(rtrim(ip.pm_id01))
+inner join @ParsedProductID ppi
+	on ppi.ProductId = ltrim(rtrim(ip.pm_id02)) '
+
+set @sql2 = '
+inner join @ParsedPM ppm
+	on ppm.PM = ltrim(rtrim(ip.manager1)) 
+inner join @ParsedStatus ps
+	on ps.[status] = ip.status_pa 
 LEFT OUTER JOIN ' + @dbName + '.dbo.xIGProdCode pc with (nolock)
 	ON ip.pm_id02 = pc.code_ID
 LEFT OUTER JOIN ' + @dbName + '.dbo.CUSTOMER c with (nolock)
@@ -253,22 +289,13 @@ LEFT OUTER JOIN ' + @dbName + '.dbo.CUSTOMER c with (nolock)
 LEFT OUTER JOIN ' + @dbName + '.dbo.PJPROJEX x with (nolock)
 	ON ip.project = x.project
 LEFT JOIN ' + @dbName + '.dbo.xClientContact xc with (nolock)
-	ON ip.user2 = xc.EA_ID '
-
-set @sql2 = '
-
+	ON ip.user2 = xc.EA_ID 
 --!!!!!! ALL FILTER CRITERIA MUST BE ON IP AND NOT P OR PARENT CHILD JOBS WILL NOT ALWAYS BE PULLED TOGETHER!!!!!!
 where ip.contract_type IN (''BPRD'',''FEE'',''MED'',''PARN'',''PDNT'',''PRNT'',''PROD'',''RET'',''TIME'',''NYK'')
 	and (ltrim(rtrim(ip.Project)) = ''' + @sProject + '''
 		or ''' + @sProject + ''' = '''')
-	and ltrim(rtrim(ip.pm_id01)) = ''' + @sClientId + '''
 	and (ip.purchase_order_num = ''' + @sClientPO + '''
 		or ''' + @sClientPO + ''' = '''')
-	and ltrim(rtrim(ip.pm_id02)) = ''' + @sProductID + '''
-	and ltrim(rtrim(ip.manager1)) = ''' + @sPM + '''
-	and ip.status_pa = ''' + @sStatus + ''' 
-
-
 
 --FJR query.  To get down to one line for reporting pulling as main source
 insert ##fjr
@@ -349,7 +376,6 @@ inner join ##uni123 u
 where act.acct = ''Billable''
 group by act.project
 
-
 -- Get the Out of Pocket Actuals
 insert ##fjrSums
 (
@@ -357,10 +383,13 @@ insert ##fjrSums
 	SumType,
 	SumValue
 )
-SELECT act.project,
-	SumType = ''OOPActuals'',
+SELECT act.project, '
+
+select @sql3 = '	SumType = ''OOPActuals'',
 	SumValue = sum(act.Amount01 + act.Amount02 + act.Amount03 + act.Amount04 + act.Amount05 + act.Amount06 + act.Amount07 + act.Amount08 + act.Amount09 + act.Amount10 + act.Amount11 + act.Amount12 + act.Amount13 + act.Amount14 + act.Amount15)
-FROM ' + @dbName + '.dbo.xvr_BU96C_Actuals act with (nolock)
+FROM ' + @dbName + '.dbo.xvr_BU96C_Actuals act with (nolock) 
+
+
 inner join ' + @dbName + '.dbo.xIGFunctionCode fc with (nolock)
 	on act.[function] = fc.code_id
 inner join ##uni123 u
@@ -368,9 +397,8 @@ inner join ##uni123 u
 where act.acct IN (''Billable'',''BILLABLE APS'',''BILLABLE FEES'') 
 	and (coalesce(fc.code_group,'''') not in (''TRAV'',''FEE'') 
 		or coalesce(fc.code_id,'''') = ''00975'')
-group by act.project  '
+group by act.project  
 
-select @sql3 = '
 
 --Per Email, include all WIP transactions.  Leaving in as easy to uncomment if decisions change.	   
 insert ##fjrSums
@@ -472,8 +500,9 @@ LEFT OUTER JOIN ##fjrSums trv
 /*Using Out Of Pocket functions. This is all functions except TRAV and FEE Must roll up to project or cartestion joins */
 LEFT OUTER JOIN ##fjrSums OOP
 	ON u.Project = OOP.Project
-	and OOP.SumType = ''OOPActuals'' 
-/*Logic taken from BI902 and stripped down.  Including aging days for reuse*/	   
+	and OOP.SumType = ''OOPActuals''  '
+
+select @sql4 = '/*Logic taken from BI902 and stripped down.  Including aging days for reuse*/	    
 LEFT OUTER JOIN ##fjrSums RptWIP
 	ON u.Project = RptWip.project
 	and rptWip.SumType =  ''WIPOvr60Amount''
@@ -488,10 +517,11 @@ drop table ##uni123 '
 
 print @sql3
 
-select @sql = (@sql1 + @sql2 + @sql3)
+select @sql = (@sql1 + @sql2 + @sql3 + @sql4)
 
 insert ##fjrResults execute sp_executesql @sql
 
+--execute sp_executesql @sql
 
 select Company = ltrim(rtrim(Company)),
 	Project = ltrim(rtrim(Project)), 
@@ -535,8 +565,12 @@ order by rowId
 
 execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU', @sProductId = 'TRDE', @sPM = 'SAPPEL', @sStatus = 'A'
 
+execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU|1JJVC', @sProductId = 'TRDE|JJHW', @sPM = 'SAPPEL|MMULDOON', @sStatus = 'A|I'
 */
 
+
+
+drop table ##fjrResults
 ---------------------------------------------
 -- permissions
 ---------------------------------------------
