@@ -46,6 +46,10 @@
       <FullPath>ArPaymentHistory.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>Client PL Hours Report.rdl</Name>
+      <FullPath>Client PL Hours Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>MC_FTE_Data_Dump.rdl</Name>
       <FullPath>MC_FTE_Data_Dump.rdl</FullPath>
     </ProjectItem>
@@ -74,8 +78,8 @@
       <FullPath>WorkingCapital.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Client PL Hours Report.rdl</Name>
-      <FullPath>Client PL Hours Report.rdl</FullPath>
+      <Name>JobsFunctions.rdl</Name>
+      <FullPath>JobsFunctions.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>

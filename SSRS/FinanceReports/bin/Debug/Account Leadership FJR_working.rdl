@@ -6,7 +6,7 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>26.27348in</Width>
+              <Width>26.31734in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -2410,7 +2410,7 @@
                                 <TablixHeader>
                                   <Size>1in</Size>
                                   <CellContents>
-                                    <Textbox Name="Textbox590">
+                                    <Textbox Name="Textbox5">
                                       <CanGrow>true</CanGrow>
                                       <KeepTogether>true</KeepTogether>
                                       <Paragraphs>
@@ -2429,7 +2429,7 @@
                                           <Style />
                                         </Paragraph>
                                       </Paragraphs>
-                                      <rd:DefaultName>Textbox590</rd:DefaultName>
+                                      <rd:DefaultName>Textbox5</rd:DefaultName>
                                       <Style>
                                         <Border>
                                           <Color>LightGrey</Color>
@@ -2531,10 +2531,20 @@
                                 </TablixMembers>
                               </TablixMember>
                               <TablixMember>
+                                <Group Name="Company">
+                                  <GroupExpressions>
+                                    <GroupExpression>=Fields!Company.Value</GroupExpression>
+                                  </GroupExpressions>
+                                </Group>
+                                <SortExpressions>
+                                  <SortExpression>
+                                    <Value>=Fields!Company.Value</Value>
+                                  </SortExpression>
+                                </SortExpressions>
                                 <TablixHeader>
                                   <Size>1in</Size>
                                   <CellContents>
-                                    <Textbox Name="Company">
+                                    <Textbox Name="Company1">
                                       <CanGrow>true</CanGrow>
                                       <KeepTogether>true</KeepTogether>
                                       <Paragraphs>
@@ -2551,13 +2561,12 @@
                                           <Style />
                                         </Paragraph>
                                       </Paragraphs>
-                                      <rd:DefaultName>Company</rd:DefaultName>
+                                      <rd:DefaultName>Company1</rd:DefaultName>
                                       <Style>
                                         <Border>
                                           <Color>LightGrey</Color>
                                           <Style>Solid</Style>
                                         </Border>
-                                        <BackgroundColor>=IIF(Fields!ContractType.Value = "TIME","LightBlue","Transparent")</BackgroundColor>
                                         <PaddingLeft>2pt</PaddingLeft>
                                         <PaddingRight>2pt</PaddingRight>
                                         <PaddingTop>2pt</PaddingTop>
@@ -2709,7 +2718,7 @@
         <RepeatColumnHeaders>true</RepeatColumnHeaders>
         <DataSetName>DataSet1</DataSetName>
         <Height>1.78401in</Height>
-        <Width>26.27348in</Width>
+        <Width>26.31734in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2720,7 +2729,7 @@
     <Height>1.79443in</Height>
     <Style />
   </Body>
-  <Width>26.27348in</Width>
+  <Width>26.31734in</Width>
   <Page>
     <PageHeader>
       <Height>0.92487in</Height>
@@ -3299,7 +3308,7 @@
             <Value>=Join(Parameters!sClientID.Value,"|")</Value>
           </QueryParameter>
           <QueryParameter Name="@company">
-            <Value>=Parameters!company.Value</Value>
+            <Value>=Join(Parameters!company.Value,"|")</Value>
           </QueryParameter>
           <QueryParameter Name="@sProject">
             <Value>=Parameters!sProject.Value</Value>
