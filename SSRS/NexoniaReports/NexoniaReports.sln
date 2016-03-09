@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "NexoniaReports", "NexoniaReports.rptproj", "{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}.Debug|Default.ActiveCfg = Debug
+		{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}.Debug|Default.Build.0 = DebugLocal
+		{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}.Debug|Default.Deploy.0 = DebugLocal
+		{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}.DebugLocal|Default.Build.0 = DebugLocal
+		{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}.Release|Default.ActiveCfg = Release
+		{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}.Release|Default.Build.0 = Release
+		{6AEA76D9-A045-4CFE-B8BC-2CBBBDF0F0ED}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

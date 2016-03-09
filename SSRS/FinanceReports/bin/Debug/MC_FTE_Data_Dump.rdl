@@ -1679,7 +1679,7 @@
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="SQL1_DENVERAPP">
-      <DataSourceReference>SQL1_DENVERAPP</DataSourceReference>
+      <DataSourceReference>DENVERAPP</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>7c44decd-4560-4169-a539-9b3514abf012</rd:DataSourceID>
     </DataSource>
@@ -1696,53 +1696,36 @@
             <Value>=Parameters!iYear.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>-- Run SPROC to Populate data if it isn't populated
- EXEC xsp_MC_FTE  @iMonth, @iYear
+        <CommandText>SET FMTONLY OFF
 
-select 
-Brand	
-, BusinessUnit	
-, SubUnit	
-, Department	
-, RTRIM(ProjectID) ProjectID	
-, ProjectDesc	
-, RTRIM(ClientID) ClientID	
-, RTRIM(ProdID) ProductID	
-, Employee_Name	
-, Title	
-, SalesMarketing	
-, CurMonth as 'Months'	
-, SUM(Hours) as 'Total Hours'	
-, Year
-, fiscalno
- from xwrk_MC_Data where curmonth in (@iMonth) and year in (@iYear) and BusinessUnit NOT LIKE ('OOS%')
-AND NOT (Year = 2015 AND BusinessUnit IN('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift'))
-AND NOT (Year = 2015 AND BusinessUnit = 'Blue Moon' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Crispin' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Peroni' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Sales Dev' AND Department IN ('Insight &amp; Strategy', 'iXpress', 'Sales &amp; Dev', 'POS'))
-AND NOT (Year = 2015 AND BusinessUnit = 'Redds' AND Department = 'POS')
-AND NOT (Year = 2015 AND BusinessUnit = 'Regions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Brand Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Channel Solutions' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Customer Marketing' AND Department = 'Digital')
-AND NOT (Year = 2015 AND BusinessUnit = 'Digital' AND Department = 'Digital')
+-- Run SPROC to Populate data if it isn't populated
+EXEC denverapp.dbo.xsp_MC_FTE_working  @iMonth, @iYear
 
- group by Brand	
-, BusinessUnit	
-, SubUnit	
-, Department	
-, ProjectID	
-, ProjectDesc	
-, ClientID	
-, ProdID	
-, Employee_Name	
-, Title	
-, SalesMarketing	
-, CurMonth	
-, Year
-, fiscalno
-order by curmonth, brand, businessunit, subunit, department</CommandText>
+
+select mcd.Brand	
+, mcd.BusinessUnit	
+, mcd.SubUnit	
+, mcd.Department	
+, RTRIM(mcd.ProjectID) ProjectID	
+, mcd.ProjectDesc	
+, RTRIM(mcd.ClientID) ClientID	
+, RTRIM(mcd.ProdID) ProductID	
+, mcd.Employee_Name	
+, mcd.Title	
+, mcd.SalesMarketing	
+, mcd.CurMonth as [Months]	
+, SUM(mcd.[Hours]) as [Total Hours]	
+, mcd.[Year]
+, mcd.fiscalno
+ from denverapp.dbo.xwrk_MC_Data mcd 
+ where mcd.curmonth = @iMonth
+	and mcd.[year] = @iYear
+	and mcd.BusinessUnit NOT LIKE ('OOS%')
+ group by mcd.Brand, mcd.BusinessUnit, mcd.SubUnit, mcd.Department, mcd.ProjectID, mcd.ProjectDesc, mcd.ClientID, mcd.ProdID, mcd.Employee_Name, mcd.Title, mcd.SalesMarketing, mcd.CurMonth, mcd.[Year], mcd.fiscalno
+order by mcd.curmonth, mcd.brand, mcd.businessunit, mcd.subunit, mcd.department
+
+
+SET FMTONLY ON</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -1811,12 +1794,33 @@ order by curmonth, brand, businessunit, subunit, department</CommandText>
     <DataSet Name="fYear">
       <Query>
         <DataSourceName>SQL1_DENVERAPP</DataSourceName>
-        <CommandText>select distinct year from xwrk_MC_Data order by year</CommandText>
+        <CommandText>; WITH years AS (SELECT     [Year] = year(getdate())
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 1
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 2
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 3
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 4
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 5
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 6
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 7
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 8
+                                      UNION
+                                      SELECT     [Year] = year(getdate()) - 9)
+    SELECT     [Year]
+     FROM         years
+     ORDER BY [Year] DESC</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="year">
-          <DataField>year</DataField>
+          <DataField>Year</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>

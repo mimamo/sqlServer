@@ -180,3 +180,17 @@ order by coalesce(m.CurMonth, ad.CurMonth), coalesce(m.BusinessUnit, ad.Business
 drop table ##fcxyz 
 drop table ##actual 
 
+---------------------------------------------
+-- permissions
+---------------------------------------------
+grant execute on dsChangeSummary_by_BU_Dept to BFGROUP
+go
+
+grant execute on dsChangeSummary_by_BU_Dept to MSDSL
+go
+
+grant control on dsChangeSummary_by_BU_Dept to MSDSL
+go
+
+grant execute on dsChangeSummary_by_BU_Dept to MSDynamicsSL
+go

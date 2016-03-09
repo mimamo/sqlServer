@@ -19,6 +19,10 @@
       <FullPath>MID_DEV_APP.rds</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>MIDWESTAPP.rds</Name>
+      <FullPath>MIDWESTAPP.rds</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>NYC_DEV_APP.rds</Name>
       <FullPath>NYC_DEV_APP.rds</FullPath>
     </ProjectItem>
@@ -42,12 +46,28 @@
       <FullPath>ApTransaction.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>AR Aging By Due Date.rdl</Name>
+      <FullPath>AR Aging By Due Date.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>ArPaymentHistory.rdl</Name>
       <FullPath>ArPaymentHistory.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Client PL Hours Report.rdl</Name>
-      <FullPath>Client PL Hours Report.rdl</FullPath>
+      <Name>Hours Report with Function.rdl</Name>
+      <FullPath>Hours Report with Function.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Dynamics Vendors.rdl</Name>
+      <FullPath>Dynamics Vendors.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Hours Report.rdl</Name>
+      <FullPath>Hours Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>JobsFunctions.rdl</Name>
+      <FullPath>JobsFunctions.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>MC_FTE_Data_Dump.rdl</Name>
@@ -62,12 +82,12 @@
       <FullPath>MC_FTE_Report_original.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>MC_FTE_Report_Test.rdl</Name>
-      <FullPath>MC_FTE_Report_Test.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
       <Name>MC_FTE_Report_Working.rdl</Name>
       <FullPath>MC_FTE_Report_Working.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>MIDWEST - Account Leadership FJR.rdl</Name>
+      <FullPath>MIDWEST - Account Leadership FJR.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>PayWhenPaid.rdl</Name>
@@ -76,10 +96,6 @@
     <ProjectItem>
       <Name>WorkingCapital.rdl</Name>
       <FullPath>WorkingCapital.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
-      <Name>JobsFunctions.rdl</Name>
-      <FullPath>JobsFunctions.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>

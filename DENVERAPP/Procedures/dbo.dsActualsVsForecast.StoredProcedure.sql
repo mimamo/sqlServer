@@ -35,9 +35,9 @@ CREATE PROCEDURE [dbo].[dsActualsVsForecast]
 *
 *   Usage:	set statistics io on
 	
-		execute DENVERAPP.dbo.dsActualsVsForecast @iCurMonth = 4,@iCurYear = 2015
-		execute DENVERAPP.dbo.dsActualsVsForecast @iCurMonth = 2,@iCurYear = 2015
-		execute DENVERAPP.dbo.dsActualsVsForecast @iCurMonth = 12,@iCurYear = 2015
+		execute DENVERAPP.dbo.dsActualsVsForecast @iCurMonth = 1, @iCurYear = 2016
+		execute DENVERAPP.dbo.dsActualsVsForecast @iCurMonth = 2, @iCurYear = 2015
+		execute DENVERAPP.dbo.dsActualsVsForecast @iCurMonth = 12, @iCurYear = 2015
 		
 		select businessUnit, Department, fMonth, count(1)
 		from DENVERAPP.dbo.xwrk_MC_Forecast
@@ -156,46 +156,6 @@ inner join sums s
 	and mc.CurMonth = s.fMonth
 where mc.Employee_Name = ''	
 	
-/*
-insert ##mcFte
-(
-	BusinessUnitAct,
-	BusinessUnitFc,
-	DepartmentAct,
-	DepartementFc,
-	SalesMarketingAct,
-	SalesMarketingFc,
-	Employee_Name,
-	[Hours],
-	Forecast,
-	FTE,
-	Adj_Forecast,
-	CurMonth
-)
-select BusinessUnitAct = fc.BusinessUnit, 
-	BusinessUnitFc = fc.BusinessUnit,
-	DepartmentAct = fc.Department,
-	DepartementFc = fc.Department,
-	SalesMarketingAct = fc.SalesMarketing, 
-	SalesMarketingFc = fc.SalesMarketing,
-	Employee_Name = '',
-	[Hours] = 0,
-	Forecast = sum(case when coalesce(fc.fPpl,0) = 0 then 0 else fc.fPpl / 1.00 end),
-	FTE = sum(case when coalesce(fc.fte_adj,0) = 0 then 0 else fc.fte_adj / 1.00 end),
-	Adj_Forecast = sum(case when coalesce(fc.adj_fPpl,0) = 0 then 0 else fc.adj_fPpl / 1.00 end),
-	CurMonth = fc.fMonth
-from DENVERAPP.dbo.xwrk_MC_Forecast fc with (nolock) 
-left join ##mcFte mc
-	on fc.BusinessUnit = mc.BusinessUnitAct
-	and fc.SalesMarketing = mc.SalesMarketingAct
-	and fc.Department = mc.DepartmentAct
-	and fc.fMonth = mc.CurMonth
-where mc.BusinessUnitAct is null 
-	and fc.BusinessUnit not like 'OOS%'
-	and fc.fMonth <= @iCurMonth
-	and fc.fYear = @iCurYear
-group by fc.BusinessUnit, fc.Department, fc.SalesMarketing, fc.fMonth
-*/
 
 select BusinessUnitAct,
 	BusinessUnitFc,
@@ -216,6 +176,8 @@ where (round([Hours], 3) <> 0
 	or round(Adj_Forecast, 3) <> 0)
 --	and BusinessUnitAct = 'Peroni'
 --	and DepartmentAct = 'Account Leadership'
+
+
 
 /*
 select BusinessUnitAct,

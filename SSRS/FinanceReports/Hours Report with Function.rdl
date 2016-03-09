@@ -50,6 +50,12 @@
             <TablixColumn>
               <Width>0.47917in</Width>
             </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
@@ -865,6 +871,114 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox3">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Function Code</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox3</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <TopBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
+                        <LeftBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </LeftBorder>
+                        <RightBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </RightBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox15">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Week Ending Date</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox15</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <TopBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
+                        <LeftBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </LeftBorder>
+                        <RightBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </RightBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
             <TablixRow>
@@ -1320,12 +1434,78 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="functionCode">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!functionCode.Value</Value>
+                              <Style>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>functionCode</rd:DefaultName>
+                      <Style>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="WeekEndingDate">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!WeekEndingDate.Value</Value>
+                              <Style>
+                                <FontSize>7pt</FontSize>
+                                <Format>d</Format>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>WeekEndingDate</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
           </TablixRows>
         </TablixBody>
         <TablixColumnHierarchy>
           <TablixMembers>
+            <TablixMember />
+            <TablixMember />
             <TablixMember />
             <TablixMember />
             <TablixMember />
@@ -1363,17 +1543,17 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>DataSet1</DataSetName>
+        <DataSetName>HoursReportClientData</DataSetName>
         <Top>0.21in</Top>
         <Height>0.42in</Height>
-        <Width>12.83334in</Width>
+        <Width>14.83334in</Width>
         <Style />
       </Tablix>
     </ReportItems>
     <Height>0.63in</Height>
     <Style />
   </Body>
-  <Width>12.83334in</Width>
+  <Width>14.83334in</Width>
   <Page>
     <LeftMargin>1in</LeftMargin>
     <RightMargin>1in</RightMargin>
@@ -1383,20 +1563,16 @@
   </Page>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DataSource1">
-      <ConnectionProperties>
-        <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=SQL1;Initial Catalog=DENVERAPP</ConnectString>
-        <IntegratedSecurity>true</IntegratedSecurity>
-      </ConnectionProperties>
+    <DataSource Name="SQL1_DENVERAPP">
+      <DataSourceReference>DENVERAPP</DataSourceReference>
       <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>b18d3547-73b8-4b1f-b3e5-ccee795832ea</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSet1">
+    <DataSet Name="HoursReportClientData">
       <Query>
-        <DataSourceName>DataSource1</DataSourceName>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Year">
             <Value>=Parameters!Year.Value</Value>
@@ -1408,41 +1584,61 @@
             <Value>=Parameters!BegMonth.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>if object_id('tempdb.dbo.#Temp') &gt; 0 drop table #Temp
-CREATE  Table #Temp(
-                    DepartmentID Varchar(24),
-                    DepartmentName varchar(60),
-                    ProjectID varchar(50), 
-                    ProjectDesc varchar(2000),
-                    ClientID varchar(30),
-                    ClientName varchar(60),
-                    ProductID varchar(300),
-                    ProductDesc varchar(50),
-                    Employee_Name varchar(8000),
-                    ADPID varchar(50),
-                    Title varchar (80),
-                    CurMonth int,
-                    CurHours float,
-                    curYear int,
-                    fiscalno varchar(6),
-                    Company varchar (20))
-                   
+        <CommandText>DECLARE @LastMonth int,
+	@CurMonth int,
+	@YearDiff int
 
-/*
-declare @year int
-set @year = 2015
-declare @BegMonth int
-declare @EndMonth int
-set @BegMonth = 01
-set @EndMonth = 01
-*/
+---------------------------------------------
+-- create temp tables
+---------------------------------------------
+if object_id('tempdb.dbo.#denEmpTitleTest') &gt; 0 drop table #denEmpTitleTest
+create table #denEmpTitleTest
+(
+	username varchar(30) not null,
+	first_name varchar(50),
+	last_name varchar(50),
+	title varchar(80),
+	id int null,
+	rowId int identity(1,1),
+	primary key clustered (username, rowId)
+)
 
-DECLARE @LastMonth int
-Select @LastMonth = 1 --MAX(curmonth) from #Temp where curYear = @Year
-DECLARE @CurMonth int
-SET @CurMonth = MONTH(getdate())
-DECLARE @YearDiff int
-SET @YearDiff = YEAR(getdate()) - @Year
+
+if object_id('tempdb.dbo.##denStagingTest') &gt; 0 drop table ##denStagingTest
+create table ##denStagingTest
+(
+	DepartmentID varchar(24),
+	DepartmentName varchar(30),
+	ProjectID varchar(16),
+	ProjectDesc varchar(60),
+	ClientID varchar(30),
+	ClientName varchar(60),
+	ProductID varchar(30),
+	ProductDesc varchar(30),
+	Employee_Name varchar(60),
+	ADPID varchar(30),
+	Title varchar(60),
+	CurMonth varchar(2),
+	CurHours float,
+	CurYear int,
+	fiscalno varchar(6),
+	functionCode varchar(32),
+	WeekEndingDate datetime,
+	employee varchar(10),
+	bill_batch_id varchar(10),
+	company varchar(20)
+ )                  
+---------------------------------------------
+-- set session variables
+---------------------------------------------
+SET NOCOUNT ON
+--set xact_abort on    --only uncomment if you're using a transaction, otherwise delete this line.
+
+---------------------------------------------
+-- body of stored procedure
+---------------------------------------------
+select @CurMonth = MONTH(getdate())
+select @YearDiff = YEAR(getdate()) - @Year
 
 -- Run Data if it is the next year in Jan
 IF YEAR(getdate()) &gt; @Year and @CurMonth = 1 and @YearDiff &lt; 2
@@ -1450,280 +1646,245 @@ BEGIN
 	SET @CurMonth = 13
 END
 
-IF (@EndMonth &gt;= @LastMonth AND @EndMonth &lt; @CurMonth) 
-
-
+--IF (@EndMonth &gt;= @LastMonth AND @EndMonth &lt; @CurMonth) 
 -- make sure that the backup currently doesn't have data for this period
---delete from #Temp where CurMonth = @EndMonth and CurYEAR = @Year
 
-BEGIN               
+              
 -- Create Temp Table to get the job title rom the bridge
-select *
-into #emptitle
+insert #denEmpTitleTest
+(
+	username,
+	first_name,
+	last_name,
+	title,
+	id
+) 
+select username,
+	first_name,
+	last_name,
+	title,
+	id
 from openquery([xRHSQL.bridge],'select username, first_name, last_name, title, id from associate')
 
-INSERT INTO #Temp (DepartmentID,DepartmentName,
-ProjectID,ProjectDesc,ClientID,ClientName,ProductID,
-ProductDesc,Employee_Name,ADPID,Title,
-CurMonth,CurHours,curYear,fiscalno,Company) 
-select 
- b.DepartmentID
-,b.DepartmentName
-, b.ProjectID
-, b.ProjectDesc
-, b.ClientID
-, b.ClientName
-, b.ProductID
-, b.ProductDesc
-, b.Employee_Name
-, b.ADPID
-, b.Title
-, b.CurMonth
-, b.CurHours
-, b.CurYear
-, b.fiscalno
-, b.company
-from
-(SELECT 
-a.DepartmentID
-, a.DepartmentName    
-, a.ProjectID
-, a.ProjectDesc
-, a.clientID as 'ClientID'
-, a.ClientName as 'ClientName'
-, a.prodID as 'ProductID'
-, a.productDesc as 'ProductDesc'
-, a.Employee_Name
-, a.ADPID
-, a.Title
-, MONTH(a.xconDate) as 'CurMonth'
-, a.Hours as 'CurHours'
-, @Year as 'CurYear'
-, a.fiscalno
-, a.Company
-FROM(
-SELECT 
-RTRIM(REPLACE(PJEMPLOY.emp_name, '~', ', ')) as 'Employee_Name'
-, RTRIM(PJEMPLOY.user2) as ADPID
-, RTRIM(PJTRAN.gl_subacct) as 'DepartmentID'
-, RTRIM(SubAcct.Descr) as 'DepartmentName'
-, (select MAX(title) from #emptitle where username = PJEMPLOY.employee) as 'Title'
-, CASE WHEN PJTRAN.fiscalno &gt;= CONVERT(CHAR(4), YEAR(PJTRAN.trans_date)) + CASE WHEN LEN(CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))) = 1 
-																	THEN '0' ELSE '' end + CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))
-		THEN CAST(SUBSTRING(PJTRAN.fiscalno, 1, 4) + '/' + SUBSTRING(PJTRAN.fiscalno, 5, 2) + '/' + '1' as smalldatetime)
-		WHEN PJTRAN.fiscalno &lt; CONVERT(CHAR(4), YEAR(PJTRAN.trans_date)) + CASE WHEN LEN(CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))) = 1 
-																	THEN '0' ELSE '' end + CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))
-		THEN CAST((CAST(YEAR(PJTRAN.trans_date) as varchar) + '/' + CAST(MONTH(PJTRAN.trans_date) as varchar) + '/' + '1') as smalldatetime) end as 'xconDate'
-, PJTRAN.units as 'Hours'
-, PJPROJ.project as 'ProjectID'
-, RTRIM(PJPROJ.project_desc) as 'ProjectDesc'
-, PJPROJ.pm_id01 as 'clientID'
-, RTRIM(C.Name) as 'ClientName'
-, PJPROJ.pm_id02 as 'prodID'
-, RTRIM(bcyc.code_value_desc) 'ProductDesc'
-, PJTRAN.fiscalno
-, 'DENVER' as 'Company'
-FROM DENVERAPP.dbo.PJTRAN PJTRAN (nolock) 
-    JOIN DENVERAPP.dbo.PJPROJ PJPROJ(nolock) ON PJTRAN.project = PJPROJ.project 
-    LEFT JOIN DENVERAPP.dbo.Customer c ON PJPROJ.pm_id01 = c.CustId
-	JOIN DENVERAPP.dbo.PJEMPLOY PJEMPLOY(nolock)  ON PJTRAN.employee = PJEMPLOY.employee 
-	LEFT JOIN DENVERAPP.dbo.xIGProdCode xIGProdCode(nolock)  ON PJPROJ.pm_id02 = xIGProdCode.code_ID 
-	LEFT JOIN DENVERAPP.dbo.SubAcct SubAcct(nolock)  ON PJTRAN.gl_subacct = SubAcct.sub 
-	LEFT JOIN DENVERAPP.dbo.xPJEMPPJT xPJEMPPJT(nolock)  ON PJTRAN.employee = xPJEMPPJT.employee 
-	LEFT OUTER JOIN DENVERAPP.dbo.PJCODE  bcyc 
-              ON PJPROJ.pm_id02 = bcyc.code_value 
-              AND bcyc.code_type = 'BCYC'  
-WHERE PJTRAN.acct = 'LABOR'
-	AND PJEMPLOY.emp_type_cd &lt;&gt; 'PROD'
-	AND MONTH(CASE WHEN PJTRAN.fiscalno &gt;= CONVERT(CHAR(4), YEAR(PJTRAN.trans_date)) + CASE WHEN LEN(CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))) = 1 
-																	THEN '0' ELSE '' end + CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))
-		THEN CAST(SUBSTRING(PJTRAN.fiscalno, 1, 4) + '/' + SUBSTRING(PJTRAN.fiscalno, 5, 2) + '/' + '1' as smalldatetime)
-		WHEN PJTRAN.fiscalno &lt; CONVERT(CHAR(4), YEAR(PJTRAN.trans_date)) + CASE WHEN LEN(CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))) = 1 
-																	THEN '0' ELSE '' end + CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))
-		THEN CAST((CAST(YEAR(PJTRAN.trans_date) as varchar) + '/' + CAST(MONTH(PJTRAN.trans_date) as varchar) + '/' + '1') as smalldatetime) end) between @BegMonth and @EndMonth
-		
-	AND YEAR(PJTRAN.trans_date) = @Year
-	
-UNION ALL
 
-SELECT 
-RTRIM(REPLACE(PJEMPLOY.emp_name, '~', ', ')) as 'Employee_Name'
-, RTRIM(PJEMPLOY.user2) as ADPID
-, RTRIM(PJTRAN.gl_subacct) as 'DepartmentID'
-, RTRIM(SubAcct.Descr) as 'DepartmentName'
-, (select MAX(title) from #emptitle where username = PJEMPLOY.employee) as 'Title'
-, CASE WHEN PJTRAN.fiscalno &gt;= CONVERT(CHAR(4), YEAR(PJTRAN.trans_date)) + CASE WHEN LEN(CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))) = 1 
-																	THEN '0' ELSE '' end + CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))
-		THEN CAST(SUBSTRING(PJTRAN.fiscalno, 1, 4) + '/' + SUBSTRING(PJTRAN.fiscalno, 5, 2) + '/' + '1' as smalldatetime)
-		WHEN PJTRAN.fiscalno &lt; CONVERT(CHAR(4), YEAR(PJTRAN.trans_date)) + CASE WHEN LEN(CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))) = 1 
-																	THEN '0' ELSE '' end + CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))
-		THEN CAST((CAST(YEAR(PJTRAN.trans_date) as varchar) + '/' + CAST(MONTH(PJTRAN.trans_date) as varchar) + '/' + '1') as smalldatetime) end as 'xconDate'
-, PJTRAN.units as 'Hours'
-, PJPROJ.project as 'ProjectID'
-, RTRIM(PJPROJ.project_desc) as 'ProjectDesc'
-, PJPROJ.pm_id01 as 'clientID'
-, RTRIM(C.Name) as 'ClientName'
-, PJPROJ.pm_id02 as 'prodID'
-, RTRIM(bcyc.code_value_desc) 'ProductDesc'
-, PJTRAN.fiscalno
-, 'SHOPPER' as company
-FROM SHOPPERAPP.dbo.PJTRAN PJTRAN(nolock) 
-    JOIN SHOPPERAPP.dbo.PJPROJ PJPROJ(nolock)  ON PJTRAN.project = PJPROJ.project 
-    LEFT JOIN SHOPPERAPP.dbo.Customer c ON PJPROJ.pm_id01 = c.CustId
-	JOIN SHOPPERAPP.dbo.PJEMPLOY PJEMPLOY(nolock)  ON PJTRAN.employee = PJEMPLOY.employee 
-	LEFT JOIN SHOPPERAPP.dbo.xIGProdCode xIGProdCode(nolock)  ON PJPROJ.pm_id02 = xIGProdCode.code_ID 
-	LEFT JOIN SHOPPERAPP.dbo.SubAcct SubAcct(nolock)  ON PJTRAN.gl_subacct = SubAcct.sub 
-	LEFT JOIN SHOPPERAPP.dbo.xPJEMPPJT xPJEMPPJT(nolock)  ON PJTRAN.employee = xPJEMPPJT.employee 
-	LEFT OUTER JOIN SHOPPERAPP.dbo.PJCODE  bcyc 
-              ON PJPROJ.pm_id02 = bcyc.code_value 
-              AND bcyc.code_type = 'BCYC'  
-WHERE PJTRAN.acct = 'LABOR'
-	AND PJEMPLOY.emp_type_cd &lt;&gt; 'PROD'
-	AND MONTH(CASE WHEN PJTRAN.fiscalno &gt;= CONVERT(CHAR(4), YEAR(PJTRAN.trans_date)) + CASE WHEN LEN(CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))) = 1 
-																	THEN '0' ELSE '' end + CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))
-		THEN CAST(SUBSTRING(PJTRAN.fiscalno, 1, 4) + '/' + SUBSTRING(PJTRAN.fiscalno, 5, 2) + '/' + '1' as smalldatetime)
-		WHEN PJTRAN.fiscalno &lt; CONVERT(CHAR(4), YEAR(PJTRAN.trans_date)) + CASE WHEN LEN(CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))) = 1 
-																	THEN '0' ELSE '' end + CONVERT(VARCHAR, MONTH(PJTRAN.trans_date))
-		THEN CAST((CAST(YEAR(PJTRAN.trans_date) as varchar) + '/' + CAST(MONTH(PJTRAN.trans_date) as varchar) + '/' + '1') as smalldatetime) end) between @BegMonth and @EndMonth
-		
-	AND YEAR(PJTRAN.trans_date) = @Year	
-	
-	
-	)a)b
-UNION ALL
---------- Mojo Data for iXpress (Query with project infor and ClientID, Brand, BU, subUnit)
-select 
- a.DepartmentID
-, a.DepartmentName
-, a.[Project Number] as ProjectID
-, a.Comments as ProjectDesc
-, a.ClientID
-, a.ClientName
-, a.[Client Product] as ProductID
-, a.ProductDesc
-, a.Employee_Name
-, a.ADPID
-, a.Title
-, a.curMonth
-, a.[Actual Hours Worked] as CurHours
-, a.curYear
-, 100 * a.curYear + a.curMonth as fiscalno 
-, 'DENVER' as company
---, CASE WHEN a.curMonth &lt; 10 THEN ''+a.Year+'0'+a.curMonth else ''+a.Year+a.curMonth end as 'fiscalno'
-from
-(select
-p.pm_id01 as 'ClientID'
-,C.clientName as 'ClientName'
-, 'Creative' as 'DepartmentID'
-, '' as 'DepartmentName'
-,RTRIM(C.prodDesc) as 'ProductDesc'
-, m.[Client Division]
-, m.[Client Name]
-, m.[Project Type]
-, m.[Project Name]
-, m.[Task Name]
-, m.[Client Product]
-, m.[Project Number]
-, m.[Date Worked]
-, MONTH(m.[Date Worked]) as 'curMonth'
-, YEAR(m.[Date Worked]) as 'CurYear'
-, m.[User Full Name]
-, m.[User Last Name]+', '+m.[User First Name] as Employee_NAme
-, 'noADPID' as ADPID
-, CASE WHEN m.[Task Name] = 'Retained Producer' THEN 'Producer' ELSE 'Designer' END as 'Title'
-, m.[Service Description]
-, m.[Actual Hours Worked]
-, m.Comments 
-, 'DENVER' as 'Company'
-from SQLWMJ.MOjo_prod.dbo.vReport_TimeDetail m
-left outer join DENVERAPP.dbo.PJPROJ p on p.project = right(m.[Project Number],11)
-JOIN DENVERAPP.dbo.xwrk_Client_Groupings C (nolock) ON p.pm_id01 = C.clientID AND p.pm_id02 = C.prodID 
-where m.[Project Type] = 'IXP'
-and [Service Description] like '%retained%'
-and MONTH(m.[Date Worked])  between @BegMonth and @EndMonth
-and YEAR(m.[Date Worked]) = @Year
 
-UNION ALL
+insert ##denStagingTest
+(
+	DepartmentID,
+	DepartmentName,
+	ProjectID,
+	ProjectDesc,
+	ClientID,
+	ClientName,
+	ProductID,
+	ProductDesc,
+	Employee_Name,
+	ADPID,
+	Title,
+	CurMonth,
+	CurHours,
+	CurYear,
+	fiscalno,
+	functionCode,
+	WeekEndingDate,
+	company,
+	employee,
+	bill_batch_id
+ ) 
+select DepartmentID = RTRIM(t.gl_subacct),
+	DepartmentName = RTRIM(SubAcct.Descr),
+	ProjectID = p.project,
+	ProjectDesc = RTRIM(p.project_desc),
+	clientID = p.pm_id01,
+	ClientName = RTRIM(C.Name),
+	ProductID = p.pm_id02,
+	ProductDesc = RTRIM(bcyc.code_value_desc),
+	Employee_Name = RTRIM(REPLACE(e.emp_name, '~', ', ')),
+	ADPID = RTRIM(e.user2),	
+	Title = rtrim(met.Title),
+	CurMonth = month(case when t.fiscalno &gt;= cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2)
+									then cast(right('00' + right(t.fiscalno,2),2) + '/01/' + left(t.fiscalno,4) as datetime)
+								when t.fiscalno &lt; cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2)
+									then cast(dateadd(month, datediff(month, 0, t.trans_date), 0) as smalldatetime)
+			end),
+	CurHours = t.units,
+	CurYear = @Year,
+	t.fiscalno,
+	functionCode = t.pjt_entity,
+	WeekEndingDate = null, --lh.pe_date,
+	Company = 'DENVER',
+	employee = xPJEMPPJT.employee,
+	bill_batch_id = t.bill_batch_id
+from DENVERAPP.dbo.PJTRAN t with (nolock)  
+inner join DENVERAPP.dbo.PJPROJ p with (nolock)  
+	on t.project = p.project 
+left join DENVERAPP.dbo.Customer c with (nolock)  
+	on p.pm_id01 = c.CustId
+inner join DENVERAPP.dbo.PJEMPLOY e with (nolock)  
+	on t.employee = e.employee 
+left join DENVERAPP.dbo.xIGProdCode xIGProdCode with (nolock)    
+	on p.pm_id02 = xIGProdCode.code_ID 
+left join DENVERAPP.dbo.SubAcct SubAcct with (nolock)  
+	on t.gl_subacct = SubAcct.sub 
+left join DENVERAPP.dbo.xPJEMPPJT xPJEMPPJT with (nolock)    
+	on t.employee = xPJEMPPJT.employee 
+left outer join DENVERAPP.dbo.PJCODE  bcyc with (nolock)  
+    on p.pm_id02 = bcyc.code_value 
+    and bcyc.code_type = 'BCYC'  
+left join (select Title = MAX(title), username
+			from #denEmpTitleTest 
+			group by username) met
+	on e.employee = met.username
+where t.acct = 'LABOR'
+	and e.emp_type_cd &lt;&gt; 'PROD'
+	and month(case when t.fiscalno &gt;= cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2)
+						then cast(right('00' + right(t.fiscalno,2),2) + '/01/' + left(t.fiscalno,4) as datetime)
+					when t.fiscalno &lt; CONVERT(CHAR(4), YEAR(t.trans_date)) + right('00' + cast(month(t.trans_date) as varchar(2)),2)
+						then cast(dateadd(month, datediff(month, 0, t.trans_date), 0) as datetime)
+				end) between @BegMonth and @EndMonth 
+	--and month(t.trans_date) between @BegMonth and @EndMonth		
+	and YEAR(t.trans_date) = @Year
 
-select
-p.pm_id01 as 'ClientID'
-,C.clientName as 'ClientName'
-, 'Creative' as 'DepartmentID'
-, '' as 'DepartmentName'
-,RTRIM(C.prodDesc) as 'ProductDesc'
-, m.[Client Division]
-, m.[Client Name]
-, m.[Project Type]
-, m.[Project Name]
-, m.[Task Name]
-, m.[Client Product]
-, m.[Project Number]
-, m.[Date Worked]
-, MONTH(m.[Date Worked]) as 'curMonth'
-, YEAR(m.[Date Worked]) as 'CurYear'
-, m.[User Full Name]
-, m.[User Last Name]+', '+m.[User First Name] as Employee_NAme
-, 'noADPID' as ADPID
-, CASE WHEN m.[Task Name] = 'Retained Producer' THEN 'Producer' ELSE 'Designer' END as 'Title'
-, m.[Service Description]
-, m.[Actual Hours Worked]
-, m.Comments 
-, 'SHOPPER' as 'Company'
-from SQLWMJ.MOjo_prod.dbo.vReport_TimeDetail m
-left outer join SHOPPERAPP.dbo.PJPROJ p on p.project = right(m.[Project Number],11)
-JOIN SHOPPERAPP.dbo.xwrk_Client_Groupings C (nolock) ON p.pm_id01 = C.clientID AND p.pm_id02 = C.prodID 
-where m.[Project Type] = 'IXP'
-and [Service Description] like '%retained%'
-and MONTH(m.[Date Worked])  between @BegMonth and @EndMonth
-and YEAR(m.[Date Worked]) = @Year
 
-)a
+insert ##denStagingTest
+(
+	DepartmentID,
+	DepartmentName,
+	ProjectID,
+	ProjectDesc,
+	ClientID,
+	ClientName,
+	ProductID,
+	ProductDesc,
+	Employee_Name,
+	ADPID,
+	Title,
+	CurMonth,
+	CurHours,
+	CurYear,
+	fiscalno,
+	functionCode,
+	WeekEndingDate,
+	company,
+	employee,
+	bill_batch_id
+ ) 
+SELECT DepartmentID = RTRIM(t.gl_subacct),
+	DepartmentName = RTRIM(SubAcct.Descr),
+	ProjectID = p.project,
+	ProjectDesc = RTRIM(p.project_desc),
+	clientID = p.pm_id01,
+	ClientName = RTRIM(C.Name),
+	productID = p.pm_id02,
+	ProductDesc = RTRIM(bcyc.code_value_desc),
+	Employee_Name = RTRIM(REPLACE(e.emp_name, '~', ', ')),
+	ADPID = RTRIM(e.user2),
+	Title =  rtrim(met.Title),
+	CurMonth = month(case when t.fiscalno &gt;= cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2)
+									then cast(right('00' + right(t.fiscalno,2),2) + '/01/' + left(t.fiscalno,4) as datetime)
+								when t.fiscalno &lt; cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2)
+									then cast(dateadd(month, datediff(month, 0, t.trans_date), 0) as smalldatetime)
+			end),
+	CurHours = t.units,
+	CurYear = @Year,
+	t.fiscalno,
+	functionCode = t.pjt_entity,
+	WeekEndingDate = null, --lh.pe_date,
+	company = 'SHOPPERNY',
+	employee = xPJEMPPJT.employee,
+	bill_batch_id = t.bill_batch_id
+from shopperapp.dbo.PJTRAN t with (nolock) 
+inner join shopperapp.dbo.PJPROJ p with (nolock) 
+	on t.project = p.project 
+left join shopperapp.dbo.Customer c with (nolock)
+	on p.pm_id01 = c.CustId
+inner join shopperapp.dbo.PJEMPLOY e with (nolock)
+	on t.employee = e.employee 
+left join shopperapp.dbo.xIGProdCode xIGProdCode with (nolock)
+	on p.pm_id02 = xIGProdCode.code_ID 
+left join shopperapp.dbo.SubAcct SubAcct with (nolock) 
+	on t.gl_subacct = SubAcct.sub 
+left join shopperapp.dbo.xPJEMPPJT xPJEMPPJT with (nolock)  
+	on t.employee = xPJEMPPJT.employee 
+left outer join shopperapp.dbo.PJCODE  bcyc with (nolock) 
+    on p.pm_id02 = bcyc.code_value 
+    and bcyc.code_type = 'BCYC'  
+left join (select Title = MAX(title), username
+			from #denEmpTitleTest 
+			group by username) met
+	on e.employee = met.username
+where t.acct = 'LABOR'
+	and e.emp_type_cd &lt;&gt; 'PROD'
+	and month(case when t.fiscalno &gt;= cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2)
+						then cast(right('00' + right(t.fiscalno,2),2) + '/01/' + left(t.fiscalno,4) as datetime)
+					when t.fiscalno &lt; cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2)
+						then cast(dateadd(month, datediff(month, 0, t.trans_date), 0) as datetime)
+				end) between @BegMonth and @EndMonth		
+	AND year(t.trans_date) = @Year
+
+
+update ds
+	set WeekEndingDate = lh.pe_date
+from ##denStagingTest ds
+inner join denverapp.dbo.PJLABHDR lh  with (nolock)
+	on ds.employee = lh.employee 
+	and ds.bill_batch_id = lh.docnbr
+
+
+update ds
+	set WeekEndingDate = lh.pe_date
+from ##denStagingTest ds
+inner join shopperapp.dbo.PJLABHDR lh with (nolock) 
+	on ds.employee = lh.employee 
+	and ds.bill_batch_id = lh.docnbr
 
 
 
-END 
 
-Select
- RTRIM(DepartmentID) DepartmentID
-,RTRIM(DepartmentName) DepartmentName
-, RTRIM(ProjectID)ProjectID	
-, RTRIM(ProjectDesc)ProjectDesc	
-, RTRIM(ClientID)ClientID	
-,RTRIM(ClientName) ClientName
-, RTRIM(ProductID) ProductID
-,RTRIM(ProductDesc) ProductDesc	
-, RTRIM(Employee_Name) Employee_Name
-, RTRIM(ADPID) ADPID	
-, RTRIM(Title) Title	
-, RTRIM(CurMonth) as 'Months'	
-, SUM(CurHours) as CurHours	
-, RTRIM(curYear) curYear
-, fiscalno 
-, company
-from #Temp  
-GROUP BY 
-company	
-, DepartmentID	
-,DepartmentName
-, ProjectID	
-, ProjectDesc	
-, ClientID	
-,CurHours
-,ClientName
-, ProductID
-,ProductDesc	
-, Employee_Name	
-, ADPID
-, Title	
-, CurMonth
-, CurYear
-, fiscalno
+Select DepartmentID = RTRIM(DepartmentID),
+	DepartmentName = RTRIM(DepartmentName),
+	ProjectID = RTRIM(ProjectID),	
+	ProjectDesc = RTRIM(ProjectDesc),	
+	ClientID = RTRIM(ClientID),
+	ClientName = RTRIM(ClientName),
+	ProductID = RTRIM(ProductID),
+	ProductDesc = RTRIM(ProductDesc),	
+	Employee_Name = RTRIM(Employee_Name),
+	ADPID = RTRIM(ADPID),
+	Title = RTRIM(Title),	
+	Months = RTRIM(CurMonth),	
+	CurHours = SUM(CurHours),	
+	curYear = RTRIM(curYear),
+	fiscalno,
+	functionCode,
+	WeekEndingDate,
+	company
+from ##denStagingTest  
+--where employee_name = 'Aldashi, Rojiar'
+--where functionCode &lt;&gt; '00000'
+group by company,
+	DepartmentID,	
+	DepartmentName,
+	ProjectId,
+	ProjectDesc,	
+	ClientID,	
+	CurHours,
+	ClientName,
+	ProductID,
+	productDesc,	
+	Employee_Name,	
+	ADPID,
+	Title,	
+	CurMonth,
+	CurYear,
+	functionCode,
+	WeekEndingDate,
+	fiscalno
 
 
-DROP TABLE #Temp
-
-drop table #emptitle</CommandText>
-        <Timeout>30</Timeout>
+drop table #denEmpTitleTest
+drop table ##denStagingTest</CommandText>
+        <Timeout>90</Timeout>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -1741,10 +1902,6 @@ drop table #emptitle</CommandText>
         </Field>
         <Field Name="ProjectDesc">
           <DataField>ProjectDesc</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Title">
-          <DataField>Title</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ClientID">
@@ -1765,6 +1922,10 @@ drop table #emptitle</CommandText>
         </Field>
         <Field Name="Employee_Name">
           <DataField>Employee_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Title">
+          <DataField>Title</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ADPID">
@@ -1790,6 +1951,14 @@ drop table #emptitle</CommandText>
         <Field Name="company">
           <DataField>company</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="functionCode">
+          <DataField>functionCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="WeekEndingDate">
+          <DataField>WeekEndingDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -1866,7 +2035,7 @@ drop table #emptitle</CommandText>
           </ParameterValue>
           <ParameterValue>
             <Value>02</Value>
-            <Label>Feruary</Label>
+            <Label>February</Label>
           </ParameterValue>
           <ParameterValue>
             <Value>03</Value>

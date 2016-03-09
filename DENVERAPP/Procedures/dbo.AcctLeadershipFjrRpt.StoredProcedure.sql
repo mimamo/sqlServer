@@ -305,11 +305,10 @@ begin
 	LEFT JOIN ' + @dbName + '.dbo.xClientContact xc with (nolock)
 		ON ip.user2 = xc.EA_ID 
 	--!!!!!! ALL FILTER CRITERIA MUST BE ON IP AND NOT P OR PARENT CHILD JOBS WILL NOT ALWAYS BE PULLED TOGETHER!!!!!!
-	where ip.contract_type IN (''BPRD'',''FEE'',''MED'',''PARN'',''PDNT'',''PRNT'',''PROD'',''RET'',''TIME'',''NYK'')
-		and (ltrim(rtrim(ip.Project)) = ''' + @sProject + '''
-			or ''' + @sProject + ''' = '''')
-		and (ip.purchase_order_num = ''' + @sClientPO + '''
-			or ''' + @sClientPO + ''' = '''')
+	where ip.contract_type IN (''BPRD'',''FEE'',''MED'',''PARN'',''PDNT'',''PRNT'',''PROD'',''RET'',''TIME'',''NYK'')	
+		and coalesce(ltrim(rtrim(ip.Project)),'''') = case when ''' + @sProject + ''' = '''' then coalesce(ltrim(rtrim(ip.Project)),'''') else ''' + @sProject + ''' end
+		and coalesce(ltrim(rtrim(ip.purchase_order_num)),'''') = case when ''' + @sClientPO + '''	= '''' then coalesce(ltrim(rtrim(ip.purchase_order_num)),'''') else ''' + @sClientPO + ''' end
+
 
 	--FJR query.  To get down to one line for reporting pulling as main source
 	insert ##fjr
@@ -529,7 +528,7 @@ begin
 	drop table ##fjrSums 
 	drop table ##uni123 '
 
-	print @sql1
+	print @sql2
 
 	select @sql = (@sql1 + @sql2 + @sql3 + @sql4)
 

@@ -187,3 +187,18 @@ order by coalesce(b.CurMonth, a.CurMonth),
 	
 drop table ##csfc
 drop table ##csactual
+
+---------------------------------------------
+-- permissions
+---------------------------------------------
+grant execute on dsChangeSummary_by_BU to BFGROUP
+go
+
+grant execute on dsChangeSummary_by_BU to MSDSL
+go
+
+grant control on dsChangeSummary_by_BU to MSDSL
+go
+
+grant execute on dsChangeSummary_by_BU to MSDynamicsSL
+go

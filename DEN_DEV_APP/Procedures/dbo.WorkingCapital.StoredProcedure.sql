@@ -39,7 +39,7 @@ CREATE PROCEDURE [dbo].[WorkingCapital]
 *
 *   Usage:	
 	
-	execute DEN_DEV_APP.dbo.WorkingCapital @Period = '201509', @AgingDate = '09/30/2015', @OverheadClientHyperionCode = '4_G9_OVRHD', @SmallClientHyperionCode = '4_G9_Small'
+	execute DEN_DEV_APP.dbo.WorkingCapital @Period = '201601', @AgingDate = '12/01/2015', @OverheadClientHyperionCode = '4_G9_OVRHD', @SmallClientHyperionCode = '4_G9_Small'
 
 		
 		select businessUnit, Department, fMonth, count(1)
@@ -284,7 +284,7 @@ WHERE PerPost <= @Period
 		AND (PerClosed > @Period 
 			OR PerClosed= '') -- Only include AP documents not closed during the period 
 	AND DocType IN ('VO', 'AD', 'AC') -- Only include specific AP document types
-	AND Acct IN('2045','2047')  -- Include only AP GL accounts; exclude interco
+	AND Acct IN('2045','2046','2047')  -- Include only AP GL accounts; exclude interco
 
 -- Add Period-To-Date Payments Made to AP Aging Documents Still Open at Period End
 ;with a
@@ -408,7 +408,7 @@ SELECT	UniqueKey = DocType + LTRIM(RTRIM(cast(RefNbr as varchar(10)))),
 FROM den_dev_app.dbo.APDoc
 WHERE PerPost = @Period -- Only include AP documents entered during the period 
 		AND DocType IN ('VO', 'AD', 'AC') -- Only include specific AP document types
-		AND Acct IN('2045','2047')  -- Include only AP GL accounts; exclude interco AP documents
+		AND Acct IN('2045','2046','2047')  -- Include only AP GL accounts; exclude interco AP documents
 
 -- Get Job Detail of AP Entered In the Current Period
 insert ##ApInputJobsTbl
@@ -719,7 +719,7 @@ select ProjectID = case when ProjectID = 'NON POST' then '' else ltrim(rtrim(Pro
 	HyperionAccount = 'CustAdv',
 	ClientHyperionCode = cast('' as nvarchar(40))
 from den_dev_app.dbo.GLTran
-where Acct in ('2100','2120')
+where Acct in ('2100','2115')
 	and PerPost <= @Period
 group by case when ProjectID = 'NON POST' then '' else ltrim(rtrim(ProjectID)) end
 having round(sum(CrAmt - DrAmt),2) <> 0
@@ -759,7 +759,7 @@ select ProjectID = case when ProjectID = 'NON POST' THEN '' ELSE ltrim(rtrim(Pro
 	HyperionAccount = 'AccrVenLiab',
 	ClientHyperionCode = cast('' as nvarchar(40))
 from den_dev_app.dbo.GLTran
-where Acct in ('2290','2295','2298','2300')
+where Acct in ('2290','2292')
 	and PerPost <= @Period
 group by case when ProjectID = 'NON POST' THEN '' ELSE ltrim(rtrim(ProjectID)) end
 having round(sum(CrAmt - DrAmt),2) <> 0

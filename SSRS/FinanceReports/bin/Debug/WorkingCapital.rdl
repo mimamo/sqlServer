@@ -16,7 +16,7 @@
   <DataSets>
     <DataSet Name="WorkingCapital">
       <Query>
-        <DataSourceName>SQL1DEV_DEN_DEV_APP</DataSourceName>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Period">
             <Value>=Parameters!Period.Value</Value>
