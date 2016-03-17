@@ -21,7 +21,7 @@
               <Width>0.55208in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.10417in</Width>
+              <Width>1.35417in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.73958in</Width>
@@ -1187,17 +1187,17 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>HoursReportClientData</DataSetName>
+        <DataSetName>HoursReportPeriodProductProject</DataSetName>
         <Top>0.21in</Top>
         <Height>0.42in</Height>
-        <Width>10.83334in</Width>
+        <Width>11.08334in</Width>
         <Style />
       </Tablix>
     </ReportItems>
     <Height>0.63in</Height>
     <Style />
   </Body>
-  <Width>10.83334in</Width>
+  <Width>11.08334in</Width>
   <Page>
     <LeftMargin>1in</LeftMargin>
     <RightMargin>1in</RightMargin>
@@ -1218,22 +1218,25 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="HoursReportClientData">
+    <DataSet Name="HoursReportPeriodProductProject">
       <Query>
         <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>
-          <QueryParameter Name="@year">
-            <Value>=Parameters!Year.Value</Value>
+          <QueryParameter Name="@iBegFiscalNo">
+            <Value>=Parameters!iBegFiscalNo.Value</Value>
           </QueryParameter>
-          <QueryParameter Name="@EndMonth">
-            <Value>=Parameters!EndMonth.Value</Value>
+          <QueryParameter Name="@iEndFiscalNo">
+            <Value>=Parameters!iEndFiscalNo.Value</Value>
           </QueryParameter>
-          <QueryParameter Name="@BegMonth">
-            <Value>=Parameters!BegMonth.Value</Value>
+          <QueryParameter Name="@iProductID">
+            <Value>=Parameters!iProductID.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@iProject">
+            <Value>=Parameters!iProject.Value</Value>
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>HoursReportClientData</CommandText>
+        <CommandText>HoursReportPeriodProductProject</CommandText>
         <Timeout>180</Timeout>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -1274,12 +1277,12 @@
           <DataField>Employee_Name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Title">
-          <DataField>Title</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="ADPID">
           <DataField>ADPID</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Title">
+          <DataField>Title</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Months">
@@ -1312,123 +1315,190 @@
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="iFiscalNo">
+      <Query>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <CommandText>declare @iMonth table (iMonth varchar(2))
+
+insert @iMonth 
+select '01' union
+select '02' union
+select '03' union
+select '04' union
+select '05' union
+select '06' union
+select '07' union
+select '08' union
+select '09' union
+select '10' union
+select '11' union
+select '12'
+
+SELECT    FiscalNo = cast(x.[Year] as varchar) + iMonth
+FROM         (SELECT     [Year] = year(getdate())
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 1
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 2
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 3
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 4
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 5
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 6
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 7
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 8
+                       UNION
+                       SELECT     [Year] = year(getdate()) - 9) AS x
+cross join @iMonth 
+where cast(x.[Year] as varchar) + iMonth &lt; cast(year(getdate()) as varchar) + right('00' + cast(month(getdate()) as varchar(2)),2)
+ORDER BY cast(x.[Year] as varchar) + iMonth DESC</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="FiscalNo">
+          <DataField>FiscalNo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="iProductID">
+      <Query>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@iBegFiscalNo">
+            <Value>=Parameters!iBegFiscalNo.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@iEndFiscalNo">
+            <Value>=Parameters!iEndFiscalNo.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT  distinct   x.ProductID
+FROM         (SELECT DISTINCT ltrim(rtrim(p.pm_id02)) AS 'ProductID', 'DENVER' AS Company
+                       FROM          pjtran AS t WITH (nolock) INNER JOIN
+                                              PJPROJ AS p WITH (nolock) ON t.project = p.project
+                       WHERE      (t.acct = 'LABOR') 			and (case when t.fiscalno &gt;= cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+						then t.fiscalno
+				when t.fiscalno &lt; cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+						then cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+			end) between @iBegFiscalNo and @iEndFiscalNo
+                       UNION
+                       SELECT DISTINCT ltrim(rtrim(p.pm_id02)) AS 'ProductID', 'SHOPPERNY' AS Company
+                       FROM         SHOPPERAPP.dbo.PJTran AS t WITH (nolock) INNER JOIN
+                                             SHOPPERAPP.dbo.PJPROJ AS p WITH (nolock) ON t.project = p.project
+                       WHERE     (t.acct = 'LABOR') 		and (case when t.fiscalno &gt;= cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+						then t.fiscalno
+				when t.fiscalno &lt; cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+						then cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+			end) between @iBegFiscalNo and @iEndFiscalNo
+
+                       ) AS x
+ORDER BY x.ProductID</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="ProductID">
+          <DataField>ProductID</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="iProject">
+      <Query>
+        <DataSourceName>SQL1_DENVERAPP</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@iBegFiscalNo">
+            <Value>=Parameters!iBegFiscalNo.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@iProductID">
+            <Value>=Parameters!iProductID.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@iEndFiscalNo">
+            <Value>=Parameters!iEndFiscalNo.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT   distinct  x.Project
+FROM         (SELECT DISTINCT LTRIM(RTRIM(p.project)) AS 'Project', 'DENVER' AS Company
+                       FROM          pjtran AS t WITH (nolock) INNER JOIN
+                                              PJPROJ AS p WITH (nolock) ON t.project = p.project
+                       WHERE      (t.acct = 'LABOR') 		and (case when t.fiscalno &gt;= cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+						then t.fiscalno
+				when t.fiscalno &lt; cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+						then cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+			end) between @iBegFiscalNo and @iEndFiscalNo
+AND (p.pm_id02 IN (@iProductID))
+                       UNION
+                       SELECT DISTINCT LTRIM(RTRIM(p.project)) AS 'Project', 'SHOPPERNY' AS Company
+                       FROM         SHOPPERAPP.dbo.PJTran AS t WITH (nolock) INNER JOIN
+                                             SHOPPERAPP.dbo.PJPROJ AS p WITH (nolock) ON t.project = p.project
+                       WHERE     (t.acct = 'LABOR') 		and (case when t.fiscalno &gt;= cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+						then t.fiscalno
+				when t.fiscalno &lt; cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+						then cast(year(t.trans_date) as varchar(4)) + right('00' + cast(month(t.trans_date) as varchar(2)),2) 
+			end) between @iBegFiscalNo and @iEndFiscalNo
+AND (p.pm_id02 IN (@iProductID))) 
+                       AS x
+ORDER BY x.Project</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="Project">
+          <DataField>Project</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportParameters>
-    <ReportParameter Name="Year">
+    <ReportParameter Name="iBegFiscalNo">
       <DataType>String</DataType>
-      <Prompt>Year</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="EndMonth">
-      <DataType>String</DataType>
-      <Prompt>End Month</Prompt>
+      <Prompt>Start Fiscal Period</Prompt>
       <ValidValues>
-        <ParameterValues>
-          <ParameterValue>
-            <Value>01</Value>
-            <Label>January</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>02</Value>
-            <Label>February</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>03</Value>
-            <Label>March</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>04</Value>
-            <Label>April</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>05</Value>
-            <Label>May</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>06</Value>
-            <Label>June</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>07</Value>
-            <Label>July</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>08</Value>
-            <Label>August</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>09</Value>
-            <Label>September</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>10</Value>
-            <Label>October</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>11</Value>
-            <Label>November</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>12</Value>
-            <Label>December</Label>
-          </ParameterValue>
-        </ParameterValues>
+        <DataSetReference>
+          <DataSetName>iFiscalNo</DataSetName>
+          <ValueField>FiscalNo</ValueField>
+          <LabelField>FiscalNo</LabelField>
+        </DataSetReference>
       </ValidValues>
     </ReportParameter>
-    <ReportParameter Name="BegMonth">
+    <ReportParameter Name="iEndFiscalNo">
       <DataType>String</DataType>
-      <Prompt>Begin Month</Prompt>
+      <Prompt>End Fiscal Period</Prompt>
       <ValidValues>
-        <ParameterValues>
-          <ParameterValue>
-            <Value>01</Value>
-            <Label>January</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>02</Value>
-            <Label>February</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>03</Value>
-            <Label>March</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>04</Value>
-            <Label>April</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>05</Value>
-            <Label>May</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>06</Value>
-            <Label>June</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>07</Value>
-            <Label>July</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>08</Value>
-            <Label>August</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>09</Value>
-            <Label>September</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>10</Value>
-            <Label>October</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>11</Value>
-            <Label>November</Label>
-          </ParameterValue>
-          <ParameterValue>
-            <Value>12</Value>
-            <Label>December</Label>
-          </ParameterValue>
-        </ParameterValues>
+        <DataSetReference>
+          <DataSetName>iFiscalNo</DataSetName>
+          <ValueField>FiscalNo</ValueField>
+          <LabelField>FiscalNo</LabelField>
+        </DataSetReference>
       </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="iProductID">
+      <DataType>String</DataType>
+      <Prompt>Product ID</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>iProductID</DataSetName>
+          <ValueField>ProductID</ValueField>
+          <LabelField>ProductID</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="iProject">
+      <DataType>String</DataType>
+      <Prompt>Project</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>iProject</DataSetName>
+          <ValueField>Project</ValueField>
+          <LabelField>Project</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
     </ReportParameter>
   </ReportParameters>
   <Language>en-US</Language>

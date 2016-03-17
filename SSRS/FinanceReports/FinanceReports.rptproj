@@ -54,20 +54,20 @@
       <FullPath>ArPaymentHistory.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Hours Report with Function.rdl</Name>
-      <FullPath>Hours Report with Function.rdl</FullPath>
-    </ProjectItem>
-    <ProjectItem>
       <Name>Dynamics Vendors.rdl</Name>
       <FullPath>Dynamics Vendors.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Hours Report.rdl</Name>
-      <FullPath>Hours Report.rdl</FullPath>
+      <Name>Hours Report with Function.rdl</Name>
+      <FullPath>Hours Report with Function.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>JobsFunctions.rdl</Name>
-      <FullPath>JobsFunctions.rdl</FullPath>
+      <Name>Hours Report_original.rdl</Name>
+      <FullPath>Hours Report_original.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>HoursReportPeriodProductProject.rdl</Name>
+      <FullPath>HoursReportPeriodProductProject.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>MC_FTE_Data_Dump.rdl</Name>
@@ -96,6 +96,10 @@
     <ProjectItem>
       <Name>WorkingCapital.rdl</Name>
       <FullPath>WorkingCapital.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Hours ReportPeriodProductProject.rdl</Name>
+      <FullPath>Hours ReportPeriodProductProject.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>
