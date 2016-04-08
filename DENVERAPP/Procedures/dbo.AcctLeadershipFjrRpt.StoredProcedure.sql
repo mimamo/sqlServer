@@ -41,7 +41,7 @@ CREATE PROCEDURE [dbo].[AcctLeadershipFjrRpt]
 *
 *   Usage:	set statistics io on
 	
-		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU|1JJVC', @sProductId = 'TRDE|JJHW', @sPM = 'SAPPEL|MMULDOON', @sStatus = 'A|I'
+		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU|1JJVC', @sProductId = 'TRDE|CUST', @sPM = 'SAPPEL|CUST', @sStatus = 'A'
 		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'SHOPPERNY', @sClientId = '1LFSU', @sProductId = 'TRDE', @sPM = 'SAPPEL', @sStatus = 'A'
 		
 		execute DENVERAPP.dbo.AcctLeadershipFjrRpt @company = 'DENVER|SHOPPERNY', @sClientId = '1JJVC|1IZZE', @sProductId = 'CUST|IZZE', @sPM = 'CUST|ALUU', @sStatus = 'A'
@@ -280,7 +280,7 @@ begin
 		ClientContact = ltrim(rtrim(xc.CName)), 
 		ContactEmailAddress = ltrim(rtrim(xc.EmailAddress)),
 		ECD = ltrim(rtrim(x.pm_id28)),
-		RowId = row_number() over (partition by 1 order by a.project_billwith) 
+		RowId = row_number() over (partition by 1 order by a.project_billwith) 	
 	from ' + @dbName + '.dbo.PJBILL A with (nolock) 
 	INNER JOIN ' + @dbName + '.dbo.PJPROJ p with (nolock)  -- parent  
 		ON A.project_billwith = case when A.project_billwith <> '''' then p.Project else A.project_billwith end

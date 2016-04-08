@@ -1633,7 +1633,7 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>DataSet1</DataSetName>
+        <DataSetName>xsp_MC_FTE</DataSetName>
         <Top>0.21in</Top>
         <Height>0.42in</Height>
         <Width>15in</Width>
@@ -1685,7 +1685,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSet1">
+    <DataSet Name="xsp_MC_FTE">
       <Query>
         <DataSourceName>SQL1_DENVERAPP</DataSourceName>
         <QueryParameters>

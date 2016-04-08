@@ -34,12 +34,12 @@
   <DataSets />
   <Reports>
     <ProjectItem>
-      <Name>Account Leadership FJR_original.rdl</Name>
-      <FullPath>Account Leadership FJR_original.rdl</FullPath>
+      <Name>Account Leadership FJR.rdl</Name>
+      <FullPath>Account Leadership FJR.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Account Leadership FJR_working.rdl</Name>
-      <FullPath>Account Leadership FJR_working.rdl</FullPath>
+      <Name>Account Leadership FJR_original.rdl</Name>
+      <FullPath>Account Leadership FJR_original.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>ApTransaction.rdl</Name>
@@ -54,6 +54,10 @@
       <FullPath>ArPaymentHistory.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>DallasPayroll.rdl</Name>
+      <FullPath>DallasPayroll.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>Dynamics Vendors.rdl</Name>
       <FullPath>Dynamics Vendors.rdl</FullPath>
     </ProjectItem>
@@ -64,6 +68,10 @@
     <ProjectItem>
       <Name>Hours Report_original.rdl</Name>
       <FullPath>Hours Report_original.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>HoursReportAllFilters.rdl</Name>
+      <FullPath>HoursReportAllFilters.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>HoursReportPeriodProductProject.rdl</Name>
@@ -98,8 +106,8 @@
       <FullPath>WorkingCapital.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Hours ReportPeriodProductProject.rdl</Name>
-      <FullPath>Hours ReportPeriodProductProject.rdl</FullPath>
+      <Name>Hours Report_original_03302016.rdl</Name>
+      <FullPath>Hours Report_original_03302016.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>
