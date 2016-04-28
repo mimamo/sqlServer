@@ -62,7 +62,8 @@ select Account,
 	code_ID, 
 	descr, 
 	Taxable = 'No',
-	Company = 'DENVER' 
+	Company = 'DENVER',
+	Company2 = 'DENVER' 
 from DENVERAPP.dbo.xIGFunctionCode 
 where code_ID not in ( '13550', 'NBIZ10','UB05','LSWU11','70013' ) 
 	AND code_ID not like '999%' 
@@ -73,7 +74,8 @@ select Account,
 	code_ID, 
 	descr, 
 	Taxable = 'No',
-	Company = 'SHOPPERNY' 
+	Company = 'SHOPPERNY',
+	Company2 = 'SHOPPERNY' 
 from SHOPPERAPP.dbo.xIGFunctionCode where code_ID not in ( '13550', 'NBIZ10','UB05','LSWU11','70013' ) 
 	AND code_ID not like '999%' 
 
@@ -93,12 +95,13 @@ SELECT	LTRIM(RTRIM(A.Account)) AS 'Account',
 			WHEN A.user02 = 'TAX' THEN 'Yes'
 			ELSE 'No'
 		END AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
 		AND B.code_value IS NULL -- Function Codes Not On The Exclude List
-		AND A.code_ID <> '90200'
+		AND A.code_ID NOT IN ('90200','20300') -- Exclude Billable Travel and Studio
 
 UNION ALL
 
@@ -107,7 +110,8 @@ SELECT	'1231' AS 'Account',
 		'90200 - Airfare' AS 'code_ID',
 		'Billable - Travel - Airfare' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -121,7 +125,8 @@ SELECT	'1232' AS 'Account',
 		'90200 - Car' AS 'code_ID',
 		'Billable - Travel - Car' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -135,7 +140,8 @@ SELECT	'1232' AS 'Account',
 		'90200 - Mileage' AS 'code_ID',
 		'Billable - Travel - Mileage' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -149,7 +155,8 @@ SELECT	'1233' AS 'Account',
 		'90200 - Entertainment' AS 'code_ID',
 		'Billable - Travel - Entertainment' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -163,7 +170,8 @@ SELECT	'1234' AS 'Account',
 		'90200 - Hotel' AS 'code_ID',
 		'Billable - Travel - Hotel' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -177,7 +185,8 @@ SELECT	'1235' AS 'Account',
 		'90200 - Meals' AS 'code_ID',
 		'Billable - Travel - Meals' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -191,7 +200,8 @@ SELECT	'1236' AS 'Account',
 		'90200 - Other' AS 'code_ID',
 		'Billable - Travel - Other' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -214,12 +224,13 @@ SELECT	LTRIM(RTRIM(A.Account)) AS 'Account',
 			WHEN A.user02 = 'TAX' THEN 'Yes'
 			ELSE 'No'
 		END AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
 		AND B.code_value IS NULL -- Function Codes Not On The Exclude List
-		AND A.code_ID <> '90200'
+		AND A.code_ID NOT IN ('90200','20300') -- Exclude Billable Travel and Studio
 		AND A.code_ID NOT LIKE 'UB%'
 
 UNION ALL
@@ -229,7 +240,8 @@ SELECT	'1231' AS 'Account',
 		'NONTAX - 90200 - Airfare' AS 'code_ID',
 		'Tax-Exempt Billable - Travel - Airfare' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -243,7 +255,8 @@ SELECT	'1232' AS 'Account',
 		'NONTAX - 90200 - Car' AS 'code_ID',
 		'Tax-Exempt Billable - Travel - Car' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -257,7 +270,8 @@ SELECT	'1232' AS 'Account',
 		'NONTAX - 90200 - Mileage' AS 'code_ID',
 		'Tax-Exempt Billable - Travel - Mileage' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -271,7 +285,8 @@ SELECT	'1233' AS 'Account',
 		'NONTAX - 90200 - Entertainment' AS 'code_ID',
 		'Tax-Exempt Billable - Travel - Entertainment' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -285,7 +300,8 @@ SELECT	'1234' AS 'Account',
 		'NONTAX - 90200 - Hotel' AS 'code_ID',
 		'Tax-Exempt Billable - Travel - Hotel' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -299,7 +315,8 @@ SELECT	'1235' AS 'Account',
 		'NONTAX - 90200 - Meals' AS 'code_ID',
 		'Tax-Exempt Billable - Travel - Meals' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -313,7 +330,8 @@ SELECT	'1236' AS 'Account',
 		'NONTAX - 90200 - Other' AS 'code_ID',
 		'Tax-Exempt Billable - Travel - Other' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -336,12 +354,13 @@ SELECT	LTRIM(RTRIM(A.Account)) AS 'Account',
 			WHEN A.user02 = 'TAX' THEN 'Yes'
 			ELSE 'No'
 		END AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
 		AND B.code_value IS NULL -- Function Codes Not On The Exclude List
-		AND A.code_ID <> '90200'
+		AND A.code_ID NOT IN ('90200','20300') -- Exclude Billable Travel and Studio
 		AND A.code_ID NOT LIKE 'UB%'
 
 UNION ALL
@@ -351,7 +370,8 @@ SELECT	'1231' AS 'Account',
 		'CIN - 90200 - Airfare' AS 'code_ID',
 		'AT&T Billable - Travel - Airfare' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -365,7 +385,8 @@ SELECT	'1232' AS 'Account',
 		'CIN - 90200 - Car' AS 'code_ID',
 		'AT&T Billable - Travel - Car' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -379,7 +400,8 @@ SELECT	'1232' AS 'Account',
 		'CIN - 90200 - Mileage' AS 'code_ID',
 		'AT&T Billable - Travel - Mileage' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -388,26 +410,27 @@ WHERE	A.status = 'A' -- Active Function Codes Only
 
 UNION ALL
 
--- ADD DALLAS AT&T BILLABLE FUNCTION CODES (Billable Travel Entertainment)
-SELECT	'1233' AS 'Account',
-		'CIN - 90200 - Entertainment' AS 'code_ID',
-		'AT&T Billable - Travel - Entertainment' AS 'descr',
-		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
-FROM	DALLASAPP.dbo.xIGFunctionCode A 
-		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
-WHERE	A.status = 'A' -- Active Function Codes Only
-		AND B.code_value IS NULL -- Function Codes Not On The Exclude List
-		AND A.code_ID = '90200'
-
-UNION ALL
+-- ADD DALLAS AT&T BILLABLE FUNCTION CODES (Billable Travel Entertainment)	DON'T USE FOR AT&T
+-- SELECT	'1233' AS 'Account',
+--			'CIN - 90200 - Entertainment' AS 'code_ID',
+--			'AT&T Billable - Travel - Entertainment' AS 'descr',
+--			'No' AS 'Taxable',
+--			'DALLAS' AS 'Company'
+-- FROM	DALLASAPP.dbo.xIGFunctionCode A 
+--			LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
+-- WHERE	A.status = 'A' -- Active Function Codes Only
+--			AND B.code_value IS NULL -- Function Codes Not On The Exclude List
+--			AND A.code_ID = '90200'
+--
+-- UNION ALL
 
 -- ADD DALLAS AT&T BILLABLE FUNCTION CODES (Billable Travel Hotel)
 SELECT	'1234' AS 'Account',
 		'CIN - 90200 - Hotel' AS 'code_ID',
 		'AT&T Billable - Travel - Hotel' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -421,7 +444,8 @@ SELECT	'1235' AS 'Account',
 		'CIN - 90200 - Meals' AS 'code_ID',
 		'AT&T Billable - Travel - Meals' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -435,7 +459,8 @@ SELECT	'1236' AS 'Account',
 		'CIN - 90200 - Other' AS 'code_ID',
 		'AT&T Billable - Travel - Other' AS 'descr',
 		'No' AS 'Taxable',
-		'DALLAS' AS 'Company'
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.xIGFunctionCode A 
 		LEFT JOIN DALLASAPP.dbo.PJCODE B ON B.code_type = 'NEX1' AND A.code_ID = B.code_value  -- Using the code file maintenance table to exclude specific function codes
 WHERE	A.status = 'A' -- Active Function Codes Only
@@ -443,6 +468,7 @@ WHERE	A.status = 'A' -- Active Function Codes Only
 		AND A.code_ID = '90200'
 		
 ORDER BY code_ID
+		
 		
 
 ---------------------------------------------

@@ -168,7 +168,7 @@ begin
 		[DateDiffDocDate],
 		[DateDiffDueDate]
 	)                
-	SELECT Company = ''' + @CurCompany + '''
+	SELECT distinct Company = ''' + @CurCompany + '''
 		, CustID = RTRIM(a.CustId)
 		, Customer = RTRIM(c.Name) 
 		, ProjectID = RTRIM(a.ProjectID) 
@@ -203,8 +203,9 @@ begin
 		, DateDiffDocDate = DateDiff(d, a.DocDate, ''' + cast(@Date as nvarchar) + ''')
 		, DateDiffDueDate = DateDiff(d, a.DueDate, ''' + cast(@Date as nvarchar) + ''')
 	FROM ' + @CurCompany + '.dbo.xvr_AR000_Aged a  with (nolock)
-	LEFT OUTER JOIN ' + @CurCompany + '.dbo.ARDoc i  with (nolock)
+	left JOIN ' + @CurCompany + '.dbo.ARDoc i  with (nolock)
 		ON a.ProjectID = i.ProjectID
+		and a.custId = i.CustId
 		AND a.BatNbr = i.BatNbr
 		AND a.RefNbr = i.RefNbr       
 	INNER JOIN ' + @CurCompany + '.dbo.Customer c with (nolock)

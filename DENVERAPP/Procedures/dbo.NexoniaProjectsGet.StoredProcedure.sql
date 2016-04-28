@@ -67,6 +67,7 @@ select ltrim(rtrim(p.project)) as Project
 , CASE WHEN right(rtrim(p.project),3) = 'AGY' OR right(rtrim(p.project),3) = 'IGG' OR right(rtrim(p.project),3) = 'BAL' THEN 'Yes' ELSE 'No' END as PMApproval
 , gl_subacct
 , 'DENVER' as Company
+, 'DENVER' as Company2
 from DENVERAPP.dbo.PJPROJ p
 where status_pa = 'A'
 AND status_ap <> 'I'
@@ -81,6 +82,7 @@ select ltrim(rtrim(p.project)) as Project
 , CASE WHEN right(rtrim(p.project),3) = 'AGY' OR right(rtrim(p.project),3) = 'IGG' OR right(rtrim(p.project),3) = 'BAL' THEN 'Yes' ELSE 'No' END as PMApproval
 , gl_subacct
 , 'SHOPPERNY' as Company
+, 'SHOPPERNY' as Company2
 from SHOPPERAPP.dbo.PJPROJ p
 where status_pa = 'A'
 AND status_ap <> 'I'
@@ -88,20 +90,23 @@ AND contract_type NOT IN ('TIME','FIN','APS','MED')
 
 UNION
 
+
 -- ADD DALLAS
 
-SELECT		LTRIM(RTRIM(P.project)) AS Project,
-			LTRIM(RTRIM(p.project_desc)) AS ProjectDescripton,
-			LTRIM(RTRIM(p.manager2)) AS ProjectMgrID,
+SELECT		LTRIM(RTRIM(P.project)) AS 'Project',
+			LTRIM(RTRIM(P.project)) + ' - ' + LTRIM(RTRIM(p.project_desc)) AS 'ProjectDescripton',
+			LTRIM(RTRIM(p.manager2)) AS 'ProjectMgrID',
 			CASE
-				WHEN LEFT(P.project,6) = 'BGTXOV' THEN 'No'
+				WHEN LEFT(P.project,3) = 'BGT' THEN 'No'
 				ELSE 'Yes'
-			END AS PMApproval,
-			'0000' AS gl_subacct,
-			'DALLAS' AS Company
+			END AS 'PMApproval',
+			'0000' AS 'gl_subacct',
+			'DALLAS' AS 'Company',
+			'DALLAS' AS 'Company2'
 FROM		DALLASAPP.dbo.PJPROJ P
-WHERE		status_pa = 'A'
-			AND status_ap = 'A'
+WHERE		P.status_pa = 'A'
+			AND P.status_ap = 'A'
+			AND P.project NOT LIKE 'INTTMP%'
 			
 ORDER BY Company
 

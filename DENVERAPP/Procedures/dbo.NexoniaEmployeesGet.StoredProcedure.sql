@@ -57,6 +57,7 @@ select 'APRECEIPT' as EmployeeID
 ,'' as Manager
 ,'DENVER' as Company
 ,'1000' as SubAccount
+,'DENVER' as Company2
 UNION ALL
 select 'APEXPORT' as EmployeeID
 ,'Approval' as lName
@@ -66,6 +67,7 @@ select 'APEXPORT' as EmployeeID
 ,'' as Manager
 ,'DENVER' as Company
 ,'1000' as SubAccount
+,'DENVER' as Company2
 
 UNION
 
@@ -81,6 +83,7 @@ select ltrim(rtrim(p.employee)) as EmployeeID
 --, LTRIM(rtrim((select em_id03 from PJEMPLOY where employee = p.manager1))) as ManagerEmail
 , ltrim(rtrim(p.cpnyid)) as Company
 , ltrim(rtrim(p.gl_subacct)) as SubAccount
+, ltrim(rtrim(p.cpnyid)) as Company2
 from DENVERAPP.dbo.PJEMPLOY p
 where emp_status = 'A'
 and emp_type_cd <> 'PROD'
@@ -107,6 +110,7 @@ select ltrim(rtrim(p.employee)) as EmployeeID
 --, LTRIM(rtrim((select em_id03 from PJEMPLOY where employee = p.manager1))) as ManagerEmail
 , ltrim(rtrim(p.cpnyid)) as Company
 , ltrim(rtrim(p.gl_subacct)) as SubAccount
+, ltrim(rtrim(p.cpnyid)) as Company2
 from SHOPPERAPP.dbo.pjemploy p
 where emp_status = 'A'
 and emp_type_cd <> 'PROD'
@@ -119,6 +123,19 @@ and (p.em_id01 <> ''
 	OR p.employee IN (select distinct ltrim(rtrim(manager1)) as Sup from SHOPPERAPP.dbo.pjemploy))	
 
 UNION
+
+-- ADD DALLAS NO APPROVAL EMAIL
+SELECT	'' AS 'EmployeeID',
+		'Supervisor' AS 'lName',
+		'No Project' AS 'fName',
+		'tsairam@integer.com' AS 'EmployeeEmail',
+		'' AS 'VendorID',
+		'' AS 'Manager', -- Supervisor field in DSL screen
+		'DALLAS' AS 'Company', -- Hardcode Dallas company
+		'' AS 'SubAccount',
+		'DALLAS' AS 'Company2'
+		
+UNION ALL
 
 -- ADD DALLAS EMPLOYEES
 
@@ -133,9 +150,10 @@ SELECT	LTRIM(RTRIM(P.employee)) AS 'EmployeeID',
 		END AS 'fName',
 		LTRIM(RTRIM(P.em_id03)) AS 'EmployeeEmail',
 		LTRIM(RTRIM(P.em_id01)) AS 'VendorID',
-		LTRIM(RTRIM(P.manager1)) AS 'Manager', -- Superviosr field in DSL screen
+		LTRIM(RTRIM(P.manager1)) AS 'Manager', -- Supervisor field in DSL screen
 		'DALLAS' AS 'Company', -- Hardcode Dallas company
-		'0000' AS 'SubAccount'  -- Hardcode to agency subaccount to prevent entries into incorrect subaccount/subaccounts not used in Dallas
+		'0000' AS 'SubAccount',  -- Hardcode to agency subaccount to prevent entries into incorrect subaccount/subaccounts not used in Dallas
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.DBO.PJEMPLOY P
 WHERE	P.emp_status = 'A' -- Only currently active employees
 		AND P.emp_type_cd <> 'PROD' --Exclude the client "employees" the system adds
@@ -156,14 +174,14 @@ SELECT	LTRIM(RTRIM(P.employee)) AS 'EmployeeID',
 		END AS 'fName',
 		LTRIM(RTRIM(P.em_id03)) AS 'EmployeeEmail',
 		LTRIM(RTRIM(P.em_id01)) AS 'VendorID',
-		LTRIM(RTRIM(P.manager1)) AS 'Manager', -- Superviosr field in DSL screen
+		LTRIM(RTRIM(P.manager1)) AS 'Manager', -- Supervisor field in DSL screen
 		'DALLAS' AS 'Company', -- Hardcode Dallas company
-		'0000' AS 'SubAccount'  -- Hardcode to agency subaccount to prevent entries into incorrect subaccount/subaccounts not used in Dallas
+		'0000' AS 'SubAccount',  -- Hardcode to agency subaccount to prevent entries into incorrect subaccount/subaccounts not used in Dallas
+		'DALLAS' AS 'Company2'
 FROM	DALLASSTUDIOAPP.DBO.PJEMPLOY P
 WHERE	P.emp_status = 'A' -- Only currently active employees
 		AND P.emp_type_cd <> 'PROD' --Exclude the client "employees" the system adds
 		AND LTRIM(RTRIM(P.em_id01)) <> '' -- Only employees with vendor ID set	
-                  
 ---------------------------------------------
 -- set session variables
 ---------------------------------------------

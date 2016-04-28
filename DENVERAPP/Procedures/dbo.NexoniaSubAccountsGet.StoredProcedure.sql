@@ -62,7 +62,8 @@ SET NOCOUNT ON
 -- SubAccounts.csv
 select distinct ltrim(rtrim(s.Sub)) as SubAccountID,
 ltrim(rtrim(s.Descr)) as SubAccountName,
-'DENVER' as Company
+'DENVER' as Company,
+'DENVER' as Company2
 --ltrim(rtrim( 
 from DENVERAPP.dbo.SubAcct s
 where s.Sub NOT IN ('1099','1060','1055','1019','1030','1085','1025','1018','1042','1026','1016','2700')
@@ -71,7 +72,8 @@ UNION
 
 select distinct ltrim(rtrim(s.Sub)) as SubAccountID,
 ltrim(rtrim(s.Descr)) as SubAccountName,
-'SHOPPERNY' as Company
+'SHOPPERNY' as Company,
+'SHOPPERNY' as Company2
 --ltrim(rtrim( 
 from SHOPPERAPP.dbo.SubAcct s
 where s.Sub NOT IN ('1099','1060','1055','1019','1030','1085','1025','1018','1042','1026','1016','2700')
@@ -80,9 +82,10 @@ UNION
 
 -- ADD DALLAS
 
-SELECT	LTRIM(RTRIM(S.Sub)) AS SubAccountID,
-		LTRIM(RTRIM(S.Descr)) as SubAccountName,
-		'DALLAS' as Company
+SELECT	LTRIM(RTRIM(S.Sub)) AS 'SubAccountID',
+		LTRIM(RTRIM(S.Descr)) AS 'SubAccountName',
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.SubAcct S
 WHERE	S.Sub IN ('0000')
 

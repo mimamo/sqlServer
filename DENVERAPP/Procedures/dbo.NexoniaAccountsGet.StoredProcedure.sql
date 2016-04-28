@@ -62,7 +62,8 @@ SET NOCOUNT ON
 -- Accounts.csv
 select ltrim(rtrim(a.Acct)) as AccountID,
 ltrim(rtrim(a.Descr)) as AccountName,
-'DENVER' as Company
+'DENVER' as Company,
+'DENVER' as Company2
 from DENVERAPP.dbo.Account a 
 where User5 = 'Y'
 
@@ -70,18 +71,21 @@ UNION
 
 select ltrim(rtrim(a.Acct)) as AccountID,
 ltrim(rtrim(a.Descr)) as AccountName,
-'SHOPPERNY' as Company
+'SHOPPERNY' as Company,
+'SHOPPERNY' as Company2
 from SHOPPERAPP.dbo.Account a 
 where User5 = 'Y'
 
 UNION
 
-select ltrim(rtrim(a.Acct)) as AccountID,
-ltrim(rtrim(a.Descr)) as AccountName,
-'DALLAS' as Company
-from DALLASAPP.dbo.Account a 
-where User5 = 'Y'
-order by Company
+SELECT	LTRIM(RTRIM(A.Acct)) AS 'AccountID',
+		LTRIM(RTRIM(A.Descr)) AS 'AccountName',
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
+FROM	DALLASAPP.dbo.Account A
+WHERE	A.Active = 1
+		-- AND A.User5 = 'Y' -- Not Needed For Dallas
+ORDER BY Company, AccountID
 
 
 ---------------------------------------------

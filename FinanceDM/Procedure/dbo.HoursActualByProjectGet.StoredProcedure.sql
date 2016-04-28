@@ -32,7 +32,7 @@ AS
 *   Notes: 
 
 		select *
-		from FinanceDM.dbo.HoursActual
+		from FinanceDM.dbo.HoursActual_a
 		where customerId like '%KEL%'
 		order by classId
 

@@ -1,0 +1,1 @@
+<?xml version="1.0"?><DTSDeploymentManifest GeneratedBy="BELMAR\mmorales" GeneratedFromProjectName="Workamajig Integration" GeneratedDate="2015-11-16T20:06:14.3222243-07:00" AllowConfigurationChanges="true"><Package>Workamajig Projects.dtsx</Package><Package>Workamajig Billing.dtsx</Package><Package>Workamajig Time.dtsx</Package></DTSDeploymentManifest>

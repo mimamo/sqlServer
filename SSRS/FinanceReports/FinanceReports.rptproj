@@ -54,6 +54,14 @@
       <FullPath>ArPaymentHistory.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>Client Data.rdl</Name>
+      <FullPath>Client Data.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Client PL Hours Report.rdl</Name>
+      <FullPath>Client PL Hours Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>DallasPayroll.rdl</Name>
       <FullPath>DallasPayroll.rdl</FullPath>
     </ProjectItem>
@@ -62,12 +70,20 @@
       <FullPath>Dynamics Vendors.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>Employee Hours Report.rdl</Name>
+      <FullPath>Employee Hours Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>Hours Report with Function.rdl</Name>
       <FullPath>Hours Report with Function.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>Hours Report_original.rdl</Name>
       <FullPath>Hours Report_original.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Hours Report_original_03302016.rdl</Name>
+      <FullPath>Hours Report_original_03302016.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
       <Name>HoursReportAllFilters.rdl</Name>
@@ -106,8 +122,8 @@
       <FullPath>WorkingCapital.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Hours Report_original_03302016.rdl</Name>
-      <FullPath>Hours Report_original_03302016.rdl</FullPath>
+      <Name>Account Leadership FJR_20160427.rdl</Name>
+      <FullPath>Account Leadership FJR_20160427.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>

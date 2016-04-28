@@ -64,6 +64,7 @@ select ltrim(rtrim(ac.acct)) as GLAcct
 , ltrim(rtrim(ac.SUB)) as GLSub
 , ltrim(rtrim(ac.Descr)) as Descr
 , 'DENVER' as Company
+, 'DENVER' as Company2
 from DENVERSYS.DBO.acctsub ac 
 inner join DENVERAPP.dbo.Account a on ac.Acct = a.Acct
 where ac.CpnyID = 'Denver' 
@@ -77,6 +78,7 @@ select ltrim(rtrim(ac.acct)) as GLAcct
 , ltrim(rtrim(ac.SUB)) as GLSub
 , ltrim(rtrim(ac.Descr)) as Descr
 , 'SHOPPERNY' as Company
+, 'SHOPPERNY' as Company2
 from DENVERSYS.DBO.acctsub ac 
 inner join SHOPPERAPP.dbo.Account a on ac.Acct = a.Acct
 where ac.CpnyID = 'SHOPPERNY' 
@@ -88,16 +90,19 @@ UNION
 
 -- ADD DALLAS
 
-SELECT	LTRIM(RTRIM(A.Acct)) AS GLAcct,
-		S.Sub AS GLSub,
-		LTRIM(RTRIM(A.Descr)) AS Descr,
-		'DALLAS' AS Company
+
+SELECT	LTRIM(RTRIM(A.Acct)) AS 'GLAcct',
+		LTRIM(RTRIM(S.Sub)) AS 'GLSub',
+		LTRIM(RTRIM(A.Descr)) AS 'Descr',
+		'DALLAS' AS 'Company',
+		'DALLAS' AS 'Company2'
 FROM	DALLASAPP.dbo.Account A, DALLASAPP.dbo.SubAcct S
 WHERE	S.Sub IN ('0000')
 		AND A.Active = 1
 		-- AND A.User5 = 'Y' -- Not Needed For Dallas
 
 ORDER BY Company
+
 
 ---------------------------------------------
 -- permissions

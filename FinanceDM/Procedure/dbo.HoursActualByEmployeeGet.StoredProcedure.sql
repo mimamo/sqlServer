@@ -17,8 +17,8 @@ GO
 
 CREATE PROCEDURE [dbo].[HoursActualByEmployeeGet] 
 	@iStartPeriod varchar(6),	
-	@iEndPeriod varchar(6)
---	@iCustomerId nvarchar(max) = null
+	@iEndPeriod varchar(6),
+	@iCustomerId nvarchar(max) = null
 	
 AS 
 
@@ -124,6 +124,14 @@ begin
 
 end
 
+if @iCustomerId is not null
+begin
+
+	insert @ParsedCustomerId (CustomerId)
+	select Name
+	from den_dev_app.dbo.SplitString(@iCustomerId)
+
+end
 
 insert ##burrito
 (
@@ -147,6 +155,8 @@ select distinct a.CustomerId,
 	periodWorked = ltrim(rtrim(a.PeriodApproved)),
 	dateWorked
 from FinanceDM.dbo.HoursActual a
+inner join @ParsedCustomerId pc
+	on a.CustomerId = case when @iCustomerId is not null then pc.CustomerId else a.CustomerId end
 where coalesce(a.[Hours],0) <> 0
 	and case when a.PeriodApproved  > cast(year(a.DateWorked) as varchar(4)) + right('00' + cast(month(a.DateWorked) as varchar(2)), 2) then a.PeriodApproved
 			else cast(year(a.DateWorked) as varchar(4)) + right('00' + cast(month(a.DateWorked) as varchar(2)), 2)

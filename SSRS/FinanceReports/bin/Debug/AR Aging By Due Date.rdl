@@ -6,13 +6,13 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.71875in</Width>
+              <Width>1in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.45833in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.625in</Width>
+              <Width>0.84375in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.61458in</Width>
@@ -24,13 +24,13 @@
               <Width>1.27083in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.82292in</Width>
+              <Width>1.0625in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.04167in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.64583in</Width>
+              <Width>0.76041in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.67708in</Width>
@@ -459,7 +459,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Job Descrition</Value>
+                              <Value>Job Description</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -2054,14 +2054,14 @@
         <DataSetName>ArAgedByDueDate</DataSetName>
         <Top>0.21in</Top>
         <Height>0.42in</Height>
-        <Width>19.25001in</Width>
+        <Width>20.10418in</Width>
         <Style />
       </Tablix>
     </ReportItems>
     <Height>0.63in</Height>
     <Style />
   </Body>
-  <Width>19.25001in</Width>
+  <Width>20.10418in</Width>
   <Page>
     <PageHeight>8.5in</PageHeight>
     <PageWidth>11in</PageWidth>

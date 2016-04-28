@@ -1225,6 +1225,9 @@
           <QueryParameter Name="@year">
             <Value>=Parameters!Year.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@Company">
+            <Value>=join(Parameters!Company.Value,"|")</Value>
+          </QueryParameter>
           <QueryParameter Name="@EndMonth">
             <Value>=Parameters!EndMonth.Value</Value>
           </QueryParameter>
@@ -1429,6 +1432,35 @@
           </ParameterValue>
         </ParameterValues>
       </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="Company">
+      <DataType>String</DataType>
+      <Prompt>Company</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>DALLAS</Value>
+            <Label>DALLAS</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>DENVER</Value>
+            <Label>DENVER</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>MIDWEST</Value>
+            <Label>MIDWEST</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>NEWYORK</Value>
+            <Label>NEWYORK</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>SHOPPERNY</Value>
+            <Label>SHOPPERNY</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
     </ReportParameter>
   </ReportParameters>
   <Language>en-US</Language>
