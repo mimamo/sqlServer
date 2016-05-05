@@ -16,11 +16,10 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE [dbo].[PayrollGet] 
-	@sAgency varchar(3),
+	@sAgency varchar(max),
 	@sPayGroup varchar(3),
 	@sEmp_ID varchar(50),
-	@sEmp_Pay_Type varchar(3),
-	@pEndDate datetime,
+	@sEmp_Pay_Type varchar(max),
 	@begDate datetime,
 	@endDate datetime
 	
@@ -29,7 +28,7 @@ AS
 /*******************************************************************************************************
 *   DALLASAPP.dbo.PayrollGet
 *
-*   Creator: David Martin / Michelle Morales    
+*   Creator: David Martin
 *   Date: 03/28/2016          
 *   
 *          
@@ -42,11 +41,19 @@ AS
 
 	execute DALLASAPP.dbo.PayrollGet @begDate = '03/01/2016',
 		@endDate = '03/22/2016',
-		@pEndDate = '03/22/2016',
 		@sAgency = NULL,
 		@sPayGroup = NULL,
 		@sEmp_ID = NULL,
 		@sEmp_Pay_Type = 'S2'
+		
+		
+	execute DALLASAPP.dbo.PayrollGet @begDate = '03/01/2016',
+		@endDate = '03/22/2016',
+		@sAgency = NULL,
+		@sPayGroup = NULL,
+		@sEmp_ID = NULL,
+		@sEmp_Pay_Type = 'HR|S1|S2'
+	
 	
 
 *   Modifications:   
@@ -65,7 +72,15 @@ declare @end datetime
 ---------------------------------------------
 -- create temp tables
 ---------------------------------------------
+declare @EmpPayType table 
+(
+	EmpPayType nvarchar(4000) primary key clustered
+)
 
+declare @Agency table 
+(
+	Agency nvarchar(4000) primary key clustered
+)
 ---------------------------------------------
 -- set session variables
 ---------------------------------------------
@@ -96,10 +111,31 @@ set @sEmp_ID = NULL
 set @sEmp_Pay_Type = 'S2'
 */
 
+if @sAgency is not null
+begin
+
+	insert @Agency (Agency)
+	select Name
+	from denverapp.dbo.SplitString(@sAgency)
+
+end
+
+
+if @sEmp_Pay_Type is not null
+begin
+
+	insert @EmpPayType (EmpPayType)
+	select Name
+	from denverapp.dbo.SplitString(@sEmp_Pay_Type)
+
+end
+
+
+
 SET @begin = Convert(datetime, Convert(char(10), @begDate, 103) + ' ' + Convert(char(8), @begTime, 108), 103)
 SET @end = Convert(datetime, Convert(char(10), @endDate, 103) + ' ' + Convert(char(8), @endTime, 108), 103)
 
-SELECT		Agency,
+SELECT		tbl.Agency,
 			Approver,
 			Emp_ID,
 			Emp_Name,
@@ -398,12 +434,15 @@ FROM		( /* Get Regular and Corrected Timesheet Data */
 			WHERE		C.le_status = 'X'
 						AND CC.le_status IN ('P','X')
 						AND CC.le_type = 'C') AS Tbl
-WHERE		(Agency IN (@sAgency) OR @sAgency IS NULL)
-			AND (PayGroup IN (@sPayGroup) OR @sPayGroup IS NULL)
+inner join @EmpPayType empt
+	on tbl.Emp_Pay_Type = coalesce(empt.EmpPayType, tbl.Emp_Pay_Type)
+inner join @Agency agy
+	on tbl.Agency = coalesce(agy.Agency, tbl.Agency)
+WHERE (PayGroup IN (@sPayGroup) OR @sPayGroup IS NULL OR PayGroup = 'MISSING')
 			AND (Emp_ID IN (@sEmp_ID) OR @sEmp_ID IS NULL)
-			AND (Emp_Pay_Type IN (@sEmp_Pay_Type) OR @sEmp_Pay_Type IS NULL)
 			AND Last_Update BETWEEN @begin AND @end
-GROUP BY	Agency,
+			
+GROUP BY	tbl.Agency,
 			Approver,
 			Emp_ID,
 			Emp_Name,
@@ -427,6 +466,7 @@ GROUP BY	Agency,
 			Docnbr
 HAVING		(SUM(Mon) <> 0 OR SUM(Tue) <> 0 OR SUM(Wed) <> 0 OR SUM(Thr) <> 0 OR SUM(Fri) <> 0 OR SUM(Sat) <> 0 OR SUM(Sun) <> 0)
 ORDER BY	Emp_ID, Period_End_Date, Docnbr, Project_ID		
+
 
 
 ---------------------------------------------

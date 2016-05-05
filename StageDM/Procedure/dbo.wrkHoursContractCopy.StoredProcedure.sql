@@ -22,6 +22,7 @@ CREATE PROCEDURE [dbo].[wrkHoursContractCopy]
 	@client varchar(15),	
 	@productCode varchar(max), 
 	@startDate datetime,
+	@endDate datetime,
 	@fteHours float
 	
 AS 
@@ -42,6 +43,7 @@ AS
 				@contractTitle = 'Another contract', 
 				@client = '1arcas',	
 				@startDate = '04/15/2016',
+				@endDate = '04/30/2016',
 				@fteHours = 1800					
 
 		
@@ -108,6 +110,7 @@ insert financeDm.dbo.HoursContract
 	contractTitle,  
 	client,	
 	startDate,
+	endDate,
 	fteHours,
 	createdDate,
 	updatedDate
@@ -117,6 +120,7 @@ select contractGroupId = ContractGroupId,
 	contractTitle = @contractTitle,  
 	client = @client,	
 	startDate = @startDate,
+	endDate = @endDate,
 	fteHours = @fteHours,
 	createdDate = @today,
 	updatedDate = @today

@@ -9,13 +9,13 @@ GO
 IF EXISTS (
             SELECT 1
             FROM sys.procedures with (nolock)
-            WHERE NAME = 'HoursActualGet'
+            WHERE NAME = 'HoursForecastGet'
                 AND type = 'P'
            )
-    DROP PROCEDURE [dbo].[HoursActualGet]
+    DROP PROCEDURE [dbo].[HoursForecastGet]
 GO
 
-CREATE PROCEDURE [dbo].[HoursActualGet] 
+CREATE PROCEDURE [dbo].[HoursForecastGet] 
 	@iStartPeriod varchar(6),	
 	@iEndPeriod varchar(6),
 	@iCustomerId varchar(max)
@@ -26,28 +26,20 @@ with recompile
 AS 
 
 /*******************************************************************************************************
-*   FinanceDM.dbo.HoursActualGet
+*   FinanceDM.dbo.HoursForecastGet
 *
 *   Creator: Michelle Morales    
-*   Date: 05/02/2016          
+*   Date: 05/03/2016          
 *   
 *          
-*   Notes: 48,479 rows, why does it take so long to export to Excel?
-
-		select *
-		from FinanceDM.dbo.HoursActual
-		where customerId like '%KEL%'
-		order by classId
-
-		select top 100 *
-		from FinanceDM.dbo.HoursActual
+*   Notes: 
 *
 *
 *   Usage:	set statistics io on
 
-	execute FinanceDM.dbo.HoursActualGet @iStartPeriod = '201511', @iEndPeriod = '201511'
+	execute FinanceDM.dbo.HoursForecastGet @iStartPeriod = '201601', @iEndPeriod = '201612', @iCustomerId = '1jackl'
 	
-	execute FinanceDM.dbo.HoursActualGet @iStartPeriod = '201507', @iEndPeriod = '201601', @iCustomerId = '1GILNA|1ARCAS'
+	execute FinanceDM.dbo.HoursForecastGet @iStartPeriod = '201507', @iEndPeriod = '201601', @iCustomerId = '1GILNA|1ARCAS'
 	
 	select distinct DateWorked from FinanceDM.dbo.HoursActual order by DateWorked desc
 	
@@ -65,34 +57,21 @@ AS
 *   
 ********************************************************************************************************/
 declare @minDateWorked datetime,
-	@maxDateWorked datetime
--- doing this to keep SSRS from parameter sniffing
-/*
-declare	@iStartPeriodInternal varchar(6),	
-	@iEndPeriodInternal varchar(6),
-	@iClientIdInternal varchar(max)
-	
-select @iStartPeriodInternal = @iStartPeriod,	
-	@iEndPeriodInternal = @iEndPeriod,
-	@iClientIdInternal = @iClientId
+	@maxDateWorked datetime,
+	@term int
 
-select @iStartPeriod = '201510',
-	@iEndPeriod = '201511'
-*/	
 ---------------------------------------------
 -- declare variables
 ---------------------------------------------
-declare @ParsedCustomerId table (CustomerId nvarchar(4000) primary key clustered)
-
+declare @ParsedCustomerId table 
+(
+	CustomerId nvarchar(4000) primary key clustered
+)
 
 ---------------------------------------------
 -- create temp tables
 ---------------------------------------------
-if object_id('tempdb.dbo.##pizza') > 0 drop table ##pizza
-create table ##pizza
-(
-	periodWorked varchar(6) primary key clustered
-)
+
 ---------------------------------------------
 -- set session variables
 ---------------------------------------------
@@ -111,57 +90,45 @@ begin
 
 end
 
-truncate table ##pizza
 
 select @minDateWorked = cast(right(@iStartPeriod,2) + '/01/' + left(@iStartPeriod,4) as datetime)
 select @maxDateWorked = cast(right(@iEndPeriod,2) + '/01/' + left(@iEndPeriod,4) as datetime)
 
-while @minDateWorked < dateadd(mm, 1, @maxDateWorked)
-begin
+select @term = datediff(mm,@minDateWorked,@maxDateWorked) + 1
 
-	insert ##pizza (periodWorked)
-	select cast(year(@minDateWorked) as varchar(4)) + right('00' + cast(month(@minDateWorked) as varchar(2)), 2)
-	
-	select @minDateWorked = dateadd(mm, 1, @minDateWorked)
+select @term
 
-end
 
-select ha.CustomerId, 
-	ha.CustomerName, 
-	ha.ClassId, 
-	ha.ProductId, 
-	ha.ProductDesc, 
-	ha.ProjectId, 
-	NewProjectNumber = replace(replace(ltrim(rtrim(ha.ProjectId)),'APS','AGY'),'NYC','AGY'),
-	ha.ProjectDesc, 
-	ha.EmployeeDeptId, 
-	ha.DepartmentName, 
-	ha.EmployeeName,
-	ha.EmployeeTitle, 
-	ha.[Hours],
-	ha.PeriodApproved, 
-	ha.WMJFlag, 
-	ha.WMJHours, 
-	ha.SumOfFTEEquiv, 
-	ha.RetainedOOS
-from FinanceDm.dbo.HoursActual ha
+select hc.integerId,
+	hc.contractGroupId,
+	hc.versionNo,
+	hc.contractTitle,	
+	hc.client,
+	hc.startDate,
+	hc.endDate,
+	hc.fteHours, 
+	hcl.departmentId,
+	hcl.ftePercent
+from FinanceDM.dbo.HoursContract hc
+left join FinanceDM.dbo.HoursContractScopedFte hcl
+	on hc.integerId = hcl.integerId
 inner join @ParsedCustomerId pc
-	on ha.CustomerId = pc.CustomerId
-where ha.PeriodApproved in(select periodWorked from ##pizza)
-	
+	on hc.client = pc.CustomerId
+where hc.startDate <=  @minDateWorked 
+	and hc.endDate >= @maxDateWorked
 
 
 ---------------------------------------------
 -- permissions
 ---------------------------------------------
-grant execute on HoursActualGet to BFGROUP
+grant execute on HoursForecastGet to BFGROUP
 go
 
-grant execute on HoursActualGet to MSDSL
+grant execute on HoursForecastGet to MSDSL
 go
 
-grant control on HoursActualGet to MSDSL
+grant control on HoursForecastGet to MSDSL
 go
 
-grant execute on HoursActualGet to MSDynamicsSL
+grant execute on HoursForecastGet to MSDynamicsSL
 go

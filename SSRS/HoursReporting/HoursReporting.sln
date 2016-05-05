@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "HoursReporting", "HoursReporting.rptproj", "{77BEA737-A730-4E87-8B2B-9A28109E4288}"
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "HoursReportingTest", "HoursReportingTest.rptproj", "{C852A40C-E470-444D-8792-164110EFB59F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,14 +10,14 @@ Global
 		Release|Default = Release|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{77BEA737-A730-4E87-8B2B-9A28109E4288}.Debug|Default.ActiveCfg = Debug
-		{77BEA737-A730-4E87-8B2B-9A28109E4288}.Debug|Default.Build.0 = DebugLocal
-		{77BEA737-A730-4E87-8B2B-9A28109E4288}.Debug|Default.Deploy.0 = DebugLocal
-		{77BEA737-A730-4E87-8B2B-9A28109E4288}.DebugLocal|Default.ActiveCfg = DebugLocal
-		{77BEA737-A730-4E87-8B2B-9A28109E4288}.DebugLocal|Default.Build.0 = DebugLocal
-		{77BEA737-A730-4E87-8B2B-9A28109E4288}.Release|Default.ActiveCfg = Release
-		{77BEA737-A730-4E87-8B2B-9A28109E4288}.Release|Default.Build.0 = Release
-		{77BEA737-A730-4E87-8B2B-9A28109E4288}.Release|Default.Deploy.0 = Release
+		{C852A40C-E470-444D-8792-164110EFB59F}.Debug|Default.ActiveCfg = Debug
+		{C852A40C-E470-444D-8792-164110EFB59F}.Debug|Default.Build.0 = DebugLocal
+		{C852A40C-E470-444D-8792-164110EFB59F}.Debug|Default.Deploy.0 = DebugLocal
+		{C852A40C-E470-444D-8792-164110EFB59F}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{C852A40C-E470-444D-8792-164110EFB59F}.DebugLocal|Default.Build.0 = DebugLocal
+		{C852A40C-E470-444D-8792-164110EFB59F}.Release|Default.ActiveCfg = Release
+		{C852A40C-E470-444D-8792-164110EFB59F}.Release|Default.Build.0 = Release
+		{C852A40C-E470-444D-8792-164110EFB59F}.Release|Default.Deploy.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,7 +17,9 @@ GO
 
 CREATE PROCEDURE [dbo].[HoursActualDdGet] 
 	@iStartPeriod varchar(6),	
-	@iEndPeriod varchar(6)
+	@iEndPeriod varchar(6),
+	@iCustomerId varchar(max)
+	
 	
 with recompile
 	
@@ -62,25 +64,35 @@ AS
 *   ------------------- ----------- ------------------------------------------------------------
 *   
 ********************************************************************************************************/
+declare @minDateWorked datetime,
+	@maxDateWorked datetime
 -- doing this to keep SSRS from parameter sniffing
+/*
 declare	@iStartPeriodInternal varchar(6),	
-	@iEndPeriodInternal varchar(6)
+	@iEndPeriodInternal varchar(6),
+	@iClientIdInternal varchar(max)
 	
 select @iStartPeriodInternal = @iStartPeriod,	
-	@iEndPeriodInternal = @iEndPeriod
-/*
+	@iEndPeriodInternal = @iEndPeriod,
+	@iClientIdInternal = @iClientId
+
 select @iStartPeriod = '201510',
 	@iEndPeriod = '201511'
 */	
-
+---------------------------------------------
 -- declare variables
 ---------------------------------------------
+declare @ParsedCustomerId table (CustomerId nvarchar(4000) primary key clustered)
+
 
 ---------------------------------------------
 -- create temp tables
 ---------------------------------------------
-
-
+if object_id('tempdb.dbo.##pizza') > 0 drop table ##pizza
+create table ##pizza
+(
+	periodWorked varchar(6) primary key clustered
+)
 ---------------------------------------------
 -- set session variables
 ---------------------------------------------
@@ -90,13 +102,38 @@ SET NOCOUNT ON
 ---------------------------------------------
 -- body of stored procedure
 ---------------------------------------------
+if @iCustomerId is not null
+begin
 
-SELECT     Company, CustomerId, CustomerName, ClassId, ClassGroup, ProductId, ProductDesc, ProjectId, ProjectDesc, JobType, JobSubType, ClientContact, ClientEmail, adpId, 
+	insert @ParsedCustomerId (CustomerId)
+	select Name
+	from den_dev_app.dbo.SplitString(@iCustomerId)
+
+end
+
+truncate table ##pizza
+
+select @minDateWorked = cast(right(@iStartPeriod,2) + '/01/' + left(@iStartPeriod,4) as datetime)
+select @maxDateWorked = cast(right(@iEndPeriod,2) + '/01/' + left(@iEndPeriod,4) as datetime)
+
+while @minDateWorked < dateadd(mm, 1, @maxDateWorked)
+begin
+
+	insert ##pizza (periodWorked)
+	select cast(year(@minDateWorked) as varchar(4)) + right('00' + cast(month(@minDateWorked) as varchar(2)), 2)
+	
+	select @minDateWorked = dateadd(mm, 1, @minDateWorked)
+
+end
+
+SELECT     ha.Company, ha.CustomerId, ha.CustomerName, ClassId, ClassGroup, ProductId, ProductDesc, ProjectId, ProjectDesc, JobType, JobSubType, ClientContact, ClientEmail, adpId, 
                       EmployeeDeptId, DepartmentName, SubDept, SubDeptName, EmployeeName, EmployeeEmail, EmployeeTitle, Approver, ApproverEmail, FunctionCode, Hours, 
-                      PeriodApproved, WeekEndingDate, DateWorked, WMJFlag, WMJHours, SumOfFteEquity, BusinessUnit, SubUnit, Brand, RetainedOOS, DocNbr, DetailNum, 
+                      PeriodApproved, WeekEndingDate, DateWorked, WMJFlag, WMJHours, SumOfFteEquiv, BusinessUnit, SubUnit, Brand, RetainedOOS, DocNbr, DetailNum, 
                       BillBatchId, BatchId, Employee, RowId, DateAdded
-FROM         HoursActual
-where PeriodApproved between @iStartPeriod and  @iEndPeriod
+FROM         HoursActual ha
+inner join @ParsedCustomerId pc
+	on ha.CustomerId = pc.CustomerId
+where ha.PeriodApproved in(select periodWorked from ##pizza)
 	
 
 

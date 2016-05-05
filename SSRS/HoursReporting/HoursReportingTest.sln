@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "HoursReportingTest", "HoursReportingTest.rptproj", "{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.Debug|Default.ActiveCfg = Debug
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.Debug|Default.Build.0 = DebugLocal
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.Debug|Default.Deploy.0 = DebugLocal
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.DebugLocal|Default.Build.0 = DebugLocal
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.DebugLocal|Default.Deploy.0 = DebugLocal
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.Release|Default.ActiveCfg = Release
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.Release|Default.Build.0 = Release
+		{CAD8E5D4-6BED-4D0F-A399-19E05E6BC6EE}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
