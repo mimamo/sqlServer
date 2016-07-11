@@ -61,8 +61,8 @@ CREATE PROCEDURE [dbo].[dsChangeSummary_by_BU_Dept]
 ---------------------------------------------
 -- create temp tables
 ---------------------------------------------
-if object_id('tempdb.dbo.##fc') > 0 drop table ##fc
-create table ##fc
+if object_id('tempdb.dbo.##fcxyz') > 0 drop table ##fcxyz
+create table ##fcxyz
 (
 	BusinessUnit varchar(50),
 	Department varchar(50),
@@ -71,7 +71,8 @@ create table ##fc
 	FTE_Adjust decimal(20,3),	
 	Adj_Forecast decimal(20,3),
 	CurMonth int,
-	primary key clustered (businessUnit, Department, curMonth)
+	rowId int identity(1,1),
+	primary key clustered (businessUnit, Department, curMonth, rowId)
 )
 
 if object_id('tempdb.dbo.##actual') > 0 drop table ##actual
@@ -95,7 +96,10 @@ SET NOCOUNT ON
 ---------------------------------------------
 -- body of stored procedure
 ---------------------------------------------
-insert ##fc
+-- Run SPROC to Populate data if it isn't populated
+EXEC DENVERAPP.dbo.xsp_MC_FTE_Working  @iCurMonth, @iCurYear
+ 
+insert ##fcxyz
 (
 	BusinessUnit,
 	Department,
@@ -113,8 +117,8 @@ select BusinessUnit,
 	Adj_Forecast = sum(adj_fPpl),
 	CurMonth = fMonth 
 from DENVERAPP.dbo.xwrk_MC_Forecast 
---where BusinessUnit not like 'OOS%'
-	where fMonth <= @iCurMonth
+where BusinessUnit not like 'OOS%'
+	and fMonth <= @iCurMonth
 	and fYear = @iCurYear
 /* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise.
 	and coalesce([fYear],0) <> 
@@ -140,7 +144,7 @@ select BusinessUnit = coalesce(BusinessUnit,''),
 	CurHours = (sum([Hours])/166.67), 
 	CurMonth 
 from DENVERAPP.dbo.xwrk_MC_Data 
---where coalesce(BusinessUnit,'OOS') not like 'OOS%'
+where coalesce(BusinessUnit,'OOS') not like 'OOS%'
 /* This sounds like it is probably a special workaround. I think we can take this out and address any new 2016 needs as they arise. 
 	and coalesce([Year],0) <> 
 		case when  coalesce(BusinessUnit,'') in('Batch 19', 'Channel', 'Fortune', 'George Killians', 'Henry Weinhard', 'Passport', 'Pilsner Urquell', 'Third Shift') then 2015 
@@ -149,7 +153,7 @@ from DENVERAPP.dbo.xwrk_MC_Data
 			else 1900
 		end
 remove above when procedures are working properly */
-	where CurMonth <= @iCurMonth
+	and CurMonth <= @iCurMonth
 	and [Year] = @iCurYear
 group by coalesce(BusinessUnit,''), Department, SalesMarketing, CurMonth
 
@@ -163,16 +167,16 @@ select BusinessUnit = coalesce(m.BusinessUnit, ad.BusinessUnit),
 	Adj_Forecast = coalesce(sum(ad.Adj_Forecast),0),
 	CurMonth = coalesce(m.CurMonth, ad.CurMonth)
 from ##actual m 
-full outer join ##fc ad 
+full outer join ##fcxyz ad 
 	on m.BusinessUnit = ad.BusinessUnit 
 	and m.SalesMarketing = ad.SalesMarketing 
 	and m.Department = ad.Department 
 	and m.CurMonth = ad.CurMonth
 group by m.BusinessUnit, ad.BusinessUnit, m.Department, ad.Department, m.SalesMarketing, ad.SalesMarketing, m.CurMonth, ad.CurMonth
---having coalesce(sum(round(m.[CurHours],5)),0) <> 0 
---	or coalesce(sum(ad.Forecast),0) <> 0
+having coalesce(sum(round(m.[CurHours],5)),0) <> 0 
+	or coalesce(sum(ad.Forecast),0) <> 0
 order by coalesce(m.CurMonth, ad.CurMonth), coalesce(m.BusinessUnit, ad.BusinessUnit), coalesce(m.Department, m.Department)
 
+drop table ##fcxyz 
+drop table ##actual 
 
-drop table ##fc
-drop table ##actual
