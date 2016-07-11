@@ -124,64 +124,81 @@ and (p.em_id01 <> ''
 
 UNION
 
--- ADD DALLAS NO APPROVAL EMAIL
-SELECT	'' AS 'EmployeeID',
-		'Supervisor' AS 'lName',
-		'No Project' AS 'fName',
-		'tsairam@integer.com' AS 'EmployeeEmail',
-		'' AS 'VendorID',
-		'' AS 'Manager', -- Supervisor field in DSL screen
-		'DALLAS' AS 'Company', -- Hardcode Dallas company
-		'' AS 'SubAccount',
-		'DALLAS' AS 'Company2'
-		
-UNION ALL
+SELECT DISTINCT SubTbl.EmployeeID,
+				SubTbl.lName,
+				SubTbl.fName,
+				SubTbl.EmployeeEmail,
+				SubTbl.VendorID,
+				CASE 
+					-- Hard Code Ellen's supervisor
+					WHEN SubTbl.EmployeeID = 'ECOOK' THEN ''
+					-- Check that employee's manager is active Nexonia user, otherwise set to no approver
+					WHEN SubTbl.Manager NOT IN (SELECT LTRIM(RTRIM(employee)) FROM DALLASAPP.DBO.PJEMPLOY WHERE emp_status = 'A' AND emp_type_cd <> 'PROD' AND LTRIM(RTRIM(em_id01)) <> '' UNION ALL SELECT LTRIM(RTRIM(employee)) FROM DALLASSTUDIOAPP.DBO.PJEMPLOY WHERE emp_status = 'A' AND emp_type_cd <> 'PROD' AND LTRIM(RTRIM(em_id01)) <> ''  ) THEN ''
+					-- All other employees
+					ELSE SubTbl.Manager
+				END AS 'Manager',
+				SubTbl.Company,
+				SubTbl.SubAccount,
+				SubTbl.Company2
+FROM			(-- ADD DALLAS NO APPROVAL EMAIL
+				SELECT	'NOPROJSUP' AS 'EmployeeID',
+						'Supervisor' AS 'lName',
+						'No Project' AS 'fName',
+						'tsairam@integer.com' AS 'EmployeeEmail',
+						'' AS 'VendorID',
+						'' AS 'Manager', -- Supervisor field in DSL screen
+						'DALLAS' AS 'Company', -- Hardcode Dallas company
+						'' AS 'SubAccount',
+						'DALLAS' AS 'Company2'
+						
+				UNION ALL
 
--- ADD DALLAS EMPLOYEES
+				-- ADD DALLAS EMPLOYEES
 
-SELECT	LTRIM(RTRIM(P.employee)) AS 'EmployeeID',
-		CASE CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1) -- Get last name by simply looking after first blank space
-			WHEN 0 THEN LTRIM(RTRIM(P.emp_name))
-			ELSE LTRIM(RTRIM(SUBSTRING(LTRIM(RTRIM(P.emp_name)),CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1)+1,100)))		
-		END AS 'lName',
-		CASE CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1) -- Get first name by simply looking for first blank space
-			WHEN 0 THEN LTRIM(RTRIM(P.emp_name))
-			ELSE LTRIM(RTRIM(SUBSTRING(LTRIM(RTRIM(P.emp_name)),1,CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1)-1)))
-		END AS 'fName',
-		LTRIM(RTRIM(P.em_id03)) AS 'EmployeeEmail',
-		LTRIM(RTRIM(P.em_id01)) AS 'VendorID',
-		LTRIM(RTRIM(P.manager1)) AS 'Manager', -- Supervisor field in DSL screen
-		'DALLAS' AS 'Company', -- Hardcode Dallas company
-		'0000' AS 'SubAccount',  -- Hardcode to agency subaccount to prevent entries into incorrect subaccount/subaccounts not used in Dallas
-		'DALLAS' AS 'Company2'
-FROM	DALLASAPP.DBO.PJEMPLOY P
-WHERE	P.emp_status = 'A' -- Only currently active employees
-		AND P.emp_type_cd <> 'PROD' --Exclude the client "employees" the system adds
-		AND LTRIM(RTRIM(P.em_id01)) <> '' -- Only employees with vendor ID set	
+				SELECT	LTRIM(RTRIM(P.employee)) AS 'EmployeeID',
+						CASE CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1) -- Get last name by simply looking after first blank space
+							WHEN 0 THEN LTRIM(RTRIM(P.emp_name))
+							ELSE LTRIM(RTRIM(SUBSTRING(LTRIM(RTRIM(P.emp_name)),CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1)+1,100)))		
+						END AS 'lName',
+						CASE CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1) -- Get first name by simply looking for first blank space
+							WHEN 0 THEN LTRIM(RTRIM(P.emp_name))
+							ELSE LTRIM(RTRIM(SUBSTRING(LTRIM(RTRIM(P.emp_name)),1,CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1)-1)))
+						END AS 'fName',
+						LTRIM(RTRIM(P.em_id03)) AS 'EmployeeEmail',
+						LTRIM(RTRIM(P.em_id01)) AS 'VendorID',
+						LTRIM(RTRIM(P.manager1)) AS 'Manager', -- Supervisor field in DSL screen
+						'DALLAS' AS 'Company', -- Hardcode Dallas company
+						'0000' AS 'SubAccount',  -- Hardcode to agency subaccount to prevent entries into incorrect subaccount/subaccounts not used in Dallas
+						'DALLAS' AS 'Company2'
+				FROM	DALLASAPP.DBO.PJEMPLOY P
+				WHERE	P.emp_status = 'A' -- Only currently active employees
+						AND P.emp_type_cd <> 'PROD' --Exclude the client "employees" the system adds
+						AND LTRIM(RTRIM(P.em_id01)) <> '' -- Only employees with vendor ID set	
 
-UNION ALL
+				UNION ALL
 
--- ADD DALLAS STUDIO EMPLOYEES
+				-- ADD DALLAS STUDIO EMPLOYEES
 
-SELECT	LTRIM(RTRIM(P.employee)) AS 'EmployeeID',
-		CASE CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1) -- Get last name by simply looking after first blank space
-			WHEN 0 THEN LTRIM(RTRIM(P.emp_name))
-			ELSE LTRIM(RTRIM(SUBSTRING(LTRIM(RTRIM(P.emp_name)),CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1)+1,100)))		
-		END AS 'lName',
-		CASE CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1) -- Get first name by simply looking for first blank space
-			WHEN 0 THEN LTRIM(RTRIM(P.emp_name))
-			ELSE LTRIM(RTRIM(SUBSTRING(LTRIM(RTRIM(P.emp_name)),1,CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1)-1)))
-		END AS 'fName',
-		LTRIM(RTRIM(P.em_id03)) AS 'EmployeeEmail',
-		LTRIM(RTRIM(P.em_id01)) AS 'VendorID',
-		LTRIM(RTRIM(P.manager1)) AS 'Manager', -- Supervisor field in DSL screen
-		'DALLAS' AS 'Company', -- Hardcode Dallas company
-		'0000' AS 'SubAccount',  -- Hardcode to agency subaccount to prevent entries into incorrect subaccount/subaccounts not used in Dallas
-		'DALLAS' AS 'Company2'
-FROM	DALLASSTUDIOAPP.DBO.PJEMPLOY P
-WHERE	P.emp_status = 'A' -- Only currently active employees
-		AND P.emp_type_cd <> 'PROD' --Exclude the client "employees" the system adds
-		AND LTRIM(RTRIM(P.em_id01)) <> '' -- Only employees with vendor ID set	
+				SELECT	LTRIM(RTRIM(P.employee)) AS 'EmployeeID',
+						CASE CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1) -- Get last name by simply looking after first blank space
+							WHEN 0 THEN LTRIM(RTRIM(P.emp_name))
+							ELSE LTRIM(RTRIM(SUBSTRING(LTRIM(RTRIM(P.emp_name)),CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1)+1,100)))		
+						END AS 'lName',
+						CASE CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1) -- Get first name by simply looking for first blank space
+							WHEN 0 THEN LTRIM(RTRIM(P.emp_name))
+							ELSE LTRIM(RTRIM(SUBSTRING(LTRIM(RTRIM(P.emp_name)),1,CHARINDEX(' ' ,LTRIM(RTRIM(P.emp_name)),1)-1)))
+						END AS 'fName',
+						LTRIM(RTRIM(P.em_id03)) AS 'EmployeeEmail',
+						LTRIM(RTRIM(P.em_id01)) AS 'VendorID',
+						LTRIM(RTRIM(P.manager1)) AS 'Manager', -- Supervisor field in DSL screen
+						'DALLAS' AS 'Company', -- Hardcode Dallas company
+						'0000' AS 'SubAccount',  -- Hardcode to agency subaccount to prevent entries into incorrect subaccount/subaccounts not used in Dallas
+						'DALLAS' AS 'Company2'
+				FROM	DALLASSTUDIOAPP.DBO.PJEMPLOY P
+				WHERE	P.emp_status = 'A' -- Only currently active employees
+						AND P.emp_type_cd <> 'PROD' --Exclude the client "employees" the system adds
+						AND LTRIM(RTRIM(P.em_id01)) <> '' -- Only employees with vendor ID set
+						) AS SubTbl	
 ---------------------------------------------
 -- set session variables
 ---------------------------------------------
